@@ -1,0 +1,364 @@
+var ug_status = {
+    "type":"FeatureCollection", 
+    "features": [
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Sunset Estates",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.287283, 47.767061
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Innis Arden",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.366856, 47.775901
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Carkeek Park",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.372413, 47.711680
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Blue Ridge",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.374975, 47.705894
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"View Ridge",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.274746, 47.687459
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Laurenlhurst",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.279773, 47.660473
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Crestmont",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.407692, 47.640798
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Boston Terrace",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.314372, 47.635515
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Hillcrest",
+                "Status":"Completed",
+                "Priority":"0",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.405406, 47.571005
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Arroyo Beach",
+                "Status":"Completed",
+                "Priority":"7",
+                "Note":"Already Completed Area"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.377703, 47.504814
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Hurstwood/Seahurst",
+                "Status":"High",
+                "Priority":"1",
+                "Note":"95% civil design for non-injectable cable segments, expect to award construction contract in summer 2023"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.363999, 47.469898
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Brace Point",
+                "Status":"High",
+                "Priority":"2",
+                "Note":"100% civil design completed, pending on SDOT permit review"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.396514, 47.517072
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Roxbury",
+                "Status":"High",
+                "Priority":"3",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.271348, 47.516862
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Leschi Park",
+                "Status":"High",
+                "Priority":"4",
+                "Note":"50% engineering design, in SDOT plan review"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.287651, 47.600729
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Delrigde",
+                "Status":"High",
+                "Priority":"5",
+                "Note":"Civil construction completed in 2021"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.353856, 47.535292
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Ambaum",
+                "Status":"High",
+                "Priority":"6",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.337485, 47.481131
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Shorewood",
+                "Status":"Medium",
+                "Priority":"9",
+                "Note":"There is existing conduit verified by crew. Only need to replace BO cable"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.36777, 47.497522
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Gatewood",
+                "Status":"Medium",
+                "Priority":"10",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.38388, 47.540115
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Norfolk",
+                "Status":"N/A",
+                "Priority":"11",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.277168, 47.513876
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Queen Anne",
+                "Status":"N/A",
+                "Priority":"12",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.35781, 47.633599
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Michelle Park",
+                "Status":"N/A",
+                "Priority":"13",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.371692, 47.762985
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Middle Ave N",
+                "Status":"N/A",
+                "Priority":"14",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.338317, 47.729885
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"5th Ave NE",
+                "Status":"N/A",
+                "Priority":"15",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.323552, 47.728047
+                ]
+            }
+        },
+        {
+            "type":"Feature",
+            "properties": {
+                "Neighborhood":"Mt Baker",
+                "Status":"N/A",
+                "Priority":"16",
+                "Note":"N/A"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.292977, 47.578578
+                ]
+            }
+        }
+]}
