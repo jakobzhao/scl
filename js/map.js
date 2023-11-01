@@ -1,6 +1,6 @@
 var beforeMap = new maplibregl.Map({
     container: "before",
-    style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+    style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
     center: [-122.335167, 47.608013],
     zoom: 12,
   });
@@ -8,7 +8,7 @@ var beforeMap = new maplibregl.Map({
   var afterMap = new maplibregl.Map({
     container: "after",
     style:
-      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+      "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
     center: [-122.335167, 47.608013],
     zoom: 12,
   });
@@ -78,7 +78,7 @@ beforeMap.on('load', () => {
               // Adjust the heatmap radius by zoom level
               'heatmap-radius': {
                 'stops': [
-                [11, 40],
+                [11, 20],
                 [15, 100]
                 ]
               },
@@ -86,13 +86,13 @@ beforeMap.on('load', () => {
               'heatmap-opacity': {
                 'default': 1,
                 'stops': [
-                [12, 1],
-                [20, 0]
+                [12, 0.8],
+                [18, 0]
                 ]
               }
           }
       },
-      'waterway'
+      'housenumber'
   );
 
   beforeMap.addLayer(
@@ -141,7 +141,7 @@ beforeMap.on('load', () => {
               }
           }
       },
-      'waterway'
+      'housenumber'
   );
 })
 
