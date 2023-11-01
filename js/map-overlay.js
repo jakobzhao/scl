@@ -110,7 +110,7 @@ beforeMap.on('load', () => {
               }
           }
       },
-      'watername_ocean'
+      'housenumber'
   );
 
   beforeMap.addLayer(
@@ -160,18 +160,18 @@ beforeMap.on('load', () => {
               }
           }
       },
-      'watername_ocean'
+      'housenumber'
   );
 })
 
 
-afterMap.on('load', () => {
-    afterMap.addSource('svi20_data', {
+beforeMap.on('load', () => {
+  beforeMap.addSource('svi20_data', {
         'type': 'geojson',
         'data': svi20
     });
 
-    afterMap.addLayer({
+    beforeMap.addLayer({
       'id': 'svi20_choropleth',
       'type': 'fill',
       'source': 'svi20_data',
@@ -186,15 +186,15 @@ afterMap.on('load', () => {
         'fill-opacity': 0.5
       }
     },
-    'watername_ocean')
+    'housenumber')
 
-    afterMap.addLayer({
+    beforeMap.addLayer({
       'id' : 'svi_lines',
       'type': 'line',
       'source': 'svi20_data',
       'paint': {
-        'line-opacity': 0.3
+        'line-opacity': 1
       }
     },
-    'watername_ocean')
+    'housenumber')
 })
