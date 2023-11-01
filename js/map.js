@@ -178,7 +178,7 @@ afterMap.on("load", () => {
           property: "svi",
           stops: [
             [0.3, "rgb(209,229,240)"],
-            [1.0, "rgb(178,24,43)"],
+            [1.3, "rgb(178,24,43)"],
           ],
         },
         "fill-opacity": 0.4,
