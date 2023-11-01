@@ -78,15 +78,17 @@ beforeMap.on('load', () => {
               // Adjust the heatmap radius by zoom level
               'heatmap-radius': {
                 'stops': [
-                [11, 20],
-                [15, 100]
+                [9, 5],
+                [12, 40],
+                [15, 120]
                 ]
               },
               // Transition from heatmap to circle layer by zoom level
               'heatmap-opacity': {
                 'default': 1,
                 'stops': [
-                [12, 0.8],
+                [9, 0.8],
+                [12, 0.6],
                 [18, 0]
                 ]
               }
