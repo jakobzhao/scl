@@ -10,3 +10,7 @@ body {
     width: 100%;
     z-index: -10;
 }
+
+.maplibregl-ctrl-top-right {
+    top:80px;
+}

@@ -22,6 +22,22 @@ var beforeMap = new maplibregl.Map({
   });
 
 
+//   afterMap.addControl(
+//     new maplibregl.NavigationControl({
+//         visualizePitch: true,
+//         showZoom: true,
+//         showCompass: true
+//     })
+// );
+
+// // afterMap.addControl(
+// //     new maplibregl.TerrainControl({
+// //         source: 'terrainSource',
+// //         exaggeration: 1
+// //     })
+// // );
+
+
 // Data Sources
 beforeMap.on('load', () => {
   // Add a geojson point source.
@@ -121,19 +137,20 @@ beforeMap.on('load', () => {
                   ['get', 'total_frq'],
                   0,
                   'rgba(33,102,172,0)',
-                  10,
+                  200,
                   'rgb(103,169,207)',
-                  20,
+                  300,
                   'rgb(209,229,240)',
-                  30,
+                  400,
                   'rgb(253,219,199)',
-                  40,
+                  500,
                   'rgb(239,138,98)',
-                  50,
+                  600,
                   'rgb(178,24,43)'
               ],
               'circle-stroke-color': 'white',
               'circle-stroke-width': 1,
+              'circle-stroke-opacity': 0.3,
               // Transition from heatmap to circle layer by zoom level
               'circle-opacity': {
                 'stops': [
