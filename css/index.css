@@ -1,16 +1,146 @@
-body { 
-    margin: 0; 
-    padding: 0; 
-    }
+body {
+  margin: 0;
+  padding: 0;
+}
 
-.map { 
-    position: absolute; 
-    top: 0; 
-    bottom: 0; 
-    width: 100%;
-    z-index: -10;
+.map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: -10;
 }
 
 .maplibregl-ctrl-top-right {
-    top:80px;
+  top: 80px;
+}
+
+.map-overlay {
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  position: absolute;
+  width: 245px;
+  top: 20;
+  left: 0;
+  padding: 10px;
+}
+
+.map-overlay .map-overlay-inner {
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.map-overlay h2 {
+  line-height: 24px;
+  display: block;
+  margin: 0 0 10px;
+}
+
+.map-overlay .legend .bar {
+  height: 10px;
+  width: 100%;
+  background: linear-gradient(to right, #fca107, #7f3121);
+}
+
+.map-overlay input {
+  background-color: transparent;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  cursor: ew-resize;
+}
+
+.timeDay {
+  display: flex; /* 2. display flex to the rescue */
+  flex-direction: row;
+}
+
+.timeDay > input {
+  display: block; /* 1. oh noes, my inputs are styled as block... */
+  /* align-items: center; */
+  /* vertical-align: middle; */
+}
+
+.map-overlay input[type="radio"] {
+  height: 1em;
+  width: 20%;
+  /* align-items: center; */
+  vertical-align: middle;
+}
+
+.map-overlay-right {
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  position: absolute;
+  width: 245px;
+  top: 20;
+  right: 0;
+  padding: 10px;
+}
+
+.map-overlay-right .map-overlay-inner {
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.map-overlay-right h2 {
+  line-height: 24px;
+  display: block;
+  margin: 0 0 10px;
+}
+
+.map-overlay-right .legend .bar {
+  height: 10px;
+  width: 100%;
+  background: linear-gradient(to right, #fca107, #7f3121);
+}
+
+.map-overlay-right input {
+  background-color: transparent;
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  cursor: ew-resize;
+}
+
+.timeDay > input {
+  display: block; /* 1. oh noes, my inputs are styled as block... */
+  /* align-items: center; */
+  /* vertical-align: middle; */
+}
+
+.map-overlay-right input[type="radio"] {
+  height: 1em;
+  width: 20%;
+  /* align-items: center; */
+  vertical-align: middle;
+}
+
+.map-overlay-bottom-right {
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  position: absolute;
+  width: 245px;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+}
+
+.map-overlay-bottom-right .map-overlay-inner {
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.map-overlay-bottom-right h2 {
+  line-height: 24px;
+  display: block;
+  margin: 0 0 10px;
 }
