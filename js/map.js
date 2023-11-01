@@ -192,7 +192,7 @@ afterMap.on('load', () => {
       'type': 'line',
       'source': 'svi20_data',
       'paint': {
-        'line-opacity': 0.3
+        'line-opacity': 0.1
       }
     })
 })
