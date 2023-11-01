@@ -1,6 +1,6 @@
 var beforeMap = new maplibregl.Map({
     container: "before",
-    style: "https://tiles.stadiamaps.com/styles/alidade_smooth_dark.json",
+    style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
     center: [-122.335167, 47.608013],
     zoom: 12,
   });
@@ -8,7 +8,7 @@ var beforeMap = new maplibregl.Map({
   var afterMap = new maplibregl.Map({
     container: "after",
     style:
-      "https://tiles.stadiamaps.com/styles/alidade_smooth.json",
+      "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
     center: [-122.335167, 47.608013],
     zoom: 12,
   });
