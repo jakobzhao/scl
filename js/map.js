@@ -189,13 +189,16 @@ afterMap.on("load", () => {
     [0.99, "rgb(189,129,140)"],
     [1, "rgb(178,24,43)"],
   ]);
+
   justiceOptions();
-  console.log(afterMap.style.sourceCaches)
+  // Use the querySourceFeatures method to get features
+
 });
 
 
 afterMap.on('click', 'options_layer', (e) => {
   featureData = e.features[0].properties;
+  console.log(featureData);
   document.getElementById('svi').textContent = featureData.svi;
   document.getElementById('racial_ethnic').textContent = featureData.racial_ethnic;
   document.getElementById('socioeconomic').textContent = featureData.socioecono;
@@ -232,8 +235,8 @@ function justiceOptions() {
         plotMap("public_health_data", "env_health_disparity_rank", [
           [1, "rgb(209,229,240)"],
           [3, "rgb(200,180,180)"],
-          [5, "rgb(189,129,140)"],
-          [7, "rgb(178,24,43)"],
+          [7, "rgb(189,129,140)"],
+          [10, "rgb(178,24,43)"],
         ]);
       }
     })
@@ -241,7 +244,6 @@ function justiceOptions() {
 }
 
 function plotMap(source, property, breaks) {
-  console.log(breaks)
   if (!(source in afterMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
