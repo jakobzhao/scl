@@ -183,6 +183,7 @@ afterMap.on("load", () => {
     },
     "watername_ocean"
   );
+
   plotMap("svi20_data", "svi", [
     [0.3, "rgb(209,229,240)"],
     [0.7, "rgb(200,180,180)"],
@@ -192,13 +193,12 @@ afterMap.on("load", () => {
 
   justiceOptions();
   // Use the querySourceFeatures method to get features
-
 });
-
 
 afterMap.on('click', 'options_layer', (e) => {
   featureData = e.features[0].properties;
   console.log(featureData);
+  document.getElementById('c-track-number').textContent = featureData.GEOID10;
   document.getElementById('svi').textContent = featureData.svi;
   document.getElementById('racial_ethnic').textContent = featureData.racial_ethnic;
   document.getElementById('socioeconomic').textContent = featureData.socioecono;
@@ -242,6 +242,13 @@ function justiceOptions() {
     })
   })
 }
+
+afterMap.on('svi20_data', (e) => {
+  if(e.sourceId === "svi20_data" && e.isSourceLoaded){
+      const stores = map.querySourceFeatures("svi20_data")
+      console.log(stores)
+  }
+})
 
 function plotMap(source, property, breaks) {
   if (!(source in afterMap.style.sourceCaches)) {
