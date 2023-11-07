@@ -275,3 +275,33 @@ function plotMap(source, property, breaks) {
     "watername_ocean"
   );
 }
+
+// Synchronize map movements from map1 to map2
+afterMap.on('move', function () {
+  var center1 = afterMap.getCenter();
+  var zoom1 = afterMap.getZoom();
+  var bearing1 = afterMap.getBearing();
+  var pitch1 = afterMap.getPitch();
+
+  beforeMap.jumpTo({
+    center: center1,
+    zoom: zoom1,
+    bearing: bearing1,
+    pitch: pitch1,
+  });
+});
+
+// Synchronize map movements from map2 to map1
+beforeMap.on('move', function () {
+  var center2 = beforeMap.getCenter();
+  var zoom2 = beforeMap.getZoom();
+  var bearing2 = beforeMap.getBearing();
+  var pitch2 = beforeMap.getPitch();
+
+  afterMap.jumpTo({
+    center: center2,
+    zoom: zoom2,
+    bearing: bearing2,
+    pitch: pitch2,
+  });
+});
