@@ -15,8 +15,6 @@
 
     <link rel="stylesheet" href="css/index.css">
     <script src="data/SCL_neighborhood_data.geojson"></script>
-    <script src="data/outage_byloc.geojson"></script>
-    <script src="data/svi20_seattle.geojson"></script>
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -48,10 +46,8 @@
             </div>
         </div>
     </nav>
-    <div id="comparison-container">
         <div id="before" class="map"></div>
         <div id="after" class="map"></div>
-    </div>
 
     <div class="map-overlay top">
 
@@ -140,32 +136,32 @@
             <h5>Equity Matrix</h5>
 
             <p>
-                <input type="radio" id="one" name="first_item" value="1" checked />
+                <input type="radio" id="sci" name="first_item" value="1" checked />
                 <label for="one">Social Venerability</label>
 
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
-                <label for="one">Health Vulnerability</label>
+                <input type="radio" id="hvi" name="first_item" value="2" />
+                <label for="one">Socioecnomic Factor</label>
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
+                <input type="radio" id="ti" name="first_item" value="3" />
                 <label for="one">Transportation Insecurity</label>
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
-                <label for="one">Environmental Burden</label>
+                <input type="radio" id="evb" name="first_item" value="4" />
+                <label for="one">Environmental Health Disparity</label>
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
+                <input type="radio" id="crb" name="first_item" value="5" />
                 <label for="one">Climate Risk Burden</label>
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
+                <input type="radio" id="poc" name="first_item" value="6" />
                 <label for="one">Persons of Color</label>
             </p>
             <p>
-                <input type="radio" id="one" name="first_item" value="1" />
+                <input type="radio" id="ell" name="first_item" value="7" />
                 <label for="one">English Language Learners</label>
             </p>
         </div>
@@ -173,13 +169,18 @@
     <div class="map-overlay-bottom-right bottom">
         <div class="map-overlay-inner">
             <h5>Tract Information</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis
-                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint
-                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="d-flex">
+                <label>SVI: </label>
+                <p id="svi"></p>
+            </div>
+            <div class="d-flex">
+                <label>Racial Ethnicity:</label>
+                <p id="racial_ethnic"></p>
+            </div>
+            <div class="d-flex">
+                <label>Socioeconomic:</label>
+                <p id="socioeconomic"></p>
+            </div>
         </div>
 
     </div>

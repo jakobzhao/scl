@@ -1,6 +1,6 @@
 var beforeMap = new maplibregl.Map({
   container: "before",
-  style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+  style: "data/style.json",
   center: [-122.335167, 47.608013],
   zoom: 12,
 });
@@ -12,13 +12,8 @@ var afterMap = new maplibregl.Map({
   zoom: 12,
 });
 
-// A selector or reference to HTML element
-var container = "#comparison-container";
 
-var map = new maplibregl.Compare(beforeMap, afterMap, container, {
-  // Set this to enable comparing two maps by mouse movement:
-  // mousemove: true
-});
+// A selector or reference to HTML element
 
 //   afterMap.addControl(
 //     new maplibregl.NavigationControl({
@@ -41,7 +36,7 @@ beforeMap.on("load", () => {
   // Heatmap layers also work with a vector tile source.
   beforeMap.addSource("outage_loc", {
     type: "geojson",
-    data: outage_byloc,
+    data: "data/outage_byloc.geojson",
   });
 
   beforeMap.addLayer(
@@ -162,32 +157,19 @@ beforeMap.on("load", () => {
   );
 });
 
+
+// map containing equity matrix and all other data
 afterMap.on("load", () => {
+
   afterMap.addSource("svi20_data", {
     type: "geojson",
-    data: svi20,
+    data: "data/svi20_seattle.geojson",
   });
 
-  afterMap.addLayer(
-    {
-      id: "svi20_choropleth",
-      type: "fill",
-      source: "svi20_data",
-      paint: {
-        "fill-color": {
-          property: "svi",
-          stops: [
-            [0.3, "rgb(209,229,240)"],
-            [0.7, "rgb(200,180,180)"],
-            [0.99, "rgb(189,129,140)"],
-            [1, "rgb(178,24,43)"],
-          ],
-        },
-        "fill-opacity": 0.4,
-      },
-    },
-    "watername_ocean"
-  );
+  afterMap.addSource("public_health_data", {
+    type: "geojson",
+    data: "data/public_health_data.geojson"
+  })
 
   afterMap.addLayer(
     {
@@ -201,4 +183,86 @@ afterMap.on("load", () => {
     },
     "watername_ocean"
   );
+  plotMap("svi20_data", "svi", [
+    [0.3, "rgb(209,229,240)"],
+    [0.7, "rgb(200,180,180)"],
+    [0.99, "rgb(189,129,140)"],
+    [1, "rgb(178,24,43)"],
+  ]);
+  justiceOptions();
+  console.log(afterMap.style.sourceCaches)
 });
+
+
+afterMap.on('click', 'options_layer', (e) => {
+  featureData = e.features[0].properties;
+  document.getElementById('svi').textContent = featureData.svi;
+  document.getElementById('racial_ethnic').textContent = featureData.racial_ethnic;
+  document.getElementById('socioeconomic').textContent = featureData.socioecono;
+})
+
+// function
+function justiceOptions() {
+  let radioButtons = document.getElementsByName("first_item");
+  radioButtons.forEach(function(radioButton) {
+    radioButton.addEventListener("change", function() {
+      var selectedProperty = this.value;
+      if(selectedProperty == 1) {
+        plotMap("svi20_data", "svi", [
+          [0.3, "rgb(209,229,240)"],
+          [0.7, "rgb(200,180,180)"],
+          [0.99, "rgb(189,129,140)"],
+          [1, "rgb(178,24,43)"],
+        ]);
+      } else if (selectedProperty == 2) {
+        plotMap("public_health_data", "sef_rank", [
+          [1, "rgb(209,229,240)"],
+          [3, "rgb(200,180,180)"],
+          [5, "rgb(189,129,140)"],
+          [7, "rgb(178,24,43)"],
+        ]);
+      } else if(selectedProperty == 3) {
+        plotMap("svi20_data", "housing_transit", [
+          [0.3, "rgb(209,229,240)"],
+          [0.7, "rgb(200,180,180)"],
+          [0.99, "rgb(189,129,140)"],
+          [1, "rgb(178,24,43)"],
+        ]);
+      } else if(selectedProperty == 4) {
+        plotMap("public_health_data", "env_health_disparity_rank", [
+          [1, "rgb(209,229,240)"],
+          [3, "rgb(200,180,180)"],
+          [5, "rgb(189,129,140)"],
+          [7, "rgb(178,24,43)"],
+        ]);
+      }
+    })
+  })
+}
+
+function plotMap(source, property, breaks) {
+  console.log(breaks)
+  if (!(source in afterMap.style.sourceCaches)) {
+    console.log("Could not find proper source.");
+  }
+  if(afterMap.getLayer("options_layer")) {
+    afterMap.removeLayer("options_layer");
+  }
+
+  // Add following layer with indicated source & property
+  afterMap.addLayer(
+    {
+      id: "options_layer",
+      type: "fill",
+      source: source,
+      paint: {
+        "fill-color": {
+          property: property,
+          stops: breaks,
+        },
+        "fill-opacity": 0.4,
+      },
+    },
+    "watername_ocean"
+  );
+}

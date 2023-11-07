@@ -3,12 +3,24 @@ body {
   padding: 0;
 }
 
-.map {
+/* .map {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100%;
+  width: 50%;
   z-index: -10;
+} */
+
+#before {
+  width: 50%;
+  height: 100vh;
+  float: left;
+}
+
+#after {
+  width: 50%;
+  height: 100vh;
+  float: left;
 }
 
 .maplibregl-ctrl-top-right {
