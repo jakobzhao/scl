@@ -277,7 +277,7 @@ function plotMap(source, property, breaks) {
 }
 
 // Synchronize map movements from map1 to map2
-afterMap.on('move', function () {
+afterMap.on('moveend', function () {
   var center1 = afterMap.getCenter();
   var zoom1 = afterMap.getZoom();
   var bearing1 = afterMap.getBearing();
@@ -292,7 +292,7 @@ afterMap.on('move', function () {
 });
 
 // Synchronize map movements from map2 to map1
-beforeMap.on('move', function () {
+beforeMap.on('moveend', function () {
   var center2 = beforeMap.getCenter();
   var zoom2 = beforeMap.getZoom();
   var bearing2 = beforeMap.getBearing();
