@@ -163,12 +163,17 @@ afterMap.on("load", () => {
 
   afterMap.addSource("svi20_data", {
     type: "geojson",
-    data: "data/svi20_seattle.geojson",
+    data: "data/svi_20_seattle_new.geojson",
   });
 
   afterMap.addSource("public_health_data", {
     type: "geojson",
     data: "data/public_health_data.geojson"
+  })
+
+  afterMap.addSource("wa_tract_data", {
+    type: "geojson",
+    data: "data/wa_tract_data.geojson"
   })
 
   afterMap.addLayer(
@@ -178,7 +183,7 @@ afterMap.on("load", () => {
       source: "svi20_data",
       paint: {
         "line-opacity": 0.3,
-        "line-color": "darkgrey",
+        "line-color": "black",
       },
     },
     "watername_ocean"
@@ -196,12 +201,24 @@ afterMap.on("load", () => {
 });
 
 afterMap.on('click', 'options_layer', (e) => {
-  featureData = e.features[0].properties;
+  // enable tooltips
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+  let featureData = e.features[0].properties;
   console.log(featureData);
   document.getElementById('c-track-number').textContent = featureData.GEOID10;
-  document.getElementById('svi').textContent = featureData.svi;
-  document.getElementById('racial_ethnic').textContent = featureData.racial_ethnic;
-  document.getElementById('socioeconomic').textContent = featureData.socioecono;
+  document.getElementById('countyName').textContent = featureData['County.Name'];
+  document.getElementById('population').textContent = featureData['Total.population'];
+
+  // Update progress bar also
+  document.getElementById('a-native-indian').style.width = featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
+  document.getElementById('a-asian').style.width = featureData['Percent.Asian'] * 100 + '%';
+  document.getElementById('a-black').style.width = featureData['Percent.Black.or.African.American.alone'] * 100 + '%';
+  document.getElementById('a-latino').style.width = featureData['Percent.Hispanic.or.Latino'] * 100 + '%';
+  document.getElementById('a-native-pacific').style.width = featureData['Percent.Native.Hawaiian.or.Pacific'] * 100 + '%';
+  document.getElementById('a-white').style.width = featureData['Percent.White'] * 100 + '%';
+  document.getElementById('a-other').style.width = featureData['Percent.other.races'] * 100 + '%';
 })
 
 // function
@@ -242,13 +259,6 @@ function justiceOptions() {
     })
   })
 }
-
-afterMap.on('svi20_data', (e) => {
-  if(e.sourceId === "svi20_data" && e.isSourceLoaded){
-      const stores = map.querySourceFeatures("svi20_data")
-      console.log(stores)
-  }
-})
 
 function plotMap(source, property, breaks) {
   if (!(source in afterMap.style.sourceCaches)) {

@@ -15,12 +15,14 @@ body {
   width: 50%;
   height: 100vh;
   float: left;
+  border-right: 0.1px solid black;
 }
 
 #after {
   width: 50%;
   height: 100vh;
   float: left;
+  border-left: 0.1px solid black;
 }
 
 .maplibregl-ctrl-top-right {
@@ -155,4 +157,33 @@ body {
   line-height: 24px;
   display: block;
   margin: 0 0 10px;
+}
+
+/* progress bar colors */
+#a-native-indian {
+  background-color: #d53e4f;
+}
+
+#a-asian {
+  background-color: #f46d43;
+}
+
+#a-black {
+  background-color: #fdae61;
+}
+
+#a-latino {
+  background-color: #fee08b;
+}
+
+#a-native-pacific {
+  background-color: #e6f598;
+}
+
+#a-white {
+  background-color: #abdda4;
+}
+
+#a-other {
+  background-color: #66c2a5;
 }
