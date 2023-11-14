@@ -166,35 +166,54 @@
             </p>
         </div>
     </div>
+    <div id="state-legend" class="legend">
+        <div class="legend-row">
+            <span style="background-color: rgb(178,24,43) "></span>
+            <div>1</div>
+        </div>
+        <div class="legend-row">
+            <span style="background-color: rgb(189,129,140)"></span>
+            <div>0.99</div>
+        </div>
+        <div class="legend-row">
+            <span style="background-color: rgb(200,180,180)"></span>
+            <div>0.7</div>
+        </div>
+        <div class="legend-row">
+            <span style="background-color: rgb(209,229,240)"></span>
+            <div>0.3</div>
+        </div>
+    </div>
     <div class="map-overlay-bottom-right bottom">
         <div class="map-overlay-inner">
             <h5>Tract Information</h5>
             <div class="d-flex">
-                <label>Census Tract Number: </label>
+                <label class="fw-bold">Census Tract Number:</label>
                 <p id="c-track-number"></p>
             </div>
             <div class="d-flex">
-                <label>County Name: </label>
+                <label class="fw-bold">County Name:</label>
                 <p id="countyName"></p>
             </div>
             <div class="d-flex">
-                <label>Population:</label>
-                <p id="population"></p>
+                <label class="fw-bold">Population:</label>
+                <p id="population"> </p>
             </div>
+            <label class="fw-bold">Population by Race:</label>
             <div class="progress" style="height: 10px">
-                <div id = "a-native-indian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="American Indian/Alaska Native">
+                <div id = "a-native-indian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-asian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="Asian">
+                <div id = "a-asian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-black" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="Black/African American">
+                <div id = "a-black" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-latino" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="Hispanic or Latino">
+                <div id = "a-latino" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-native-pacific" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="Native Hawaiian/Pacific Islander">
+                <div id = "a-native-pacific" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-white" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="White">
+                <div id = "a-white" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-other" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top" title="Other">
+                <div id = "a-other" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
             </div>
         </div>

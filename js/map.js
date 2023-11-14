@@ -39,6 +39,24 @@ beforeMap.on("load", () => {
     data: "data/outage_byloc.geojson",
   });
 
+  beforeMap.addSource("svi20_data", {
+    type: "geojson",
+    data: "data/svi_20_seattle_new.geojson",
+  });
+
+  beforeMap.addLayer(
+    {
+      id: "svi_lines",
+      type: "line",
+      source: "svi20_data",
+      paint: {
+        "line-opacity": 0.3,
+        "line-color": "black",
+      },
+    },
+    "watername_ocean"
+  );
+
   beforeMap.addLayer(
     {
       id: "outage_heatmap",
@@ -211,19 +229,28 @@ afterMap.on('click', 'options_layer', (e) => {
   document.getElementById('countyName').textContent = featureData['County.Name'];
   document.getElementById('population').textContent = featureData['Total.population'];
 
-  // Update progress bar also
+  // Update progress bar also [need to optimize]
   document.getElementById('a-native-indian').style.width = featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
+  document.getElementById('a-native-indian').title= "American Indian/Alaska Native:" + featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
   document.getElementById('a-asian').style.width = featureData['Percent.Asian'] * 100 + '%';
+  document.getElementById('a-asian').title= "Asian: " + featureData['Percent.Asian'] * 100 + '%';
   document.getElementById('a-black').style.width = featureData['Percent.Black.or.African.American.alone'] * 100 + '%';
+  document.getElementById('a-black').title= "Black/African American: " + featureData['Percent.Black.or.African.American.alone'] * 100 + '%';
   document.getElementById('a-latino').style.width = featureData['Percent.Hispanic.or.Latino'] * 100 + '%';
+  document.getElementById('a-latino').title= "Hispanic or Latino: " + featureData['Percent.Hispanic.or.Latino'] * 100 + '%';
   document.getElementById('a-native-pacific').style.width = featureData['Percent.Native.Hawaiian.or.Pacific'] * 100 + '%';
+  document.getElementById('a-native-pacific').title= "Native Hawaiian/Pacific Islander: " + featureData['Percent.Native.Hawaiian.or.Pacific'] * 100 + '%';
   document.getElementById('a-white').style.width = featureData['Percent.White'] * 100 + '%';
+  document.getElementById('a-white').title= "White: " + featureData['Percent.White'] * 100 + '%';
   document.getElementById('a-other').style.width = featureData['Percent.other.races'] * 100 + '%';
+  document.getElementById('a-other').title= "Other: " + featureData['Percent.other.races'] * 100 + '%';
+
 })
 
 // function
 function justiceOptions() {
   let radioButtons = document.getElementsByName("first_item");
+  let legendLabels = document.querySelectorAll(".legend-row > div");
   radioButtons.forEach(function(radioButton) {
     radioButton.addEventListener("change", function() {
       var selectedProperty = this.value;
@@ -234,6 +261,8 @@ function justiceOptions() {
           [0.99, "rgb(189,129,140)"],
           [1, "rgb(178,24,43)"],
         ]);
+        let legendValues = [1, 0.99,0.7, 0.3];
+        updateLegendValues(legendValues,legendLabels);
       } else if (selectedProperty == 2) {
         plotMap("public_health_data", "sef_rank", [
           [1, "rgb(209,229,240)"],
@@ -241,6 +270,10 @@ function justiceOptions() {
           [5, "rgb(189,129,140)"],
           [7, "rgb(178,24,43)"],
         ]);
+
+        // update legend scale
+        let legendValues = [7,5,3,1];
+        updateLegendValues(legendValues,legendLabels);
       } else if(selectedProperty == 3) {
         plotMap("svi20_data", "housing_transit", [
           [0.3, "rgb(209,229,240)"],
@@ -248,6 +281,8 @@ function justiceOptions() {
           [0.99, "rgb(189,129,140)"],
           [1, "rgb(178,24,43)"],
         ]);
+        let legendValues = [1, 0.99,0.7, 0.3];
+        updateLegendValues(legendValues,legendLabels);
       } else if(selectedProperty == 4) {
         plotMap("public_health_data", "env_health_disparity_rank", [
           [1, "rgb(209,229,240)"],
@@ -255,6 +290,8 @@ function justiceOptions() {
           [7, "rgb(189,129,140)"],
           [10, "rgb(178,24,43)"],
         ]);
+        let legendValues = [10, 7, 3, 1];
+        updateLegendValues(legendValues,legendLabels);
       }
     })
   })
@@ -284,6 +321,19 @@ function plotMap(source, property, breaks) {
     },
     "watername_ocean"
   );
+}
+
+function updateLegendValues(rangeArray, legendLabels) {
+  let length = rangeArray.length;
+  legendLabels.forEach((label, index) => {
+    let value = rangeArray[index];
+    if(index == length -1 || index == 0) {
+      label.textContent = value;
+    } else {
+      let prev = rangeArray[index - 1];
+      label.textContent = value + " - " + prev;
+    }
+  })
 }
 
 // Synchronize map movements from map1 to map2

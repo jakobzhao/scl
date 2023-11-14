@@ -187,3 +187,35 @@ body {
 #a-other {
   background-color: #66c2a5;
 }
+
+#state-legend {
+  position: absolute;
+  bottom: 5%;
+  right: 67em;
+  padding: 10px;
+  width: 120px;
+}
+
+.legend {
+  background-color: rgba(255,255,255, 0.75);
+  border-radius: 3px;
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 10px;
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+}
+
+.legend div span {
+  border-radius: 0%;
+  display: inline-block;
+  height: 20px;
+  margin: 0 1em 0.5em 0;
+  width: 20px;
+}
+
+.legend-row {
+  display: flex;
+}
