@@ -424,6 +424,37 @@ function plotMap(source, property, breaks) {
     },
     "watername_ocean"
   );
+  let features = afterMap.queryRenderedFeatures({ layers: ['options_layer'] });
+  var propertyValues = features.map(function (feature) {
+    return feature.properties[property];
+  });
+
+  let histDiv = document.getElementById("histogram-testing");
+  var trace = {
+    x: propertyValues,
+    type: 'histogram',
+    marker: {
+      type: 'gradient', // Use the property values as the basis for the color scale
+      color: [breaks[0][1],breaks[1][1],breaks[2][1],breaks[3][1]], // Choose a predefined color scale or provide your own array
+    },
+    nbinsx: 4, // Set the number of bins
+  };
+
+  var layout = {
+    xaxis: {
+      tickfont: { size: 9 }, // Set the font size for tick labels
+    },
+    yaxis: {
+      tickfont: { size: 9 }, // Set the font size for tick labels
+    },
+    width: 250,
+    height: 150,
+    margin: { l: 30, r: 10, b: 15, t: 20 },
+    plot_bgcolor: 'rgba(0, 0, 0, 0)', // Set the background color of the plot area
+    paper_bgcolor: 'rgba(0, 0, 0, 0)', // Set the background color of the entire chart
+  };
+  var data = [trace];
+  Plotly.newPlot(histDiv, data, layout);
 }
 
 function beforeMapPlotLine(source) {
