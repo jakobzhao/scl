@@ -184,16 +184,6 @@ afterMap.on("load", () => {
     data: "data/svi_20_seattle_new.geojson",
   });
 
-  afterMap.addSource("public_health_data", {
-    type: "geojson",
-    data: "data/public_health_data.geojson"
-  })
-
-  afterMap.addSource("wa_tract_data", {
-    type: "geojson",
-    data: "data/wa_tract_data.geojson"
-  })
-
   afterMap.addLayer(
     {
       id: "svi_lines",
@@ -249,49 +239,121 @@ afterMap.on('click', 'options_layer', (e) => {
 
 // function
 function justiceOptions() {
-  let radioButtons = document.getElementsByName("first_item");
+  let radioButtons = document.getElementsByName("population_category");
   let legendLabels = document.querySelectorAll(".legend-row > div");
   radioButtons.forEach(function(radioButton) {
     radioButton.addEventListener("change", function() {
       var selectedProperty = this.value;
       if(selectedProperty == 1) {
-        plotMap("svi20_data", "svi", [
-          [0.3, "rgb(209,229,240)"],
-          [0.7, "rgb(200,180,180)"],
-          [0.99, "rgb(189,129,140)"],
-          [1, "rgb(178,24,43)"],
+        plotMap("svi20_data", "env_health_disparity_rank", [
+          [1, "rgb(209,229,240)"],
+          [6, "rgb(200,180,180)"],
+          [9, "rgb(189,129,140)"],
+          [10, "rgb(178,24,43)"],
         ]);
-        let legendValues = [1, 0.99,0.7, 0.3];
+        let legendValues = [10, 9, 6, 1];
         updateLegendValues(legendValues,legendLabels);
       } else if (selectedProperty == 2) {
-        plotMap("public_health_data", "sef_rank", [
-          [1, "rgb(209,229,240)"],
-          [3, "rgb(200,180,180)"],
-          [5, "rgb(189,129,140)"],
-          [7, "rgb(178,24,43)"],
+        plotMap("svi20_data", "Traffic.proximity.and.volume", [
+          [28.26, "rgb(209,229,240)"],
+          [712.60, "rgb(200,180,180)"],
+          [1884.40, "rgb(189,129,140)"],
+          [14032.93, "rgb(178,24,43)"],
         ]);
 
         // update legend scale
-        let legendValues = [7,5,3,1];
+        let legendValues = [14032.93, 1884.40, 712.60, 28.26];
         updateLegendValues(legendValues,legendLabels);
       } else if(selectedProperty == 3) {
-        plotMap("svi20_data", "housing_transit", [
-          [0.3, "rgb(209,229,240)"],
-          [0.7, "rgb(200,180,180)"],
-          [0.99, "rgb(189,129,140)"],
-          [1, "rgb(178,24,43)"],
+        plotMap("svi20_data", "Proximity.to.hazardous.waste.sites", [
+          [0.31, "rgb(209,229,240)"],
+          [4.82, "rgb(200,180,180)"],
+          [11.35, "rgb(189,129,140)"],
+          [25.7, "rgb(178,24,43)"],
         ]);
-        let legendValues = [1, 0.99,0.7, 0.3];
+        let legendValues = [25.7, 11.35, 4.82, 0.31];
         updateLegendValues(legendValues,legendLabels);
       } else if(selectedProperty == 4) {
-        plotMap("public_health_data", "env_health_disparity_rank", [
-          [1, "rgb(209,229,240)"],
-          [3, "rgb(200,180,180)"],
-          [7, "rgb(189,129,140)"],
-          [10, "rgb(178,24,43)"],
+        plotMap("svi20_data", "Expected.population.loss.rate..Natural.Hazards.Risk.Index.", [
+          [0.0024, "rgb(209,229,240)"],
+          [0.0035, "rgb(200,180,180)"],
+          [0.0048, "rgb(189,129,140)"],
+          [0.0145, "rgb(178,24,43)"],
         ]);
-        let legendValues = [10, 7, 3, 1];
+        let legendValues = [0.0145, 0.0048, 0.0035, 0.0024];
         updateLegendValues(legendValues,legendLabels);
+      } else if(selectedProperty == 5) {
+        plotMap("svi20_data", "housing_transit",[
+          [0.041, "rgb(209,229,240)"],
+          [0.609, "rgb(200,180,180)"],
+          [1.0, "rgb(189,129,140)"],
+          [1.0, "rgb(178,24,43)"],
+        ])
+        let legendValues = [1.0, 1.0, 0.609, 0.041];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 6) {
+        plotMap("svi20_data", "svi",[
+          [0.007, "rgb(209,229,240)"],
+          [0.385, "rgb(200,180,180)"],
+          [1.0, "rgb(189,129,140)"],
+          [1.0, "rgb(178,24,43)"],
+        ])
+        let legendValues = [1.0, 1.0, 0.385, 0.007];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 7) {
+        plotMap("svi20_data", "sef_rank",[
+          [1, "rgb(209,229,240)"],
+          [2, "rgb(200,180,180)"],
+          [6, "rgb(189,129,140)"],
+          [10, "rgb(178,24,43)"],
+        ])
+        let legendValues = [10.0, 6.0, 2.0, 1.0];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 8)  {
+        plotMap("svi20_data", "Housing.burden..percent.",[
+          [5, "rgb(209,229,240)"],
+          [18, "rgb(200,180,180)"],
+          [26, "rgb(189,129,140)"],
+          [84, "rgb(178,24,43)"],
+        ])
+        let legendValues = [84.0, 26.0, 18.0, 5.0];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 9) {
+        plotMap("svi20_data", "Linguistic.isolation..percent.",[
+          [0, "rgb(209,229,240)"],
+          [1, "rgb(200,180,180)"],
+          [5, "rgb(189,129,140)"],
+          [35, "rgb(178,24,43)"],
+        ])
+        let legendValues = [35.0, 5.0, 1.0, 0.0];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 10) {
+        plotMap("svi20_data", "Percent.Black.or.African.American.alone",[
+          [0, "rgb(209,229,240)"],
+          [0.013, "rgb(200,180,180)"],
+          [0.08, "rgb(189,129,140)"],
+          [0.4, "rgb(178,24,43)"],
+        ])
+        let legendValues = [0.4, 0.08, 0.013, 0.0];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 11) {
+        plotMap("svi20_data", "PM2.5.in.the.air",[
+          [7.4, "rgb(209,229,240)"],
+          [7.65, "rgb(200,180,180)"],
+          [7.8, "rgb(189,129,140)"],
+          [7.88, "rgb(178,24,43)"],
+        ])
+        let legendValues = [7.88, 7.8, 7.65, 7.4];
+        updateLegendValues(legendValues, legendLabels);
+      } else if (selectedProperty == 12) {
+        plotMap("svi20_data", "Diesel.particulate.matter.exposure",[
+          [0.44, "rgb(209,229,240)"],
+          [0.65, "rgb(200,180,180)"],
+          [0.74, "rgb(189,129,140)"],
+          [1.05, "rgb(178,24,43)"],
+        ])
+        let legendValues = [1.05, 0.74, 0.65, 0.44];
+        updateLegendValues(legendValues, legendLabels);
       }
     })
   })

@@ -132,56 +132,83 @@
     </div>
 
     <div class="map-overlay-right top">
-        <div class="map-overlay-inner">
+        <div id="equity-matrix" class="map-overlay-inner">
             <h5>Equity Matrix</h5>
-
-            <p>
-                <input type="radio" id="sci" name="first_item" value="1" checked />
-                <label for="one">Social Venerability</label>
-
-            </p>
-            <p>
-                <input type="radio" id="hvi" name="first_item" value="2" />
-                <label for="one">Socioecnomic Factor</label>
-            </p>
-            <p>
-                <input type="radio" id="ti" name="first_item" value="3" />
-                <label for="one">Transportation Insecurity</label>
-            </p>
-            <p>
-                <input type="radio" id="evb" name="first_item" value="4" />
-                <label for="one">Env. Health Disparity</label>
-            </p>
-            <p>
-                <input type="radio" id="crb" name="first_item" value="5" />
-                <label for="one">Climate Risk Burden</label>
-            </p>
-            <p>
-                <input type="radio" id="poc" name="first_item" value="6" />
-                <label for="one">Persons of Color</label>
-            </p>
-            <p>
-                <input type="radio" id="ell" name="first_item" value="7" />
-                <label for="one">English Language Learners</label>
-            </p>
+            <div>
+                Environment
+                <div>
+                    <input type="radio" id="evb" name="population_category" value="1" checked/>
+                    <label for="evb">Environ. Health Disparity</label>
+                </div>
+                <div>
+                    <input type="radio" id="traffic-volume" name="population_category" value="2" />
+                    <label for="traffic-volume">Traffic Proximity & Volume</label>
+                </div>
+                <div>
+                    <input type="radio" id="waste-proximity" name="population_category" value="3" />
+                    <label for="waste-proximity">Hazardous Site Proximity</label>
+                </div>
+                <div>
+                    <input type="radio" id="n-risk-index" name="population_category" value="4" />
+                    <label for="n-risk-index">Natural Hazards Risk Index</label>
+                </div>
+                <div>
+                    <input type="radio" id="ti" name="population_category" value="5" />
+                    <label for="one">Transportation Insecurity</label>
+                </div>
+            </div>
+            <div>
+                Socialeconomic
+                <div>
+                    <input type="radio" id="svi" name="population_category" value="6" />
+                    <label for="svi">Social Vulnerability</label>
+                </div>
+                <div>
+                    <input type="radio" id="sef" name="population_category" value="7" />
+                    <label for="sef">Socioeconomic Factor</label>
+                </div>
+                <div>
+                    <input type="radio" id="housing-burden" name="population_category" value="8" />
+                    <label for="housing-burden">Housing Burden (%)</label>
+                </div>
+                <div>
+                    <input type="radio" id="english-learner" name="population_category" value="9" />
+                    <label for="english-learner">English Learner</label>
+                </div>
+                <div>
+                    <input type="radio" id="poc" name="population_category" value="10" />
+                    <label for="poc">Persons of Color</label>
+                </div>
+            </div>
+            <div>
+                Health Factors
+                <div>
+                    <input type="radio" id="pm-2.5" name="population_category" value="11" />
+                    <label for="pm-2.5">PM 2.5 in the Air</label>
+                </div>
+                <div>
+                    <input type="radio" id="dpe" name="population_category" value="12" />
+                    <label for="dpe">Diesel Particulate Exposure</label>
+                </div>
+            </div>
         </div>
     </div>
     <div id="state-legend" class="legend">
         <div class="legend-row">
             <span style="background-color: rgb(178,24,43) "></span>
-            <div>1</div>
+            <div>10+</div>
         </div>
         <div class="legend-row">
             <span style="background-color: rgb(189,129,140)"></span>
-            <div>0.99</div>
+            <div>9-10</div>
         </div>
         <div class="legend-row">
             <span style="background-color: rgb(200,180,180)"></span>
-            <div>0.7</div>
+            <div>6-9</div>
         </div>
         <div class="legend-row">
             <span style="background-color: rgb(209,229,240)"></span>
-            <div>0.3</div>
+            <div>1-6</div>
         </div>
     </div>
     <div class="map-overlay-bottom-right bottom">
