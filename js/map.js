@@ -211,11 +211,9 @@ afterMap.on("load", () => {
     "watername_ocean"
   );
 
+  // initiate
   let legendLabels = document.querySelectorAll(".legend-row > div");
   let colorScale = chroma.scale('OrRd').colors(4);
-
-  // Wait for the GeoJSON source to load before plotting the map
-  // Check if the source is loaded
   let legendValues = [10, 9, 6, 1];
   plotMap("svi20_data", "env_health_disparity_rank", [
     [1, colorScale[0]],
@@ -386,6 +384,16 @@ function justiceOptions() {
           [1.05, colorScale[3]],
         ])
         let legendValues = [1.05, 0.74, 0.65, 0.44];
+        updateLegendValues(legendValues, legendLabels, colorScale);
+      } else if (selectedProperty == 13) {
+        let colorScale = chroma.scale('YlOrBr').colors(4);
+        plotMap("svi20_data", "%_disability",[
+          [3.8, colorScale[0]],
+          [7.1, colorScale[1]],
+          [10.7, colorScale[2]],
+          [28.1, colorScale[3]],
+        ])
+        let legendValues = [28.1, 10.7, 7.1, 3.8];
         updateLegendValues(legendValues, legendLabels, colorScale);
       }
     })
