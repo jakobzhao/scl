@@ -197,15 +197,20 @@ afterMap.on("load", () => {
     "watername_ocean"
   );
 
-  plotMap("svi20_data", "svi", [
-    [0.3, "rgb(209,229,240)"],
-    [0.7, "rgb(200,180,180)"],
-    [0.99, "rgb(189,129,140)"],
-    [1, "rgb(178,24,43)"],
-  ]);
+  let legendLabels = document.querySelectorAll(".legend-row > div");
+  let colorScale = chroma.scale('OrRd').colors(4);
 
+  // Wait for the GeoJSON source to load before plotting the map
+  // Check if the source is loaded
+  let legendValues = [10, 9, 6, 1];
+  plotMap("svi20_data", "env_health_disparity_rank", [
+    [1, colorScale[0]],
+    [6, colorScale[1]],
+    [9, colorScale[2]],
+    [10, colorScale[3]],
+  ]);
+  updateLegendValues(legendValues, legendLabels, colorScale);
   justiceOptions();
-  // Use the querySourceFeatures method to get features
 });
 
 afterMap.on('click', 'options_layer', (e) => {
@@ -245,115 +250,128 @@ function justiceOptions() {
     radioButton.addEventListener("change", function() {
       var selectedProperty = this.value;
       if(selectedProperty == 1) {
+        let colorScale = chroma.scale('OrRd').colors(4);
+        console.log(colorScale);
         plotMap("svi20_data", "env_health_disparity_rank", [
-          [1, "rgb(209,229,240)"],
-          [6, "rgb(200,180,180)"],
-          [9, "rgb(189,129,140)"],
-          [10, "rgb(178,24,43)"],
+          [1, colorScale[0]],
+          [6, colorScale[1]],
+          [9, colorScale[2]],
+          [10, colorScale[3]],
         ]);
         let legendValues = [10, 9, 6, 1];
-        updateLegendValues(legendValues,legendLabels);
+        updateLegendValues(legendValues,legendLabels, colorScale);
       } else if (selectedProperty == 2) {
+        let colorScale = chroma.scale('PuBu').colors(4);
         plotMap("svi20_data", "Traffic.proximity.and.volume", [
-          [28.26, "rgb(209,229,240)"],
-          [712.60, "rgb(200,180,180)"],
-          [1884.40, "rgb(189,129,140)"],
-          [14032.93, "rgb(178,24,43)"],
+          [28.26, colorScale[0]],
+          [712.60,colorScale[1]],
+          [1884.40, colorScale[2]],
+          [14032.93, colorScale[3]],
         ]);
 
         // update legend scale
         let legendValues = [14032.93, 1884.40, 712.60, 28.26];
-        updateLegendValues(legendValues,legendLabels);
+        updateLegendValues(legendValues,legendLabels, colorScale);
       } else if(selectedProperty == 3) {
+        let colorScale = chroma.scale('Oranges').colors(4);
         plotMap("svi20_data", "Proximity.to.hazardous.waste.sites", [
-          [0.31, "rgb(209,229,240)"],
-          [4.82, "rgb(200,180,180)"],
-          [11.35, "rgb(189,129,140)"],
-          [25.7, "rgb(178,24,43)"],
+          [0.31, colorScale[0]],
+          [4.82, colorScale[1]],
+          [11.35, colorScale[2]],
+          [25.7, colorScale[3]],
         ]);
         let legendValues = [25.7, 11.35, 4.82, 0.31];
-        updateLegendValues(legendValues,legendLabels);
+        updateLegendValues(legendValues,legendLabels, colorScale);
       } else if(selectedProperty == 4) {
+        let colorScale = chroma.scale('Greys').colors(4);
         plotMap("svi20_data", "Expected.population.loss.rate..Natural.Hazards.Risk.Index.", [
-          [0.0024, "rgb(209,229,240)"],
-          [0.0035, "rgb(200,180,180)"],
-          [0.0048, "rgb(189,129,140)"],
-          [0.0145, "rgb(178,24,43)"],
+          [0.0024, colorScale[0] ],
+          [0.0035, colorScale[1] ],
+          [0.0048, colorScale[2] ],
+          [0.0145, colorScale[3] ],
         ]);
         let legendValues = [0.0145, 0.0048, 0.0035, 0.0024];
-        updateLegendValues(legendValues,legendLabels);
+        updateLegendValues(legendValues,legendLabels, colorScale);
       } else if(selectedProperty == 5) {
+        let colorScale = chroma.scale('Greens').colors(4);
         plotMap("svi20_data", "housing_transit",[
-          [0.041, "rgb(209,229,240)"],
-          [0.609, "rgb(200,180,180)"],
-          [1.0, "rgb(189,129,140)"],
-          [1.0, "rgb(178,24,43)"],
+          [0.041, colorScale[0]],
+          [0.609, colorScale[1]],
+          [1.0, colorScale[2]],
+          [1.0, colorScale[3]],
         ])
         let legendValues = [1.0, 1.0, 0.609, 0.041];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 6) {
+        let colorScale = chroma.scale('GnBu').colors(4);
         plotMap("svi20_data", "svi",[
-          [0.007, "rgb(209,229,240)"],
-          [0.385, "rgb(200,180,180)"],
-          [1.0, "rgb(189,129,140)"],
-          [1.0, "rgb(178,24,43)"],
+          [0.007, colorScale[0]],
+          [0.385, colorScale[1]],
+          [1.0, colorScale[2]],
+          [1.0, colorScale[3]],
         ])
         let legendValues = [1.0, 1.0, 0.385, 0.007];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 7) {
+        let colorScale = chroma.scale('BuPu').colors(4);
         plotMap("svi20_data", "sef_rank",[
-          [1, "rgb(209,229,240)"],
-          [2, "rgb(200,180,180)"],
-          [6, "rgb(189,129,140)"],
-          [10, "rgb(178,24,43)"],
+          [1, colorScale[0]],
+          [2, colorScale[1]],
+          [6, colorScale[2]],
+          [10, colorScale[3]],
         ])
         let legendValues = [10.0, 6.0, 2.0, 1.0];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 8)  {
+        let colorScale = chroma.scale('BuGn').colors(4);
         plotMap("svi20_data", "Housing.burden..percent.",[
-          [5, "rgb(209,229,240)"],
-          [18, "rgb(200,180,180)"],
-          [26, "rgb(189,129,140)"],
-          [84, "rgb(178,24,43)"],
+          [5, colorScale[0]],
+          [18, colorScale[1]],
+          [26, colorScale[2]],
+          [84, colorScale[3]],
         ])
         let legendValues = [84.0, 26.0, 18.0, 5.0];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 9) {
+        let colorScale = chroma.scale('Blues').colors(4);
         plotMap("svi20_data", "Linguistic.isolation..percent.",[
-          [0, "rgb(209,229,240)"],
-          [1, "rgb(200,180,180)"],
-          [5, "rgb(189,129,140)"],
-          [35, "rgb(178,24,43)"],
+          [0, colorScale[0]],
+          [1, colorScale[1]],
+          [5, colorScale[2]],
+          [35, colorScale[3]],
         ])
         let legendValues = [35.0, 5.0, 1.0, 0.0];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 10) {
+        let colorScale = chroma.scale('PuRd').colors(4);
         plotMap("svi20_data", "Percent.Black.or.African.American.alone",[
-          [0, "rgb(209,229,240)"],
-          [0.013, "rgb(200,180,180)"],
-          [0.08, "rgb(189,129,140)"],
-          [0.4, "rgb(178,24,43)"],
+          [0, colorScale[0]],
+          [0.013, colorScale[1]],
+          [0.08, colorScale[2]],
+          [0.4, colorScale[3]],
         ])
         let legendValues = [0.4, 0.08, 0.013, 0.0];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 11) {
+        let colorScale = chroma.scale('Purples').colors(4);
         plotMap("svi20_data", "PM2.5.in.the.air",[
-          [7.4, "rgb(209,229,240)"],
-          [7.65, "rgb(200,180,180)"],
-          [7.8, "rgb(189,129,140)"],
-          [7.88, "rgb(178,24,43)"],
+          [7.4, colorScale[0]],
+          [7.65, colorScale[1]],
+          [7.8, colorScale[2]],
+          [7.88, colorScale[3]],
         ])
         let legendValues = [7.88, 7.8, 7.65, 7.4];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 12) {
+        let colorScale = chroma.scale('YlGn').colors(4);
         plotMap("svi20_data", "Diesel.particulate.matter.exposure",[
-          [0.44, "rgb(209,229,240)"],
-          [0.65, "rgb(200,180,180)"],
-          [0.74, "rgb(189,129,140)"],
-          [1.05, "rgb(178,24,43)"],
+          [0.44, colorScale[0]],
+          [0.65, colorScale[1]],
+          [0.74, colorScale[2]],
+          [1.05, colorScale[3]],
         ])
         let legendValues = [1.05, 0.74, 0.65, 0.44];
-        updateLegendValues(legendValues, legendLabels);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       }
     })
   })
@@ -385,9 +403,11 @@ function plotMap(source, property, breaks) {
   );
 }
 
-function updateLegendValues(rangeArray, legendLabels) {
+function updateLegendValues(rangeArray, legendLabels, colorScale) {
   let length = rangeArray.length;
   legendLabels.forEach((label, index) => {
+    let span = label.parentElement.querySelector('span');
+    span.style.backgroundColor = colorScale[(length -1) - index];
     let value = rangeArray[index];
     if(index == length -1 || index == 0) {
       label.textContent = value;
