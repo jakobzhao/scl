@@ -39,9 +39,9 @@ beforeMap.on("load", () => {
     data: "data/outage_byloc.geojson",
   });
 
-  beforeMap.addSource("svi20_data", {
+  beforeMap.addSource("censusTract", {
     type: "geojson",
-    data: "data/svi_20_seattle_new.geojson",
+    data: "data/c_tract_2020_seattle.geojson",
   });
 
   beforeMap.addSource("cc_districts", {
@@ -56,9 +56,9 @@ beforeMap.on("load", () => {
 
   beforeMap.addLayer(
     {
-      id: "svi_lines",
+      id: "co_line_layer",
       type: "line",
-      source: "svi20_data",
+      source: "censusTract",
       paint: {
         "line-opacity": 0.3,
         "line-color": "black",
@@ -440,8 +440,8 @@ function beforeMapPlotLine(source) {
       type: "line",
       source: source,
       paint: {
-        "line-opacity" : 1,
-        "line-color": "red"
+        "line-opacity" : 0.3,
+        "line-color": "black"
       }
     }
   );
@@ -471,6 +471,8 @@ function outlineOptions() {
         beforeMapPlotLine("cc_districts");
       } else if (selectedProperty == "nh") {
         beforeMapPlotLine("neighborhoods_outline");
+      } else if (selectedProperty == "ct") {
+        beforeMapPlotLine("censusTract");
       }
     });
   })
