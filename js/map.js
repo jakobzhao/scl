@@ -233,9 +233,12 @@ afterMap.on('click', 'options_layer', (e) => {
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   let featureData = e.features[0].properties;
-  document.getElementById('c-track-number').textContent = featureData.GEOID10;
+  console.log(featureData);
+  document.getElementById('c-tract-name').textContent = featureData['NAMELSAD'];
   document.getElementById('countyName').textContent = featureData['County.Name'];
   document.getElementById('population').textContent = featureData['Total.population'];
+  document.getElementById('life-expectancy').textContent = featureData['Life.expectancy..years.'];
+  document.getElementById('households').textContent = featureData['Households'];
 
   // Update progress bar also [need to optimize]
   document.getElementById('a-native-indian').style.width = featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
