@@ -44,6 +44,16 @@ beforeMap.on("load", () => {
     data: "data/svi_20_seattle_new.geojson",
   });
 
+  beforeMap.addSource("cc_districts", {
+    type: "geojson",
+    data: "data/seattle_city_council_districts.geojson"
+  });
+
+  beforeMap.addSource("neighborhoods_outline", {
+    type: "geojson",
+    data: "data/SCL_neighborhood_data.geojson"
+  });
+
   beforeMap.addLayer(
     {
       id: "svi_lines",
@@ -173,6 +183,10 @@ beforeMap.on("load", () => {
     },
     "watername_ocean"
   );
+
+  // outline of city districts
+  outlineOptions();
+
 });
 
 
@@ -219,7 +233,6 @@ afterMap.on('click', 'options_layer', (e) => {
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   let featureData = e.features[0].properties;
-  console.log(featureData);
   document.getElementById('c-track-number').textContent = featureData.GEOID10;
   document.getElementById('countyName').textContent = featureData['County.Name'];
   document.getElementById('population').textContent = featureData['Total.population'];
@@ -248,10 +261,9 @@ function justiceOptions() {
   let legendLabels = document.querySelectorAll(".legend-row > div");
   radioButtons.forEach(function(radioButton) {
     radioButton.addEventListener("change", function() {
-      var selectedProperty = this.value;
+      let selectedProperty = this.value;
       if(selectedProperty == 1) {
         let colorScale = chroma.scale('OrRd').colors(4);
-        console.log(colorScale);
         plotMap("svi20_data", "env_health_disparity_rank", [
           [1, colorScale[0]],
           [6, colorScale[1]],
@@ -403,6 +415,27 @@ function plotMap(source, property, breaks) {
   );
 }
 
+function beforeMapPlotLine(source) {
+  if (!(source in beforeMap.style.sourceCaches)) {
+    console.log("Could not find proper source.");
+  }
+  if(beforeMap.getLayer("co_line_layer")) {
+    beforeMap.removeLayer("co_line_layer");
+  }
+
+  beforeMap.addLayer(
+    {
+      id: "co_line_layer",
+      type: "line",
+      source: source,
+      paint: {
+        "line-opacity" : 1,
+        "line-color": "red"
+      }
+    }
+  );
+}
+
 function updateLegendValues(rangeArray, legendLabels, colorScale) {
   let length = rangeArray.length;
   legendLabels.forEach((label, index) => {
@@ -416,6 +449,21 @@ function updateLegendValues(rangeArray, legendLabels, colorScale) {
       label.textContent = value + " - " + prev;
     }
   })
+}
+
+function outlineOptions() {
+  let radioButtons = document.getElementsByName("city_outlines");
+  radioButtons.forEach(function(radioButton) {
+    radioButton.addEventListener("change", function() {
+      let selectedProperty = this.value;
+      if(selectedProperty == "cc") {
+        beforeMapPlotLine("cc_districts");
+      } else if (selectedProperty == "nh") {
+        beforeMapPlotLine("neighborhoods_outline");
+      }
+    });
+  })
+
 }
 
 // Synchronize map movements from map1 to map2

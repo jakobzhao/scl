@@ -14,7 +14,6 @@
     <script src="js/maplibre-gl-compare.js"></script>
 
     <link rel="stylesheet" href="css/index.css">
-    <script src="data/SCL_neighborhood_data.geojson"></script>
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -57,13 +56,22 @@
 
         <div class="map-overlay-inner">
             <h5>Outage</h5>
+                <input type="radio" id="one" name="first_item" value="1" checked />
+                <label for="one">frequency</label>
+                <input type="radio" id="one" name="first_item" value="1" />
+                <label for="one">duration</label>
+        </div>
+        <div class="map-overlay-inner d-flex flex-column">
+            <h5>City Outlines</h5>
 
-            <input type="radio" id="one" name="first_item" value="1" checked />
-            <label for="one">frequency</label>
-
-            <input type="radio" id="one" name="first_item" value="1" />
-            <label for="one">duration</label>
-
+            <div>
+                <input type="radio" id="city_council" name="city_outlines" value="cc"/>
+                <label for="city_council">City Council</label>
+            </div>
+            <div>
+                <input type="radio" id="neighborhood" name="city_outlines" value="nh" />
+                <label for="neigborhood">Neighborhoods</label>
+            </div>
         </div>
         <div class="map-overlay-inner">
             <h5>Year</h5>

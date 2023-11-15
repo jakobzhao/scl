@@ -1,4 +1,4 @@
-var scl_nei = {
+{
 "type": "FeatureCollection",
 "name": "SCL_neighborhood_data",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
