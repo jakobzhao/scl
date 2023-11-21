@@ -12,31 +12,13 @@ var afterMap = new maplibregl.Map({
   zoom: 12,
 });
 
-
-// A selector or reference to HTML element
-
-//   afterMap.addControl(
-//     new maplibregl.NavigationControl({
-//         visualizePitch: true,
-//         showZoom: true,
-//         showCompass: true
-//     })
-// );
-
-// // afterMap.addControl(
-// //     new maplibregl.TerrainControl({
-// //         source: 'terrainSource',
-// //         exaggeration: 1
-// //     })
-// // );
-
 // Data Sources
 beforeMap.on("load", () => {
   // Add a geojson point source.
   // Heatmap layers also work with a vector tile source.
   beforeMap.addSource("outage_loc", {
     type: "geojson",
-    data: "data/outage_byloc.geojson",
+    data: "data/outage_by_year.geojson",
   });
 
   beforeMap.addSource("censusTract", {
@@ -77,72 +59,14 @@ beforeMap.on("load", () => {
     "watername_ocean"
   );
 
-  beforeMap.addLayer(
-    {
-      id: "outage_heatmap",
-      type: "heatmap",
-      source: "outage_loc",
-      maxzoom: 21,
-      paint: {
-        // Increase the heatmap weight based on frequency and property magnitude
-        "heatmap-weight": {
-          property: "total_frq",
-          type: "exponential",
-          stops: [
-            [500, 0],
-            [750, 1],
-          ],
-        },
-        // Increase the heatmap color weight weight by zoom level
-        // heatmap-intensity is a multiplier on top of heatmap-weight
-        "heatmap-intensity": {
-          stops: [
-            [11, 1],
-            [15, 3],
-          ],
-        },
-        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-        // Begin color ramp at 0-stop with a 0-transparancy color
-        // to create a blur-like effect.
-        "heatmap-color": [
-          "interpolate",
-          ["linear"],
-          ["heatmap-density"],
-          0,
-          "rgba(33,102,172,0)",
-          0.2,
-          "rgb(103,169,207)",
-          0.4,
-          "rgb(209,229,240)",
-          0.6,
-          "rgb(253,219,199)",
-          0.8,
-          "rgb(239,138,98)",
-          1,
-          "rgb(178,24,43)",
-        ],
-        // Adjust the heatmap radius by zoom level
-        "heatmap-radius": {
-          stops: [
-            [9, 5],
-            [12, 40],
-            [15, 120],
-          ],
-        },
-        // Transition from heatmap to circle layer by zoom level
-        "heatmap-opacity": {
-          default: 1,
-          stops: [
-            [9, 0.9],
-            [12, 0.7],
-            [15, 0.7],
-            [18, 0],
-          ],
-        },
-      },
-    },
-    "watername_ocean"
-  );
+  // Initialize the heatmap layer with the default year
+  addHeatmapLayer(2023);
+
+  // Update the heatmap layer when the slider changes
+  document.getElementById('yearSlider').addEventListener('input', function () {
+      var selectedYear = parseInt(this.value, 10);
+      updateHeatmapLayer(selectedYear);
+  });
 
   beforeMap.addLayer(
     {
@@ -161,7 +85,6 @@ beforeMap.on("load", () => {
           25,
           ["interpolate", ["linear"], ["get", "total_frq"], 1, 5, 6, 10],
         ],
-        // Color circle by earthquake magnitude
         "circle-color": [
           "interpolate",
           ["linear"],
@@ -587,4 +510,91 @@ beforeMap.on('moveend', function () {
     bearing: bearing2,
     pitch: pitch2,
   });
-});
+}); 
+
+document.getElementById('yearSlider').addEventListener('input', updateYearLabel);
+// slider bar change on slide
+function updateYearLabel() {
+  let yearLabel = document.getElementById('yearLabel');
+  let yearSlider = document.getElementById('yearSlider');
+  yearLabel.innerHTML = yearSlider.value;
+}
+
+// function add heatmap layer
+function addHeatmapLayer(year) {
+  beforeMap.addLayer(
+    {
+      id: "outage_heatmap",
+      type: "heatmap",
+      source: "outage_loc",
+      maxzoom: 21,
+      paint: {
+        // Increase the heatmap weight based on frequency and property magnitude
+        'heatmap-weight': [
+          'interpolate',
+          ['linear'],
+          ['get', year + '_fq'],
+          50, 0,
+          100, 1
+        ],
+        // Increase the heatmap color weight weight by zoom level
+        // heatmap-intensity is a multiplier on top of heatmap-weight
+        "heatmap-intensity": {
+          stops: [
+            [11, 1],
+            [15, 3],
+          ],
+        },
+        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+        // Begin color ramp at 0-stop with a 0-transparancy color
+        // to create a blur-like effect.
+        "heatmap-color": [
+          "interpolate",
+          ["linear"],
+          ["heatmap-density"],
+          0,
+          "rgba(33,102,172,0)",
+          0.2,
+          "rgb(103,169,207)",
+          0.4,
+          "rgb(209,229,240)",
+          0.6,
+          "rgb(253,219,199)",
+          0.8,
+          "rgb(239,138,98)",
+          1,
+          "rgb(178,24,43)",
+        ],
+        // Adjust the heatmap radius by zoom level
+        "heatmap-radius": {
+          stops: [
+            [9, 5],
+            [12, 40],
+            [15, 120],
+          ],
+        },
+        // Transition from heatmap to circle layer by zoom level
+        "heatmap-opacity": {
+          default: 1,
+          stops: [
+            [9, 0.9],
+            [12, 0.7],
+            [15, 0.7],
+            [18, 0],
+          ],
+        },
+      },
+    },
+    "watername_ocean"
+  );
+}
+
+// Function to update the heatmap layer
+function updateHeatmapLayer(year) {
+  // Remove the existing heatmap layer
+  if (beforeMap.getLayer('outage_heatmap')) {
+      beforeMap.removeLayer('outage_heatmap');
+  }
+  // Add the updated heatmap layer
+  addHeatmapLayer(year);
+}
