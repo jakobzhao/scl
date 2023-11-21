@@ -54,6 +54,16 @@ beforeMap.on("load", () => {
     data: "data/SCL_neighborhood_data.geojson"
   });
 
+  beforeMap.addSource("wireless_priority_area", {
+    type: "geojson",
+    data: "data/WirelessPriorityAreas.geojson"
+  })
+
+  beforeMap.addSource("ua_status", {
+    type: "geojson",
+    data: "data/ug_status.geojson"
+  })
+
   beforeMap.addLayer(
     {
       id: "co_line_layer",
@@ -231,7 +241,6 @@ afterMap.on('click', 'options_layer', (e) => {
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
   let featureData = e.features[0].properties;
-  console.log(featureData);
   document.getElementById('c-tract-name').textContent = featureData['NAMELSAD'];
   document.getElementById('countyName').textContent = featureData['County.Name'];
   document.getElementById('population').textContent = featureData['Total.population'];
@@ -454,7 +463,7 @@ function plotMap(source, property, breaks) {
     paper_bgcolor: 'rgba(0, 0, 0, 0)', // Set the background color of the entire chart
   };
   var data = [trace];
-  Plotly.newPlot(histDiv, data, layout);
+  Plotly.newPlot(histDiv, data, layout, {displayModeBar: false});
 }
 
 function beforeMapPlotLine(source) {
@@ -473,6 +482,42 @@ function beforeMapPlotLine(source) {
       paint: {
         "line-opacity" : 0.3,
         "line-color": "black"
+      }
+    }
+  );
+}
+
+function beforeMapPlotPoint(source) {
+  if (!(source in beforeMap.style.sourceCaches)) {
+    console.log("Could not find proper source.");
+  }
+  if(beforeMap.getLayer("co_line_layer")) {
+    beforeMap.removeLayer("co_line_layer");
+  }
+
+  let statusColorScale = {
+    "Completed": "#00ff00",  // Green
+    "High Priority": "#ff0000",  // Red
+    "Medium Priority": "#ffcc00",  // Yellow
+    "Low Priority": "#3399ff"  // Blue
+  };
+
+  beforeMap.addLayer(
+    {
+      id: "co_line_layer",
+      type: "circle",
+      source: source,
+      paint: {
+        "circle-radius": 8,
+        "circle-color": [
+          "match",
+          ["get", "Status"],
+          "Completed", statusColorScale["Completed"],
+          "High", statusColorScale["High Priority"],
+          "Medium", statusColorScale["Medium Priority"],
+          "N/A", statusColorScale["Low Priority"],
+          "#ffffff"  // Default color for unmatched values
+        ]
       }
     }
   );
@@ -504,6 +549,10 @@ function outlineOptions() {
         beforeMapPlotLine("neighborhoods_outline");
       } else if (selectedProperty == "ct") {
         beforeMapPlotLine("censusTract");
+      } else if (selectedProperty == "wpa") {
+        beforeMapPlotLine("wireless_priority_area");
+      } else if (selectedProperty == "uas") {
+        beforeMapPlotPoint("ua_status");
       }
     });
   })
