@@ -207,15 +207,19 @@ function justiceOptions() {
         updateLegendValues(legendValues,legendLabels, colorScale);
       } else if (selectedProperty == 2) {
         let colorScale = chroma.scale('PuBu').colors(4);
+        let features = afterMap.querySourceFeatures('svi20_data');
+        var propertyValues = features.map(function (feature) {
+          return feature.properties["Traffic.proximity.and.volume"];
+        });
+        var breaks = ss.equalIntervalBreaks(propertyValues, 3);
         plotMap("svi20_data", "Traffic.proximity.and.volume", [
-          [28.26, colorScale[0]],
-          [712.60,colorScale[1]],
-          [1884.40, colorScale[2]],
-          [14032.93, colorScale[3]],
+          [breaks[0], colorScale[0]],
+          [breaks[1],colorScale[1]],
+          [breaks[2], colorScale[2]],
+          [breaks[3], colorScale[3]],
         ]);
 
-        // update legend scale
-        let legendValues = [14032.93, 1884.40, 712.60, 28.26];
+        let legendValues = breaks;
         updateLegendValues(legendValues,legendLabels, colorScale);
       } else if(selectedProperty == 3) {
         let colorScale = chroma.scale('Oranges').colors(4);
