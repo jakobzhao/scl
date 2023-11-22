@@ -207,19 +207,19 @@ function justiceOptions() {
         updateLegendValues(legendValues,legendLabels, colorScale);
       } else if (selectedProperty == 2) {
         let colorScale = chroma.scale('PuBu').colors(4);
-        let features = afterMap.querySourceFeatures('svi20_data');
-        var propertyValues = features.map(function (feature) {
-          return feature.properties["Traffic.proximity.and.volume"];
-        });
-        var breaks = ss.equalIntervalBreaks(propertyValues, 3);
+        // let features = afterMap.querySourceFeatures('svi20_data');
+        // var propertyValues = features.map(function (feature) {
+        //   return feature.properties["Traffic.proximity.and.volume"];
+        // });
+        // var breaks = ss.equalIntervalBreaks(propertyValues, 3);
         plotMap("svi20_data", "Traffic.proximity.and.volume", [
-          [breaks[0], colorScale[0]],
-          [breaks[1],colorScale[1]],
-          [breaks[2], colorScale[2]],
-          [breaks[3], colorScale[3]],
+          [28.26, colorScale[0]],
+          [712.60,colorScale[1]],
+          [1884.40, colorScale[2]],
+          [14032.93, colorScale[3]],
         ]);
 
-        let legendValues = breaks;
+        let legendValues = [14032.93, 1884.40, 712.60, 28.26];
         updateLegendValues(legendValues,legendLabels, colorScale);
       } else if(selectedProperty == 3) {
         let colorScale = chroma.scale('Oranges').colors(4);
@@ -373,7 +373,7 @@ function plotMap(source, property, breaks) {
       type: 'gradient', // Use the property values as the basis for the color scale
       color: [breaks[0][1],breaks[1][1],breaks[2][1],breaks[3][1]], // Choose a predefined color scale or provide your own array
     },
-    nbinsx: 4, // Set the number of bins
+    nbinsx: 15, // Set the number of bins
   };
 
   var layout = {
@@ -514,7 +514,7 @@ beforeMap.on('moveend', function () {
     bearing: bearing2,
     pitch: pitch2,
   });
-}); 
+});
 
 document.getElementById('yearSlider').addEventListener('input', updateYearLabel);
 // slider bar change on slide
