@@ -95,14 +95,27 @@ beforeMap.on("load", () => {
         let selectedCausation = this.textContent;
         let selectedIndex = this.getAttribute('data-index');
         let featureData = beforeMap.querySourceFeatures("outage_loc");
-        let causationValues = []; // Store causation values
+        const geojsonData = {
+          type: "FeatureCollection",
+          features: [],
+        };
         featureData.forEach(function(feature) {
           let stringArray = feature.properties.causation;
           let validJsonString = stringArray.replace(/^"|"$/g, '');
           let parsedArray = JSON.parse('[' + validJsonString + ']');
-          causationValues.push(parsedArray[0][selectedIndex]);
+          const feature_point = {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [feature.properties.lon, feature.properties.lat], // Random coordinates
+            },
+            properties: {
+              cause: selectedCausation,
+              causeCount: parseInt(parsedArray[0][selectedIndex])
+            },
+          };
+          geojsonData.features.push(feature_point);
         })
-        causationValues = causationValues.map(str => parseInt(str, 10));
       })
     });
 
