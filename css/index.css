@@ -228,3 +228,8 @@ body {
   bottom: 33%;
   left: 51%;
 }
+
+.scrollable-dropdown {
+  max-height: 200px; /* Set your desired max height */
+  overflow-y: auto;
+}

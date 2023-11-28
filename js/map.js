@@ -18,7 +18,7 @@ beforeMap.on("load", () => {
   // Heatmap layers also work with a vector tile source.
   beforeMap.addSource("outage_loc", {
     type: "geojson",
-    data: "data/outage_by_year.geojson",
+    data: "data/outage_condensed_2023.geojson",
   });
 
   beforeMap.addSource("censusTract", {
@@ -60,67 +60,60 @@ beforeMap.on("load", () => {
   );
 
   // Initialize the heatmap layer with the default year
-  addHeatmapLayer(2023);
+  addHeatmapLayer(2023, 1, "sum");
 
-  // Update the heatmap layer when the slider changes
-  document.getElementById('yearSlider').addEventListener('input', function () {
-      var selectedYear = parseInt(this.value, 10);
-      updateHeatmapLayer(selectedYear);
+  let yearSlider = document.getElementById('yearSlider');
+  let monthSlider = document.getElementById('monthSlider');
+  let radioButtons = document.getElementsByName("outage_type");
+
+    // Add event listeners for slider changes
+  yearSlider.addEventListener('input', function() {
+    updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
   });
 
-  beforeMap.addLayer(
-    {
-      id: "outage-point",
-      type: "circle",
-      source: "outage_loc",
-      minzoom: 14,
-      paint: {
-        // Size circle radius by earthquake magnitude and zoom level
-        "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          7,
-          ["interpolate", ["linear"], ["get", "sum"], 1, 1, 6, 4],
-          25,
-          ["interpolate", ["linear"], ["get", "sum"], 1, 5, 6, 10],
-        ],
-        "circle-color": [
-          "interpolate",
-          ["linear"],
-          ["get", "sum"],
-          0,
-          "rgba(33,102,172,0)",
-          200,
-          "rgb(103,169,207)",
-          300,
-          "rgb(209,229,240)",
-          400,
-          "rgb(253,219,199)",
-          500,
-          "rgb(239,138,98)",
-          600,
-          "rgb(178,24,43)",
-        ],
-        "circle-stroke-color": "white",
-        "circle-stroke-width": 1,
-        "circle-stroke-opacity": 0.3,
-        // Transition from heatmap to circle layer by zoom level
-        "circle-opacity": {
-          stops: [
-            [14, 0],
-            [15, 1],
-          ],
-        },
-      },
-    },
-    "watername_ocean"
-  );
+  monthSlider.addEventListener('input', function() {
+    updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+  });
 
-  // outline of city districts
-  outlineOptions();
+  // Add event listeners for radio button changes
+  radioButtons.forEach(function(radioButton) {
+    radioButton.addEventListener("change", function() {
+        let selectedProperty = this.value;
+        if(selectedProperty == 1) {
+          updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+        } else {
+          updateHeatmapLayer(yearSlider.value, monthSlider.value, "duration");
+        }
+    });
+  });
 
-});
+
+    // get causation
+    let causations = document.querySelectorAll('.dropdown-item');
+    causations.forEach(function(causation) {
+      causation.addEventListener('click', function() {
+        let selectedCausation = this.textContent;
+        let selectedIndex = this.getAttribute('data-index');
+        let featureData = beforeMap.querySourceFeatures("outage_loc");
+        let causationValues = []; // Store causation values
+        featureData.forEach(function(feature) {
+          let stringArray = feature.properties.causation;
+          let validJsonString = stringArray.replace(/^"|"$/g, '');
+          let parsedArray = JSON.parse('[' + validJsonString + ']');
+          causationValues.push(parsedArray[0][selectedIndex]);
+        })
+        causationValues = causationValues.map(str => parseInt(str, 10));
+      })
+    });
+
+    // outline of city districts
+    outlineOptions();
+
+    // add tooltip for cliked feature
+    displayAreaInformation();
+
+    beforeMap.moveLayer('co_line_layer', 'outage_heatmap');
+  });
 
 
 // map containing equity matrix and all other data
@@ -401,6 +394,23 @@ function beforeMapPlotLine(source) {
     beforeMap.removeLayer("co_line_layer");
   }
 
+  if(beforeMap.getLayer("co_fill")) {
+    beforeMap.removeLayer("co_fill");
+  }
+
+  beforeMap.addLayer(
+    {
+      id: "co_fill",
+      type: "fill",
+      source: source,
+      paint: {
+        "fill-color": '#ffffff',
+        "fill-opacity": 0,
+      },
+    },
+    "watername_ocean"
+  );
+
   beforeMap.addLayer(
     {
       id: "co_line_layer",
@@ -420,6 +430,10 @@ function beforeMapPlotPoint(source) {
   }
   if(beforeMap.getLayer("co_line_layer")) {
     beforeMap.removeLayer("co_line_layer");
+  }
+
+  if(beforeMap.getLayer("co_fill")) {
+    beforeMap.removeLayer("co_fill");
   }
 
   let statusColorScale = {
@@ -483,7 +497,6 @@ function outlineOptions() {
       }
     });
   })
-
 }
 
 // Synchronize map movements from map1 to map2
@@ -525,7 +538,65 @@ function updateYearLabel() {
 }
 
 // function add heatmap layer
-function addHeatmapLayer(year) {
+function addHeatmapLayer(year, month, outage_type) {
+  if(!beforeMap.getSource('outage_loc')) {
+    beforeMap.addSource("outage_loc", {
+      type: "geojson",
+      data: "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson",
+    });
+  }
+
+  // get radio button value to decide if frequency or duration
+  beforeMap.addLayer(
+    {
+      id: "outage_point",
+      type: "circle",
+      source: "outage_loc",
+      minzoom: 14,
+      paint: {
+        // Size circle radius by earthquake magnitude and zoom level
+        "circle-radius": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          7,
+          ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4],
+          25,
+          ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10],
+        ],
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          ["get", outage_type],
+          0,
+          "rgba(33,102,172,0)",
+          200,
+          "rgb(103,169,207)",
+          300,
+          "rgb(209,229,240)",
+          400,
+          "rgb(253,219,199)",
+          500,
+          "rgb(239,138,98)",
+          600,
+          "rgb(178,24,43)",
+        ],
+        "circle-stroke-color": "white",
+        "circle-stroke-width": 1,
+        "circle-stroke-opacity": 0.3,
+        // Transition from heatmap to circle layer by zoom level
+        "circle-opacity": {
+          stops: [
+            [14, 0],
+            [15, 1],
+          ],
+        },
+      },
+    },
+    "watername_ocean"
+  );
+
+
   beforeMap.addLayer(
     {
       id: "outage_heatmap",
@@ -537,8 +608,8 @@ function addHeatmapLayer(year) {
         'heatmap-weight': [
           'interpolate',
           ['linear'],
-          ['get', year + '_fq'],
-          50, 0,
+          ['get', outage_type],
+          0, 0,
           100, 1
         ],
         // Increase the heatmap color weight weight by zoom level
@@ -594,11 +665,29 @@ function addHeatmapLayer(year) {
 }
 
 // Function to update the heatmap layer
-function updateHeatmapLayer(year) {
-  // Remove the existing heatmap layer
+function updateHeatmapLayer(year, month, value) {
+  let selectedYear = parseInt(year, 10);
+  let selectedMonth = parseInt(month, 10);
+  // Remove the existing heatmap layer and source
   if (beforeMap.getLayer('outage_heatmap')) {
       beforeMap.removeLayer('outage_heatmap');
   }
-  // Add the updated heatmap layer
-  addHeatmapLayer(year);
+
+  if (beforeMap.getLayer('outage_point')) {
+    beforeMap.removeLayer('outage_point');
+  }
+
+  if (beforeMap.getSource('outage_loc')) {
+    beforeMap.removeSource('outage_loc');
+  }
+
+  addHeatmapLayer(selectedYear, selectedMonth, value);
+}
+
+// display area information for before map
+function displayAreaInformation() {
+  beforeMap.on('click', 'co_fill', (e) => {
+    let featureData = e.features[0].properties;
+    console.log(featureData);
+  })
 }
