@@ -683,6 +683,25 @@ function addHeatmapLayer(year, month, outage_type) {
   }
 
   if (outage_type == "duration") {
+    // heatmap_ramp = [
+    //   "interpolate",
+    //   ["linear"],
+    //   ["heatmap-density"],
+    //   0,
+    //   "rgba(255, 255, 255, 0)", // White
+    //   0.2,
+    //   "rgb(173, 216, 230)", // Light Blue
+    //   0.4,
+    //   "rgb(135, 206, 250)", // Sky Blue
+    //   0.6,
+    //   "rgb(70, 130, 180)", // Steel Blue
+    //   0.8,
+    //   "rgb(0, 102, 204)", // Royal Blue
+    //   1,
+    //   "rgb(0, 51, 102)", // Dark Blue
+    // ];
+
+    //color can be found from https://colorbrewer2.org/#type=diverging&scheme=PRGn&n=6
     heatmap_ramp = [
       "interpolate",
       ["linear"],
@@ -690,15 +709,15 @@ function addHeatmapLayer(year, month, outage_type) {
       0,
       "rgba(255, 255, 255, 0)", // White
       0.2,
-      "rgb(173, 216, 230)", // Light Blue
+      "#ffffb2", // Light Blue
       0.4,
-      "rgb(135, 206, 250)", // Sky Blue
+      "#fecc5c", // Sky Blue
       0.6,
-      "rgb(70, 130, 180)", // Steel Blue
+      "#fd8d3c", // Steel Blue
       0.8,
-      "rgb(0, 102, 204)", // Royal Blue
+      "#f03b20", // Royal Blue
       1,
-      "rgb(0, 51, 102)", // Dark Blue
+      "#bd0026", // Dark Blue
     ];
 
     heatmap_weight = [
@@ -747,9 +766,9 @@ function addHeatmapLayer(year, month, outage_type) {
           600,
           "rgb(178,24,43)",
         ],
-        "circle-stroke-color": "white",
+        "circle-stroke-color": "darkgrey",
         "circle-stroke-width": 1,
-        "circle-stroke-opacity": 0.5,
+        "circle-stroke-opacity": 0.8,
         // Transition from heatmap to circle layer by zoom level
         "circle-opacity": {
           stops: [

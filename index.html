@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Seattle City Light</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -51,27 +51,27 @@
                 </ul>
             </div>
         </div>
-    </nav>
-        <div id="before" class="map"></div>
-        <div id="after" class="map"></div>
+    </nav> -->
+    <div id="before" class="map"></div>
+    <div id="after" class="map"></div>
 
     <div class="map-overlay top">
 
         <div class="map-overlay-inner">
             <h5>Outage</h5>
-                <input type="radio" id="frequency" name="outage_type" value="sum" checked />
-                <label for="one">Frequency</label>
-                <input type="radio" id="duration" name="outage_type" value="duration" />
-                <label for="duration">Duration</label>
+            <input type="radio" id="frequency" name="outage_type" value="sum" checked />
+            <label for="one">Frequency</label>
+            <input type="radio" id="duration" name="outage_type" value="duration" />
+            <label for="duration">Duration</label>
         </div>
         <div class="map-overlay-inner d-flex flex-column">
             <h5>City Outlines</h5>
             <div>
-                <input type="radio" id="c_tract" name="city_outlines" value="ct" checked/>
+                <input type="radio" id="c_tract" name="city_outlines" value="ct" checked />
                 <label for="c_tract">Census Tract</label>
             </div>
             <div>
-                <input type="radio" id="city_council" name="city_outlines" value="cc"/>
+                <input type="radio" id="city_council" name="city_outlines" value="cc" />
                 <label for="city_council">City Council</label>
             </div>
             <div>
@@ -97,13 +97,13 @@
             <div>
                 <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
                 <label class="form-check-label" for="all_months">
-                  Show all months
+                    All months
                 </label>
             </div>
 
             <div id="monthInputs">
                 <label id="monthLabel">January</label>
-                <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" disabled/>
+                <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" disabled />
             </div>
             <h5>Time of Day</h5>
             <div class="d-flex flex-column">
@@ -112,11 +112,11 @@
                     <label for="one">All</label>
                 </div>
                 <div>
-                    <input type="radio" id="morning" name="time_of_day" value="Morning"  />
+                    <input type="radio" id="morning" name="time_of_day" value="Morning" />
                     <label for="morning">Morning</label>
                 </div>
                 <div>
-                    <input type="radio" id="afternoon" name="time_of_day" value="Afternoon"  />
+                    <input type="radio" id="afternoon" name="time_of_day" value="Afternoon" />
                     <label for="afternoon">Afternoon</label>
                 </div>
                 <div>
@@ -133,10 +133,11 @@
         <div class="map-overlay-inner">
             <h5>Causation</h5>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="causationButton" data-bs-toggle="dropdown" aria-expanded="false">All</button>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="causationButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">All</button>
                 <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="causationButton">
                 </ul>
-              </div>
+            </div>
         </div>
     </div>
 
@@ -146,11 +147,11 @@
             <div>
                 Environment
                 <div>
-                    <input type="radio" id="ehd" name="population_category" value= "1" checked/>
+                    <input type="radio" id="ehd" name="population_category" value="1" checked />
                     <label for="ehd">Environ. Health Disparity</label>
                 </div>
                 <div>
-                    <input type="radio" id="traffic-volume" name="population_category" value="2"/>
+                    <input type="radio" id="traffic-volume" name="population_category" value="2" />
                     <label for="traffic-volume">Traffic Proximity & Volume</label>
                 </div>
                 <div>
@@ -208,7 +209,7 @@
     </div>
 
     <div id="histogram-testing">
-        
+
     </div>
 
     <div id="state-legend" class="legend">
@@ -253,19 +254,19 @@
             </div>
             <label class="fw-bold">Population by Race:</label>
             <div class="progress" style="height: 10px">
-                <div id = "a-native-indian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-native-indian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-asian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-asian" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-black" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-black" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-latino" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-latino" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-native-pacific" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-native-pacific" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-white" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-white" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
-                <div id = "a-other" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
+                <div id="a-other" class="progress-bar" data-bs-toggle="tooltip" data-bs-placement="top">
                 </div>
             </div>
         </div>
