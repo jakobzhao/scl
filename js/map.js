@@ -1,15 +1,23 @@
 var beforeMap = new maplibregl.Map({
   container: "before",
   style: "data/style.json",
-  center: [-122.335167, 47.608013],
-  zoom: 12,
+  bounds: [
+    [-122.6290395434541, 47.81179323004783],
+    [-122.03558975261807, 47.420779676472435],
+  ],
 });
+
+// the bounds for seattle city is [-122.335167, 47.608013], [-122.224433, 47.734145]
 
 var afterMap = new maplibregl.Map({
   container: "after",
   style: "data/style.json",
-  center: [-122.335167, 47.608013],
-  zoom: 12,
+  bounds: [
+    [-122.6290395434541, 47.81179323004783],
+    [-122.03558975261807, 47.420779676472435],
+  ],
+  // center: [-122.335167, 47.608013],
+  // zoom: 12,
 });
 
 // Data Sources
@@ -28,23 +36,23 @@ beforeMap.on("load", () => {
 
   beforeMap.addSource("cc_districts", {
     type: "geojson",
-    data: "data/seattle_city_council_districts.geojson"
+    data: "data/seattle_city_council_districts.geojson",
   });
 
   beforeMap.addSource("neighborhoods_outline", {
     type: "geojson",
-    data: "data/SCL_neighborhood_data.geojson"
+    data: "data/SCL_neighborhood_data.geojson",
   });
 
   beforeMap.addSource("wireless_priority_area", {
     type: "geojson",
-    data: "data/WirelessPriorityAreas.geojson"
-  })
+    data: "data/WirelessPriorityAreas.geojson",
+  });
 
   beforeMap.addSource("ua_status", {
     type: "geojson",
-    data: "data/ug_status.geojson"
-  })
+    data: "data/ug_status.geojson",
+  });
 
   beforeMap.addLayer(
     {
@@ -62,104 +70,143 @@ beforeMap.on("load", () => {
   // Initialize the heatmap layer with the default year
   addHeatmapLayer(2023, "all", "sum");
 
-  let yearSlider = document.getElementById('yearSlider');
-  let monthSlider = document.getElementById('monthSlider');
+  let yearSlider = document.getElementById("yearSlider");
+  let monthSlider = document.getElementById("monthSlider");
   let radioButtons = document.getElementsByName("outage_type");
-  let monthsCheckbox = document.getElementById('all_months');
-  let monthInputs = document.getElementById('monthInputs');
+  let monthsCheckbox = document.getElementById("all_months");
+  let monthInputs = document.getElementById("monthInputs");
 
-    // Add event listeners for slider changes
-  yearSlider.addEventListener('input', function() {
+  // Add event listeners for slider changes
+  yearSlider.addEventListener("input", function () {
     updateYearLabel();
     // check if all months or not
-    if(monthsCheckbox.checked) {
+    if (monthsCheckbox.checked) {
       updateHeatmapLayer(yearSlider.value, "all", outageType(radioButtons));
     } else {
-      updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
+      updateHeatmapLayer(
+        yearSlider.value,
+        monthSlider.value,
+        outageType(radioButtons)
+      );
     }
     // update other filters too
     updateFilter();
   });
 
-  monthSlider.addEventListener('input', function() {
+  monthSlider.addEventListener("input", function () {
     let monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
-    let monthLabel = document.getElementById('monthLabel');
-    monthLabel.innerHTML = monthNames[monthSlider.value-1];
-    updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
+    let monthLabel = document.getElementById("monthLabel");
+    monthLabel.innerHTML = monthNames[monthSlider.value - 1];
+    updateHeatmapLayer(
+      yearSlider.value,
+      monthSlider.value,
+      outageType(radioButtons)
+    );
   });
 
   // show all months
-  monthsCheckbox.addEventListener('change', function() {
+  monthsCheckbox.addEventListener("change", function () {
     // if checked, disable the rest, and update year data
-    if(monthsCheckbox.checked) {
+    if (monthsCheckbox.checked) {
       monthSlider.disabled = true;
       monthInputs.style.display = "none";
       updateHeatmapLayer(yearSlider.value, "all", outageType(radioButtons));
     } else {
       monthSlider.disabled = false;
       monthInputs.style.display = "block";
-      updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
+      updateHeatmapLayer(
+        yearSlider.value,
+        monthSlider.value,
+        outageType(radioButtons)
+      );
     }
-  })
+  });
 
   // Add event listeners for radio button changes
-  radioButtons.forEach(function(radioButton) {
-    radioButton.addEventListener("change", function() {
-        let selectedProperty = this.value;
-        if(monthsCheckbox.checked) {
-          updateHeatmapLayer(yearSlider.value, "all",  selectedProperty);
-        } else {
-          updateHeatmapLayer(yearSlider.value, monthSlider.value,  selectedProperty);
-        }
-
+  radioButtons.forEach(function (radioButton) {
+    radioButton.addEventListener("change", function () {
+      let selectedProperty = this.value;
+      if (monthsCheckbox.checked) {
+        updateHeatmapLayer(yearSlider.value, "all", selectedProperty);
+      } else {
+        updateHeatmapLayer(
+          yearSlider.value,
+          monthSlider.value,
+          selectedProperty
+        );
+      }
     });
   });
 
   // get time=_of_day
-  let timeOfDayButtons = document.getElementsByName('time_of_day');
-  timeOfDayButtons.forEach(function(button) {
-    button.addEventListener('change', function() {
-      if(this.value == "all") {
-        beforeMap.setFilter('outage_heatmap', ['!=', ['get', 'time_of_day'], this.value]);
+  let timeOfDayButtons = document.getElementsByName("time_of_day");
+  timeOfDayButtons.forEach(function (button) {
+    button.addEventListener("change", function () {
+      if (this.value == "all") {
+        beforeMap.setFilter("outage_heatmap", [
+          "!=",
+          ["get", "time_of_day"],
+          this.value,
+        ]);
       } else {
-        beforeMap.setFilter('outage_heatmap', ['==', ['get', 'time_of_day'], this.value]);
+        beforeMap.setFilter("outage_heatmap", [
+          "==",
+          ["get", "time_of_day"],
+          this.value,
+        ]);
       }
-    })
-  })
-
-  // get causation
-  let causations = document.querySelectorAll('.dropdown-item');
-  causations.forEach(function(causation) {
-    causation.addEventListener('click', function() {
-      let selectedIndex = parseInt(this.getAttribute('data-index'));
-      if (selectedIndex != 1) {
-        beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex - 2, ['array', ['get', 'causation']]], '1']);
-      } else {
-        beforeMap.setFilter('outage_heatmap', ['!=', ['at', 0, ['array', ['get', 'causation']]], '1']);
-      }
-    })
+    });
   });
 
-    // outline of city districts
-    outlineOptions();
+  // get causation
+  let causations = document.querySelectorAll(".dropdown-item");
+  causations.forEach(function (causation) {
+    causation.addEventListener("click", function () {
+      let selectedIndex = parseInt(this.getAttribute("data-index"));
+      if (selectedIndex != 1) {
+        beforeMap.setFilter("outage_heatmap", [
+          "==",
+          ["at", selectedIndex - 2, ["array", ["get", "causation"]]],
+          "1",
+        ]);
+      } else {
+        beforeMap.setFilter("outage_heatmap", [
+          "!=",
+          ["at", 0, ["array", ["get", "causation"]]],
+          "1",
+        ]);
+      }
+    });
+  });
 
-    // add tooltip for cliked feature
-    displayAreaInformation();
+  // outline of city districts
+  outlineOptions();
 
-    // adding popup for cliked point
-    displayServicePointInfo();
+  // add tooltip for cliked feature
+  displayAreaInformation();
 
-    beforeMap.moveLayer('co_line_layer', 'outage_heatmap');
+  // adding popup for cliked point
+  displayServicePointInfo();
+
+  beforeMap.moveLayer("co_line_layer", "outage_heatmap");
 });
-
 
 // map containing equity matrix and all other data
 afterMap.on("load", () => {
-
   afterMap.addSource("svi20_data", {
     type: "geojson",
     data: "data/svi_20_seattle_new.geojson",
@@ -178,10 +225,9 @@ afterMap.on("load", () => {
     "watername_ocean"
   );
 
-
   // initiate
   let legendLabels = document.querySelectorAll(".legend-row > div");
-  let colorScale = chroma.scale('OrRd').colors(4);
+  let colorScale = chroma.scale("OrRd").colors(4);
   let legendValues = [10, 9, 6, 1];
   plotMap("svi20_data", "env_health_disparity_rank", [
     [1, colorScale[0]],
@@ -193,45 +239,73 @@ afterMap.on("load", () => {
   justiceOptions();
 });
 
-afterMap.on('click', 'options_layer', (e) => {
+afterMap.on("click", "options_layer", (e) => {
   // enable tooltips
-  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+  );
+  const tooltipList = [...tooltipTriggerList].map(
+    (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+  );
 
   let featureData = e.features[0].properties;
-  document.getElementById('c-tract-name').textContent = featureData['NAMELSAD'];
-  document.getElementById('countyName').textContent = featureData['County.Name'];
-  document.getElementById('population').textContent = featureData['Total.population'];
-  document.getElementById('life-expectancy').textContent = featureData['Life.expectancy..years.'];
-  document.getElementById('households').textContent = featureData['Households'];
+  document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
+  document.getElementById("countyName").textContent =
+    featureData["County.Name"];
+  document.getElementById("population").textContent =
+    featureData["Total.population"];
+  document.getElementById("life-expectancy").textContent =
+    featureData["Life.expectancy..years."];
+  document.getElementById("households").textContent = featureData["Households"];
 
   // Update progress bar also [need to optimize]
-  document.getElementById('a-native-indian').style.width = featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
-  document.getElementById('a-native-indian').title= "American Indian/Alaska Native:" + featureData['Percent.American.Indian...Alaska.Native'] * 100 + '%';
-  document.getElementById('a-asian').style.width = featureData['Percent.Asian'] * 100 + '%';
-  document.getElementById('a-asian').title= "Asian: " + featureData['Percent.Asian'] * 100 + '%';
-  document.getElementById('a-black').style.width = featureData['Percent.Black.or.African.American.alone'] * 100 + '%';
-  document.getElementById('a-black').title= "Black/African American: " + featureData['Percent.Black.or.African.American.alone'] * 100 + '%';
-  document.getElementById('a-latino').style.width = featureData['Percent.Hispanic.or.Latino'] * 100 + '%';
-  document.getElementById('a-latino').title= "Hispanic or Latino: " + featureData['Percent.Hispanic.or.Latino'] * 100 + '%';
-  document.getElementById('a-native-pacific').style.width = featureData['Percent.Native.Hawaiian.or.Pacific'] * 100 + '%';
-  document.getElementById('a-native-pacific').title= "Native Hawaiian/Pacific Islander: " + featureData['Percent.Native.Hawaiian.or.Pacific'] * 100 + '%';
-  document.getElementById('a-white').style.width = featureData['Percent.White'] * 100 + '%';
-  document.getElementById('a-white').title= "White: " + featureData['Percent.White'] * 100 + '%';
-  document.getElementById('a-other').style.width = featureData['Percent.other.races'] * 100 + '%';
-  document.getElementById('a-other').title= "Other: " + featureData['Percent.other.races'] * 100 + '%';
-
-})
+  document.getElementById("a-native-indian").style.width =
+    featureData["Percent.American.Indian...Alaska.Native"] * 100 + "%";
+  document.getElementById("a-native-indian").title =
+    "American Indian/Alaska Native:" +
+    featureData["Percent.American.Indian...Alaska.Native"] * 100 +
+    "%";
+  document.getElementById("a-asian").style.width =
+    featureData["Percent.Asian"] * 100 + "%";
+  document.getElementById("a-asian").title =
+    "Asian: " + featureData["Percent.Asian"] * 100 + "%";
+  document.getElementById("a-black").style.width =
+    featureData["Percent.Black.or.African.American.alone"] * 100 + "%";
+  document.getElementById("a-black").title =
+    "Black/African American: " +
+    featureData["Percent.Black.or.African.American.alone"] * 100 +
+    "%";
+  document.getElementById("a-latino").style.width =
+    featureData["Percent.Hispanic.or.Latino"] * 100 + "%";
+  document.getElementById("a-latino").title =
+    "Hispanic or Latino: " +
+    featureData["Percent.Hispanic.or.Latino"] * 100 +
+    "%";
+  document.getElementById("a-native-pacific").style.width =
+    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 + "%";
+  document.getElementById("a-native-pacific").title =
+    "Native Hawaiian/Pacific Islander: " +
+    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 +
+    "%";
+  document.getElementById("a-white").style.width =
+    featureData["Percent.White"] * 100 + "%";
+  document.getElementById("a-white").title =
+    "White: " + featureData["Percent.White"] * 100 + "%";
+  document.getElementById("a-other").style.width =
+    featureData["Percent.other.races"] * 100 + "%";
+  document.getElementById("a-other").title =
+    "Other: " + featureData["Percent.other.races"] * 100 + "%";
+});
 
 // function
 function justiceOptions() {
   let radioButtons = document.getElementsByName("population_category");
   let legendLabels = document.querySelectorAll(".legend-row > div");
-  radioButtons.forEach(function(radioButton) {
-    radioButton.addEventListener("change", function() {
+  radioButtons.forEach(function (radioButton) {
+    radioButton.addEventListener("change", function () {
       let selectedProperty = this.value;
-      if(selectedProperty == 1) {
-        let colorScale = chroma.scale('OrRd').colors(4);
+      if (selectedProperty == 1) {
+        let colorScale = chroma.scale("OrRd").colors(4);
         plotMap("svi20_data", "env_health_disparity_rank", [
           [1, colorScale[0]],
           [6, colorScale[1]],
@@ -239,9 +313,9 @@ function justiceOptions() {
           [10, colorScale[3]],
         ]);
         let legendValues = [10, 9, 6, 1];
-        updateLegendValues(legendValues,legendLabels, colorScale);
+        updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 2) {
-        let colorScale = chroma.scale('PuBu').colors(4);
+        let colorScale = chroma.scale("PuBu").colors(4);
         // let features = afterMap.querySourceFeatures('svi20_data');
         // var propertyValues = features.map(function (feature) {
         //   return feature.properties["Traffic.proximity.and.volume"];
@@ -249,15 +323,15 @@ function justiceOptions() {
         // var breaks = ss.equalIntervalBreaks(propertyValues, 3);
         plotMap("svi20_data", "Traffic.proximity.and.volume", [
           [28.26, colorScale[0]],
-          [712.60,colorScale[1]],
-          [1884.40, colorScale[2]],
+          [712.6, colorScale[1]],
+          [1884.4, colorScale[2]],
           [14032.93, colorScale[3]],
         ]);
 
-        let legendValues = [14032.93, 1884.40, 712.60, 28.26];
-        updateLegendValues(legendValues,legendLabels, colorScale);
-      } else if(selectedProperty == 3) {
-        let colorScale = chroma.scale('Oranges').colors(4);
+        let legendValues = [14032.93, 1884.4, 712.6, 28.26];
+        updateLegendValues(legendValues, legendLabels, colorScale);
+      } else if (selectedProperty == 3) {
+        let colorScale = chroma.scale("Oranges").colors(4);
         plotMap("svi20_data", "Proximity.to.hazardous.waste.sites", [
           [0.31, colorScale[0]],
           [4.82, colorScale[1]],
@@ -265,117 +339,121 @@ function justiceOptions() {
           [25.7, colorScale[3]],
         ]);
         let legendValues = [25.7, 11.35, 4.82, 0.31];
-        updateLegendValues(legendValues,legendLabels, colorScale);
-      } else if(selectedProperty == 4) {
-        let colorScale = chroma.scale('Greys').colors(4);
-        plotMap("svi20_data", "Expected.population.loss.rate..Natural.Hazards.Risk.Index.", [
-          [0.0024, colorScale[0] ],
-          [0.0035, colorScale[1] ],
-          [0.0048, colorScale[2] ],
-          [0.0145, colorScale[3] ],
-        ]);
+        updateLegendValues(legendValues, legendLabels, colorScale);
+      } else if (selectedProperty == 4) {
+        let colorScale = chroma.scale("Greys").colors(4);
+        plotMap(
+          "svi20_data",
+          "Expected.population.loss.rate..Natural.Hazards.Risk.Index.",
+          [
+            [0.0024, colorScale[0]],
+            [0.0035, colorScale[1]],
+            [0.0048, colorScale[2]],
+            [0.0145, colorScale[3]],
+          ]
+        );
         let legendValues = [0.0145, 0.0048, 0.0035, 0.0024];
-        updateLegendValues(legendValues,legendLabels, colorScale);
-      } else if(selectedProperty == 5) {
-        let colorScale = chroma.scale('Greens').colors(4);
-        plotMap("svi20_data", "housing_transit",[
+        updateLegendValues(legendValues, legendLabels, colorScale);
+      } else if (selectedProperty == 5) {
+        let colorScale = chroma.scale("Greens").colors(4);
+        plotMap("svi20_data", "housing_transit", [
           [0.041, colorScale[0]],
           [0.609, colorScale[1]],
           [1.0, colorScale[2]],
           [1.0, colorScale[3]],
-        ])
+        ]);
         let legendValues = [1.0, 1.0, 0.609, 0.041];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 6) {
-        let colorScale = chroma.scale('GnBu').colors(4);
-        plotMap("svi20_data", "svi",[
+        let colorScale = chroma.scale("GnBu").colors(4);
+        plotMap("svi20_data", "svi", [
           [0.007, colorScale[0]],
           [0.385, colorScale[1]],
           [1.0, colorScale[2]],
           [1.0, colorScale[3]],
-        ])
+        ]);
         let legendValues = [1.0, 1.0, 0.385, 0.007];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 7) {
-        let colorScale = chroma.scale('BuPu').colors(4);
-        plotMap("svi20_data", "sef_rank",[
+        let colorScale = chroma.scale("BuPu").colors(4);
+        plotMap("svi20_data", "sef_rank", [
           [1, colorScale[0]],
           [2, colorScale[1]],
           [6, colorScale[2]],
           [10, colorScale[3]],
-        ])
+        ]);
         let legendValues = [10.0, 6.0, 2.0, 1.0];
         updateLegendValues(legendValues, legendLabels, colorScale);
-      } else if (selectedProperty == 8)  {
-        let colorScale = chroma.scale('BuGn').colors(4);
-        plotMap("svi20_data", "Housing.burden..percent.",[
+      } else if (selectedProperty == 8) {
+        let colorScale = chroma.scale("BuGn").colors(4);
+        plotMap("svi20_data", "Housing.burden..percent.", [
           [5, colorScale[0]],
           [18, colorScale[1]],
           [26, colorScale[2]],
           [84, colorScale[3]],
-        ])
+        ]);
         let legendValues = [84.0, 26.0, 18.0, 5.0];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 9) {
-        let colorScale = chroma.scale('Blues').colors(4);
-        plotMap("svi20_data", "Linguistic.isolation..percent.",[
+        let colorScale = chroma.scale("Blues").colors(4);
+        plotMap("svi20_data", "Linguistic.isolation..percent.", [
           [0, colorScale[0]],
           [1, colorScale[1]],
           [5, colorScale[2]],
           [35, colorScale[3]],
-        ])
+        ]);
         let legendValues = [35.0, 5.0, 1.0, 0.0];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 10) {
-        let colorScale = chroma.scale('PuRd').colors(4);
-        plotMap("svi20_data", "Percent.Black.or.African.American.alone",[
+        let colorScale = chroma.scale("PuRd").colors(4);
+        plotMap("svi20_data", "Percent.Black.or.African.American.alone", [
           [0, colorScale[0]],
           [0.013, colorScale[1]],
           [0.08, colorScale[2]],
           [0.4, colorScale[3]],
-        ])
+        ]);
         let legendValues = [0.4, 0.08, 0.013, 0.0];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 11) {
-        let colorScale = chroma.scale('Purples').colors(4);
-        plotMap("svi20_data", "PM2.5.in.the.air",[
+        let colorScale = chroma.scale("Purples").colors(4);
+        plotMap("svi20_data", "PM2.5.in.the.air", [
           [7.4, colorScale[0]],
           [7.65, colorScale[1]],
           [7.8, colorScale[2]],
           [7.88, colorScale[3]],
-        ])
+        ]);
         let legendValues = [7.88, 7.8, 7.65, 7.4];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 12) {
-        let colorScale = chroma.scale('YlGn').colors(4);
-        plotMap("svi20_data", "Diesel.particulate.matter.exposure",[
+        let colorScale = chroma.scale("YlGn").colors(4);
+        plotMap("svi20_data", "Diesel.particulate.matter.exposure", [
           [0.44, colorScale[0]],
           [0.65, colorScale[1]],
           [0.74, colorScale[2]],
           [1.05, colorScale[3]],
-        ])
+        ]);
         let legendValues = [1.05, 0.74, 0.65, 0.44];
         updateLegendValues(legendValues, legendLabels, colorScale);
       } else if (selectedProperty == 13) {
-        let colorScale = chroma.scale('YlOrBr').colors(4);
-        plotMap("svi20_data", "%_disability",[
+        let colorScale = chroma.scale("YlOrBr").colors(4);
+        plotMap("svi20_data", "%_disability", [
           [3.8, colorScale[0]],
           [7.1, colorScale[1]],
           [10.7, colorScale[2]],
           [28.1, colorScale[3]],
-        ])
+        ]);
         let legendValues = [28.1, 10.7, 7.1, 3.8];
         updateLegendValues(legendValues, legendLabels, colorScale);
       }
-    })
-  })
+    });
+  });
 }
 
 function plotMap(source, property, breaks) {
   if (!(source in afterMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if(afterMap.getLayer("options_layer")) {
+  if (afterMap.getLayer("options_layer")) {
     afterMap.removeLayer("options_layer");
   }
 
@@ -401,11 +479,11 @@ function beforeMapPlotLine(source) {
   if (!(source in beforeMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if(beforeMap.getLayer("co_line_layer")) {
+  if (beforeMap.getLayer("co_line_layer")) {
     beforeMap.removeLayer("co_line_layer");
   }
 
-  if(beforeMap.getLayer("co_fill")) {
+  if (beforeMap.getLayer("co_fill")) {
     beforeMap.removeLayer("co_fill");
   }
 
@@ -415,87 +493,87 @@ function beforeMapPlotLine(source) {
       type: "fill",
       source: source,
       paint: {
-        "fill-color": '#ffffff',
+        "fill-color": "#ffffff",
         "fill-opacity": 0,
       },
     },
     "watername_ocean"
   );
 
-  beforeMap.addLayer(
-    {
-      id: "co_line_layer",
-      type: "line",
-      source: source,
-      paint: {
-        "line-opacity" : 0.3,
-        "line-color": "black"
-      }
-    }
-  );
+  beforeMap.addLayer({
+    id: "co_line_layer",
+    type: "line",
+    source: source,
+    paint: {
+      "line-opacity": 0.3,
+      "line-color": "black",
+    },
+  });
 }
 
 function beforeMapPlotPoint(source) {
   if (!(source in beforeMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if(beforeMap.getLayer("co_line_layer")) {
+  if (beforeMap.getLayer("co_line_layer")) {
     beforeMap.removeLayer("co_line_layer");
   }
 
-  if(beforeMap.getLayer("co_fill")) {
+  if (beforeMap.getLayer("co_fill")) {
     beforeMap.removeLayer("co_fill");
   }
 
   let statusColorScale = {
-    "Completed": "#00ff00",  // Green
-    "High Priority": "#ff0000",  // Red
-    "Medium Priority": "#ffcc00",  // Yellow
-    "Low Priority": "#3399ff"  // Blue
+    Completed: "#00ff00", // Green
+    "High Priority": "#ff0000", // Red
+    "Medium Priority": "#ffcc00", // Yellow
+    "Low Priority": "#3399ff", // Blue
   };
 
-  beforeMap.addLayer(
-    {
-      id: "co_line_layer",
-      type: "circle",
-      source: source,
-      paint: {
-        "circle-radius": 8,
-        "circle-color": [
-          "match",
-          ["get", "Status"],
-          "Completed", statusColorScale["Completed"],
-          "High", statusColorScale["High Priority"],
-          "Medium", statusColorScale["Medium Priority"],
-          "N/A", statusColorScale["Low Priority"],
-          "#ffffff"  // Default color for unmatched values
-        ]
-      }
-    }
-  );
+  beforeMap.addLayer({
+    id: "co_line_layer",
+    type: "circle",
+    source: source,
+    paint: {
+      "circle-radius": 8,
+      "circle-color": [
+        "match",
+        ["get", "Status"],
+        "Completed",
+        statusColorScale["Completed"],
+        "High",
+        statusColorScale["High Priority"],
+        "Medium",
+        statusColorScale["Medium Priority"],
+        "N/A",
+        statusColorScale["Low Priority"],
+        "#ffffff", // Default color for unmatched values
+      ],
+    },
+  });
 }
 
 function updateLegendValues(rangeArray, legendLabels, colorScale) {
   let length = rangeArray.length;
   legendLabels.forEach((label, index) => {
-    let span = label.parentElement.querySelector('span');
-    span.style.backgroundColor = colorScale[(length -1) - index];
+    let span = label.parentElement.querySelector("span");
+    span.style.backgroundColor = colorScale[length - 1 - index];
     let value = rangeArray[index];
-    if(index == length -1 || index == 0) {
+    if (index == length - 1 || index == 0) {
       label.textContent = value;
     } else {
       let prev = rangeArray[index - 1];
       label.textContent = value + " - " + prev;
     }
-  })
+  });
 }
 
 function outlineOptions() {
   let radioButtons = document.getElementsByName("city_outlines");
-  radioButtons.forEach(function(radioButton) {
-    radioButton.addEventListener("change", function() {
+  radioButtons.forEach(function (radioButton) {
+    radioButton.addEventListener("change", function () {
       let selectedProperty = this.value;
-      if(selectedProperty == "cc") {
+      if (selectedProperty == "cc") {
         beforeMapPlotLine("cc_districts");
       } else if (selectedProperty == "nh") {
         beforeMapPlotLine("neighborhoods_outline");
@@ -507,11 +585,11 @@ function outlineOptions() {
         beforeMapPlotPoint("ua_status");
       }
     });
-  })
+  });
 }
 
 // Synchronize map movements from map1 to map2
-afterMap.on('moveend', function () {
+afterMap.on("moveend", function () {
   var center1 = afterMap.getCenter();
   var zoom1 = afterMap.getZoom();
   var bearing1 = afterMap.getBearing();
@@ -526,7 +604,7 @@ afterMap.on('moveend', function () {
 });
 
 // Synchronize map movements from map2 to map1
-beforeMap.on('moveend', function () {
+beforeMap.on("moveend", function () {
   var center2 = beforeMap.getCenter();
   var zoom2 = beforeMap.getZoom();
   var bearing2 = beforeMap.getBearing();
@@ -542,15 +620,18 @@ beforeMap.on('moveend', function () {
 
 // slider bar change on slide
 function updateYearLabel() {
-  let yearLabel = document.getElementById('yearLabel');
-  let yearSlider = document.getElementById('yearSlider');
+  let yearLabel = document.getElementById("yearLabel");
+  let yearSlider = document.getElementById("yearSlider");
   yearLabel.innerHTML = yearSlider.value;
 }
 
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
-  let heatmap_ramp =  ["interpolate",["linear"],["heatmap-density"],
+  let heatmap_ramp = [
+    "interpolate",
+    ["linear"],
+    ["heatmap-density"],
     0,
     "rgba(33,102,172,0)",
     0.2,
@@ -563,41 +644,62 @@ function addHeatmapLayer(year, month, outage_type) {
     "rgb(239,138,98)",
     1,
     "rgb(178,24,43)",
-  ]
+  ];
 
-  let heatmap_weight =['interpolate',['linear'],['get', outage_type],0, 0, 100, 1]
+  let heatmap_weight = [
+    "interpolate",
+    ["linear"],
+    ["get", outage_type],
+    0,
+    0,
+    100,
+    1,
+  ];
 
-  if(month != "all") {
-    data_path = "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson";
+  if (month != "all") {
+    data_path =
+      "data/year_month_data/outage_condensed_" +
+      year +
+      "_" +
+      month +
+      ".geojson";
   }
 
-  if(!beforeMap.getSource('outage_loc')) {
+  if (!beforeMap.getSource("outage_loc")) {
     beforeMap.addSource("outage_loc", {
       type: "geojson",
       data: data_path,
     });
   }
 
-  if(outage_type == "duration") {
-    heatmap_ramp =  [
+  if (outage_type == "duration") {
+    heatmap_ramp = [
       "interpolate",
       ["linear"],
       ["heatmap-density"],
       0,
-      "rgba(255, 255, 255, 0)",    // White
+      "rgba(255, 255, 255, 0)", // White
       0.2,
-      "rgb(173, 216, 230)",         // Light Blue
+      "rgb(173, 216, 230)", // Light Blue
       0.4,
-      "rgb(135, 206, 250)",         // Sky Blue
+      "rgb(135, 206, 250)", // Sky Blue
       0.6,
-      "rgb(70, 130, 180)",          // Steel Blue
+      "rgb(70, 130, 180)", // Steel Blue
       0.8,
-      "rgb(0, 102, 204)",           // Royal Blue
+      "rgb(0, 102, 204)", // Royal Blue
       1,
-      "rgb(0, 51, 102)"             // Dark Blue
-    ]
+      "rgb(0, 51, 102)", // Dark Blue
+    ];
 
-    heatmap_weight = ['interpolate',['linear'],['get', outage_type], 10000, 0, 20000, 1]
+    heatmap_weight = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      10000,
+      0,
+      20000,
+      1,
+    ];
   }
 
   // get radio button value to decide if frequency or duration
@@ -650,7 +752,6 @@ function addHeatmapLayer(year, month, outage_type) {
     "watername_ocean"
   );
 
-
   beforeMap.addLayer(
     {
       id: "outage_heatmap",
@@ -659,7 +760,7 @@ function addHeatmapLayer(year, month, outage_type) {
       maxzoom: 21,
       paint: {
         // Increase the heatmap weight based on frequency and property magnitude
-        'heatmap-weight': heatmap_weight,
+        "heatmap-weight": heatmap_weight,
         // Increase the heatmap color weight weight by zoom level
         // heatmap-intensity is a multiplier on top of heatmap-weight
         "heatmap-intensity": {
@@ -691,7 +792,7 @@ function addHeatmapLayer(year, month, outage_type) {
           ],
         },
       },
-      filter: ['!=', ['get', 'time_of_day'], '']
+      filter: ["!=", ["get", "time_of_day"], ""],
     },
     "watername_ocean"
   );
@@ -700,20 +801,20 @@ function addHeatmapLayer(year, month, outage_type) {
 // Function to update the heatmap layer
 function updateHeatmapLayer(year, month, value) {
   let selectedYear = parseInt(year, 10);
-  if(month !='all') {
+  if (month != "all") {
     month = parseInt(month, 10);
   }
   // Remove the existing heatmap layer and source
-  if (beforeMap.getLayer('outage_heatmap')) {
-      beforeMap.removeLayer('outage_heatmap');
+  if (beforeMap.getLayer("outage_heatmap")) {
+    beforeMap.removeLayer("outage_heatmap");
   }
 
-  if (beforeMap.getLayer('outage_point')) {
-    beforeMap.removeLayer('outage_point');
+  if (beforeMap.getLayer("outage_point")) {
+    beforeMap.removeLayer("outage_point");
   }
 
-  if (beforeMap.getSource('outage_loc')) {
-    beforeMap.removeSource('outage_loc');
+  if (beforeMap.getSource("outage_loc")) {
+    beforeMap.removeSource("outage_loc");
   }
 
   addHeatmapLayer(selectedYear, month, value);
@@ -721,10 +822,10 @@ function updateHeatmapLayer(year, month, value) {
 
 // display area information for before map
 function displayAreaInformation() {
-  beforeMap.on('click', 'co_fill', (e) => {
+  beforeMap.on("click", "co_fill", (e) => {
     let featureData = e.features[0].properties;
     console.log(featureData);
-  })
+  });
 }
 
 function updateFilter() {
@@ -732,50 +833,57 @@ function updateFilter() {
   // get selected causation
   let timeOfDay = "all";
   let causationIndex = 0;
-  let timeOfDayInputs = document.getElementsByName('time_of_day');
-  timeOfDayInputs.forEach(function(input) {
-    if(input.checked) {
+  let timeOfDayInputs = document.getElementsByName("time_of_day");
+  timeOfDayInputs.forEach(function (input) {
+    if (input.checked) {
       timeOfDay = input.value;
     }
-  })
+  });
 
-  let causations = document.querySelectorAll('.dropdown-item');
-  let buttonText = document.getElementById('causationButton').innerHTML;
-  causations.forEach(function(causation) {
-    let selectedIndex = parseInt(causation.getAttribute('data-index'));
-    if(buttonText == causation.innerHTML) {
+  let causations = document.querySelectorAll(".dropdown-item");
+  let buttonText = document.getElementById("causationButton").innerHTML;
+  causations.forEach(function (causation) {
+    let selectedIndex = parseInt(causation.getAttribute("data-index"));
+    if (buttonText == causation.innerHTML) {
       causationIndex = selectedIndex;
     }
   });
 
-  let timeOfDayFilter = ['==', ['get', 'time_of_day'], timeOfDay];
-  if(timeOfDay == "all") {
-    timeOfDayFilter = ['!=', ['get', 'time_of_day'], timeOfDay];
+  let timeOfDayFilter = ["==", ["get", "time_of_day"], timeOfDay];
+  if (timeOfDay == "all") {
+    timeOfDayFilter = ["!=", ["get", "time_of_day"], timeOfDay];
   }
 
   let causationFilter;
-  if(causationIndex == 1) {
-    causationFilter = ['!=', ['at', 0, ['array', ['get', 'causation']]], '1']
+  if (causationIndex == 1) {
+    causationFilter = ["!=", ["at", 0, ["array", ["get", "causation"]]], "1"];
   } else {
-    causationFilter = ['==', ['at', causationIndex - 2, ['array', ['get', 'causation']]], '1'];
+    causationFilter = [
+      "==",
+      ["at", causationIndex - 2, ["array", ["get", "causation"]]],
+      "1",
+    ];
   }
 
   // update map filter
   filter = ["all", timeOfDayFilter, causationFilter];
 
-  beforeMap.setFilter('outage_heatmap', filter);
+  beforeMap.setFilter("outage_heatmap", filter);
 }
 
 function displayServicePointInfo() {
-  beforeMap.on('click', 'outage_point', (e) => {
+  beforeMap.on("click", "outage_point", (e) => {
     const coordinates = e.features[0].geometry.coordinates.slice();
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
- 
+
     let duration = e.features[0].properties.duration;
     let timeOfDay = e.features[0].properties.time_of_day;
-    let description = `<strong>Service Point at ${[coordinates[0].toFixed(6), coordinates[1].toFixed(6)]}</strong>
+    let description = `<strong>Service Point at ${[
+      coordinates[0].toFixed(6),
+      coordinates[1].toFixed(6),
+    ]}</strong>
       <p> Duration : ${duration} <br>
           Time of Day: ${timeOfDay}
       </p>`;
@@ -785,13 +893,12 @@ function displayServicePointInfo() {
       .addTo(beforeMap);
   });
 
-
-  beforeMap.on('mouseenter', 'outage_point', () => {
-    beforeMap.getCanvas().style.cursor = 'pointer';
+  beforeMap.on("mouseenter", "outage_point", () => {
+    beforeMap.getCanvas().style.cursor = "pointer";
   });
   // Change it back to a pointer when it leaves.
-  beforeMap.on('mouseleave', 'outage_point', () => {
-    beforeMap.getCanvas().style.cursor = '';
+  beforeMap.on("mouseleave", "outage_point", () => {
+    beforeMap.getCanvas().style.cursor = "";
   });
 }
 
