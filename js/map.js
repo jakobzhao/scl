@@ -60,16 +60,23 @@ beforeMap.on("load", () => {
   );
 
   // Initialize the heatmap layer with the default year
-  addHeatmapLayer(2023, 1, "sum");
+  addHeatmapLayer(2023, "all", "sum");
 
   let yearSlider = document.getElementById('yearSlider');
   let monthSlider = document.getElementById('monthSlider');
   let radioButtons = document.getElementsByName("outage_type");
+  let monthsCheckbox = document.getElementById('all_months');
+  let monthInputs = document.getElementById('monthInputs');
 
     // Add event listeners for slider changes
   yearSlider.addEventListener('input', function() {
     updateYearLabel();
-    updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+    // check if all months or not
+    if(monthsCheckbox.checked) {
+      updateHeatmapLayer(yearSlider.value, "all", "sum");
+    } else {
+      updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+    }
   });
 
   monthSlider.addEventListener('input', function() {
@@ -82,6 +89,20 @@ beforeMap.on("load", () => {
     monthLabel.innerHTML = monthNames[monthSlider.value-1];
     updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
   });
+
+  // show all months
+  monthsCheckbox.addEventListener('change', function() {
+    // if checked, disable the rest, and update year data
+    if(monthsCheckbox.checked) {
+      monthSlider.disabled = true;
+      monthInputs.style.display = "none";
+      updateHeatmapLayer(yearSlider.value, "all", "sum");
+    } else {
+      monthSlider.disabled = false;
+      monthInputs.style.display = "block";
+      updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+    }
+  })
 
   // Add event listeners for radio button changes
   radioButtons.forEach(function(radioButton) {
@@ -112,7 +133,6 @@ beforeMap.on("load", () => {
   causations.forEach(function(causation) {
     causation.addEventListener('click', function() {
       let selectedIndex = parseInt(this.getAttribute('data-index'));
-      console.log(selectedIndex);
       if (selectedIndex != 1) {
         beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex - 2, ['array', ['get', 'causation']]], '1']);
       } else {
@@ -523,10 +543,15 @@ function updateYearLabel() {
 
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
+  let data_path = "data/outage_condensed_" + year + ".geojson";
+  if(month != "all") {
+    data_path = "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson";
+  }
+
   if(!beforeMap.getSource('outage_loc')) {
     beforeMap.addSource("outage_loc", {
       type: "geojson",
-      data: "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson",
+      data: data_path,
     });
   }
 
@@ -652,7 +677,9 @@ function addHeatmapLayer(year, month, outage_type) {
 // Function to update the heatmap layer
 function updateHeatmapLayer(year, month, value) {
   let selectedYear = parseInt(year, 10);
-  let selectedMonth = parseInt(month, 10);
+  if(month !='all') {
+    month = parseInt(month, 10);
+  }
   // Remove the existing heatmap layer and source
   if (beforeMap.getLayer('outage_heatmap')) {
       beforeMap.removeLayer('outage_heatmap');
@@ -666,7 +693,7 @@ function updateHeatmapLayer(year, month, value) {
     beforeMap.removeSource('outage_loc');
   }
 
-  addHeatmapLayer(selectedYear, selectedMonth, value);
+  addHeatmapLayer(selectedYear, month, value);
 }
 
 // display area information for before map

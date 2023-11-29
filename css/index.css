@@ -233,3 +233,13 @@ body {
   max-height: 200px; /* Set your desired max height */
   overflow-y: auto;
 }
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px; /* Optional: Set a specific height */
+  margin-right: 5px;
+}
+
+#monthInputs {
+  display: none;
+}

@@ -91,11 +91,20 @@
             <h5>Year</h5>
             <label id="yearLabel">2023</label>
             <input id="yearSlider" type="range" min="2022" max="2023" step="1" value="2023" />
+
             <h5>Month</h5>
-            <label id="monthLabel">January</label>
-            <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" />
 
+            <div>
+                <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
+                <label class="form-check-label" for="all_months">
+                  Show all months
+                </label>
+            </div>
 
+            <div id="monthInputs">
+                <label id="monthLabel">January</label>
+                <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" disabled/>
+            </div>
             <h5>Time of Day</h5>
             <div class="d-flex flex-column">
                 <div>
