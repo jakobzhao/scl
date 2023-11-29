@@ -62,6 +62,7 @@ beforeMap.on("load", () => {
       paint: {
         "line-opacity": 0.3,
         "line-color": "black",
+        // "line-width": 2,
       },
     },
     "watername_ocean"
@@ -500,15 +501,19 @@ function beforeMapPlotLine(source) {
     "watername_ocean"
   );
 
-  beforeMap.addLayer({
-    id: "co_line_layer",
-    type: "line",
-    source: source,
-    paint: {
-      "line-opacity": 0.3,
-      "line-color": "black",
+  beforeMap.addLayer(
+    {
+      id: "co_line_layer",
+      type: "line",
+      source: source,
+      paint: {
+        "line-opacity": 0.2,
+        "line-color": "black",
+        "line-width": 1.5,
+      },
     },
-  });
+    "watername_ocean"
+  );
 }
 
 function beforeMapPlotPoint(source) {
@@ -535,7 +540,12 @@ function beforeMapPlotPoint(source) {
     type: "circle",
     source: source,
     paint: {
-      "circle-radius": 8,
+      "circle-radius": 5,
+      //transparency of the circle fill (0-1)
+      //how to set the transparency of the circle fill
+      "circle-opacity": 0.8,
+
+      // "circle-transparency": 0.5,
       "circle-color": [
         "match",
         ["get", "Status"],
