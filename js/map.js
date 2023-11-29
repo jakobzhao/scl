@@ -110,7 +110,12 @@ beforeMap.on("load", () => {
   radioButtons.forEach(function(radioButton) {
     radioButton.addEventListener("change", function() {
         let selectedProperty = this.value;
-        updateHeatmapLayer(yearSlider.value, monthSlider.value, selectedProperty);
+        if(monthsCheckbox.checked) {
+          updateHeatmapLayer(yearSlider.value, "all",  selectedProperty);
+        } else {
+          updateHeatmapLayer(yearSlider.value, monthSlider.value,  selectedProperty);
+        }
+
     });
   });
 
@@ -559,6 +564,9 @@ function addHeatmapLayer(year, month, outage_type) {
     1,
     "rgb(178,24,43)",
   ]
+
+  let heatmap_weight =['interpolate',['linear'],['get', outage_type],0, 0, 100, 1]
+
   if(month != "all") {
     data_path = "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson";
   }
@@ -576,18 +584,20 @@ function addHeatmapLayer(year, month, outage_type) {
       ["linear"],
       ["heatmap-density"],
       0,
-      "rgba(255, 255, 178, 0)",   // Light Yellow
+      "rgba(255, 255, 255, 0)",    // White
       0.2,
-      "rgb(254, 204, 92)",        // Yellow
+      "rgb(173, 216, 230)",         // Light Blue
       0.4,
-      "rgb(253, 141, 60)",        // Orange
+      "rgb(135, 206, 250)",         // Sky Blue
       0.6,
-      "rgb(240, 59, 32)",         // Red-Orange
+      "rgb(70, 130, 180)",          // Steel Blue
       0.8,
-      "rgb(189, 0, 38)",          // Dark Red
+      "rgb(0, 102, 204)",           // Royal Blue
       1,
-      "rgb(128, 0, 38)"           // Maroon
+      "rgb(0, 51, 102)"             // Dark Blue
     ]
+
+    heatmap_weight = ['interpolate',['linear'],['get', outage_type], 10000, 0, 20000, 1]
   }
 
   // get radio button value to decide if frequency or duration
@@ -649,13 +659,7 @@ function addHeatmapLayer(year, month, outage_type) {
       maxzoom: 21,
       paint: {
         // Increase the heatmap weight based on frequency and property magnitude
-        'heatmap-weight': [
-          'interpolate',
-          ['linear'],
-          ['get', outage_type],
-          0, 0,
-          100, 1
-        ],
+        'heatmap-weight': heatmap_weight,
         // Increase the heatmap color weight weight by zoom level
         // heatmap-intensity is a multiplier on top of heatmap-weight
         "heatmap-intensity": {
