@@ -94,28 +94,31 @@
             <h5>Month</h5>
             <label id="monthLabel">January</label>
             <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" />
-            <!-- <h5>Hour</h5>
-            <label id="month">12pm</label>
-            <input id="slider" type="range" min="2017" max="2023" step="1" value="0" /> -->
+
+
             <h5>Time of Day</h5>
-
-            <p>
-                <input type="radio" id="one" name="first_item" value="1" checked />
-                <label for="one">Morning</label>
-
-
-                <input type="radio" id="one" name="first_item" value="1" />
-                <label for="one">Afternoon</label>
-            </p>
-            <p>
-                <input type="radio" id="one" name="first_item" value="1" />
-                <label for="one">Evening</label>
-
-                <input type="radio" id="one" name="first_item" value="1" />
-                <label for="one">Night</label>
-            </p>
-
-
+            <div class="d-flex flex-column">
+                <div>
+                    <input type="radio" id="one" name="time_of_day" value="all" checked />
+                    <label for="one">All</label>
+                </div>
+                <div>
+                    <input type="radio" id="morning" name="time_of_day" value="Morning"  />
+                    <label for="morning">Morning</label>
+                </div>
+                <div>
+                    <input type="radio" id="afternoon" name="time_of_day" value="Afternoon"  />
+                    <label for="afternoon">Afternoon</label>
+                </div>
+                <div>
+                    <input type="radio" id="evening" name="time_of_day" value="Evening" />
+                    <label for="evening">Evening</label>
+                </div>
+                <div>
+                    <input type="radio" id="night" name="time_of_day" value="Night" />
+                    <label for="night">Night</label>
+                </div>
+            </div>
         </div>
 
         <div class="map-overlay-inner">

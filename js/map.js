@@ -87,37 +87,51 @@ beforeMap.on("load", () => {
     });
   });
 
+  // get time=_of_day
+  let timeOfDayButtons = document.getElementsByName('time_of_day');
+  timeOfDayButtons.forEach(function(button) {
+    button.addEventListener('change', function() {
+      if(this.value == "all") {
+        beforeMap.setFilter('outage_heatmap', ['!=', ['get', 'time_of_day'], this.value]);
+      } else {
+        beforeMap.setFilter('outage_heatmap', ['==', ['get', 'time_of_day'], this.value]);
+      }
+    })
+  })
 
-    // get causation
-    let causations = document.querySelectorAll('.dropdown-item');
-    causations.forEach(function(causation) {
-      causation.addEventListener('click', function() {
-        let selectedCausation = this.textContent;
-        let selectedIndex = this.getAttribute('data-index');
-        let featureData = beforeMap.querySourceFeatures("outage_loc");
-        const geojsonData = {
-          type: "FeatureCollection",
-          features: [],
+
+
+
+  // get causation
+  let causations = document.querySelectorAll('.dropdown-item');
+  causations.forEach(function(causation) {
+    causation.addEventListener('click', function() {
+      let selectedCausation = this.textContent;
+      let selectedIndex = this.getAttribute('data-index');
+      let featureData = beforeMap.querySourceFeatures("outage_loc");
+      const geojsonData = {
+        type: "FeatureCollection",
+        features: [],
+      };
+      featureData.forEach(function(feature) {
+        let stringArray = feature.properties.causation;
+        let validJsonString = stringArray.replace(/^"|"$/g, '');
+        let parsedArray = JSON.parse('[' + validJsonString + ']');
+        const feature_point = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [feature.properties.lon, feature.properties.lat], // Random coordinates
+          },
+          properties: {
+            cause: selectedCausation,
+            causeCount: parseInt(parsedArray[0][selectedIndex])
+          },
         };
-        featureData.forEach(function(feature) {
-          let stringArray = feature.properties.causation;
-          let validJsonString = stringArray.replace(/^"|"$/g, '');
-          let parsedArray = JSON.parse('[' + validJsonString + ']');
-          const feature_point = {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: [feature.properties.lon, feature.properties.lat], // Random coordinates
-            },
-            properties: {
-              cause: selectedCausation,
-              causeCount: parseInt(parsedArray[0][selectedIndex])
-            },
-          };
-          geojsonData.features.push(feature_point);
-        })
+        geojsonData.features.push(feature_point);
       })
-    });
+    })
+  });
 
     // outline of city districts
     outlineOptions();
@@ -149,6 +163,7 @@ afterMap.on("load", () => {
     },
     "watername_ocean"
   );
+
 
   // initiate
   let legendLabels = document.querySelectorAll(".legend-row > div");
@@ -366,37 +381,6 @@ function plotMap(source, property, breaks) {
     },
     "watername_ocean"
   );
-  let features = afterMap.queryRenderedFeatures({ layers: ['options_layer'] });
-  var propertyValues = features.map(function (feature) {
-    return feature.properties[property];
-  });
-
-  let histDiv = document.getElementById("histogram-testing");
-  var trace = {
-    x: propertyValues,
-    type: 'histogram',
-    marker: {
-      type: 'gradient', // Use the property values as the basis for the color scale
-      color: [breaks[0][1],breaks[1][1],breaks[2][1],breaks[3][1]], // Choose a predefined color scale or provide your own array
-    },
-    nbinsx: 15, // Set the number of bins
-  };
-
-  var layout = {
-    xaxis: {
-      tickfont: { size: 9 }, // Set the font size for tick labels
-    },
-    yaxis: {
-      tickfont: { size: 9 }, // Set the font size for tick labels
-    },
-    width: 250,
-    height: 150,
-    margin: { l: 30, r: 10, b: 15, t: 20 },
-    plot_bgcolor: 'rgba(0, 0, 0, 0)', // Set the background color of the plot area
-    paper_bgcolor: 'rgba(0, 0, 0, 0)', // Set the background color of the entire chart
-  };
-  var data = [trace];
-  Plotly.newPlot(histDiv, data, layout, {displayModeBar: false});
 }
 
 function beforeMapPlotLine(source) {
@@ -672,6 +656,7 @@ function addHeatmapLayer(year, month, outage_type) {
           ],
         },
       },
+      filter: ['!=', ['get', 'time_of_day'], '']
     },
     "watername_ocean"
   );
