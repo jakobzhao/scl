@@ -136,7 +136,11 @@ beforeMap.on("load", () => {
       if (selectedIndex != 1) {
         beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex - 2, ['array', ['get', 'causation']]], '1']);
       } else {
-        updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+        if(monthsCheckbox.checked) {
+          updateHeatmapLayer(yearSlider.value, "all", "sum");
+        } else {
+          updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+        }
       }
     })
   });
