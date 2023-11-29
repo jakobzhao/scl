@@ -59,9 +59,9 @@
 
         <div class="map-overlay-inner">
             <h5>Outage</h5>
-                <input type="radio" id="frequency" name="outage_type" value="1" checked />
+                <input type="radio" id="frequency" name="outage_type" value="sum" checked />
                 <label for="one">Frequency</label>
-                <input type="radio" id="duration" name="outage_type" value="2" />
+                <input type="radio" id="duration" name="outage_type" value="duration" />
                 <label for="duration">Duration</label>
         </div>
         <div class="map-overlay-inner d-flex flex-column">
@@ -133,9 +133,7 @@
         <div class="map-overlay-inner">
             <h5>Causation</h5>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="causationButton" data-bs-toggle="dropdown" aria-expanded="false">
-                  Select causation
-                </button>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="causationButton" data-bs-toggle="dropdown" aria-expanded="false">All</button>
                 <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="causationButton">
                 </ul>
               </div>

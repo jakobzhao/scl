@@ -73,9 +73,9 @@ beforeMap.on("load", () => {
     updateYearLabel();
     // check if all months or not
     if(monthsCheckbox.checked) {
-      updateHeatmapLayer(yearSlider.value, "all", "sum");
+      updateHeatmapLayer(yearSlider.value, "all", outageType(radioButtons));
     } else {
-      updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+      updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
     }
     // update other filters too
     updateFilter();
@@ -89,7 +89,7 @@ beforeMap.on("load", () => {
 
     let monthLabel = document.getElementById('monthLabel');
     monthLabel.innerHTML = monthNames[monthSlider.value-1];
-    updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+    updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
   });
 
   // show all months
@@ -98,24 +98,19 @@ beforeMap.on("load", () => {
     if(monthsCheckbox.checked) {
       monthSlider.disabled = true;
       monthInputs.style.display = "none";
-      updateHeatmapLayer(yearSlider.value, "all", "sum");
+      updateHeatmapLayer(yearSlider.value, "all", outageType(radioButtons));
     } else {
       monthSlider.disabled = false;
       monthInputs.style.display = "block";
-      updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+      updateHeatmapLayer(yearSlider.value, monthSlider.value, outageType(radioButtons));
     }
-    updateFilter();
   })
 
   // Add event listeners for radio button changes
   radioButtons.forEach(function(radioButton) {
     radioButton.addEventListener("change", function() {
         let selectedProperty = this.value;
-        if(selectedProperty == 1) {
-          updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
-        } else {
-          updateHeatmapLayer(yearSlider.value, monthSlider.value, "duration");
-        }
+        updateHeatmapLayer(yearSlider.value, monthSlider.value, selectedProperty);
     });
   });
 
@@ -550,6 +545,20 @@ function updateYearLabel() {
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
+  let heatmap_ramp =  ["interpolate",["linear"],["heatmap-density"],
+    0,
+    "rgba(33,102,172,0)",
+    0.2,
+    "rgb(103,169,207)",
+    0.4,
+    "rgb(209,229,240)",
+    0.6,
+    "rgb(253,219,199)",
+    0.8,
+    "rgb(239,138,98)",
+    1,
+    "rgb(178,24,43)",
+  ]
   if(month != "all") {
     data_path = "data/year_month_data/outage_condensed_" + year + "_" + month + ".geojson";
   }
@@ -559,6 +568,26 @@ function addHeatmapLayer(year, month, outage_type) {
       type: "geojson",
       data: data_path,
     });
+  }
+
+  if(outage_type == "duration") {
+    heatmap_ramp =  [
+      "interpolate",
+      ["linear"],
+      ["heatmap-density"],
+      0,
+      "rgba(255, 255, 178, 0)",   // Light Yellow
+      0.2,
+      "rgb(254, 204, 92)",        // Yellow
+      0.4,
+      "rgb(253, 141, 60)",        // Orange
+      0.6,
+      "rgb(240, 59, 32)",         // Red-Orange
+      0.8,
+      "rgb(189, 0, 38)",          // Dark Red
+      1,
+      "rgb(128, 0, 38)"           // Maroon
+    ]
   }
 
   // get radio button value to decide if frequency or duration
@@ -598,7 +627,7 @@ function addHeatmapLayer(year, month, outage_type) {
         ],
         "circle-stroke-color": "white",
         "circle-stroke-width": 1,
-        "circle-stroke-opacity": 0.3,
+        "circle-stroke-opacity": 0.5,
         // Transition from heatmap to circle layer by zoom level
         "circle-opacity": {
           stops: [
@@ -638,23 +667,7 @@ function addHeatmapLayer(year, month, outage_type) {
         // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
         // Begin color ramp at 0-stop with a 0-transparancy color
         // to create a blur-like effect.
-        "heatmap-color": [
-          "interpolate",
-          ["linear"],
-          ["heatmap-density"],
-          0,
-          "rgba(33,102,172,0)",
-          0.2,
-          "rgb(103,169,207)",
-          0.4,
-          "rgb(209,229,240)",
-          0.6,
-          "rgb(253,219,199)",
-          0.8,
-          "rgb(239,138,98)",
-          1,
-          "rgb(178,24,43)",
-        ],
+        "heatmap-color": heatmap_ramp,
         // Adjust the heatmap radius by zoom level
         "heatmap-radius": {
           stops: [
@@ -736,9 +749,11 @@ function updateFilter() {
     timeOfDayFilter = ['!=', ['get', 'time_of_day'], timeOfDay];
   }
 
-  let causationFilter = ['==', ['at', causationIndex - 2, ['array', ['get', 'causation']]], '1'];
+  let causationFilter;
   if(causationIndex == 1) {
     causationFilter = ['!=', ['at', 0, ['array', ['get', 'causation']]], '1']
+  } else {
+    causationFilter = ['==', ['at', causationIndex - 2, ['array', ['get', 'causation']]], '1'];
   }
 
   // update map filter
@@ -753,14 +768,13 @@ function displayServicePointInfo() {
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
     }
-    
+ 
     let duration = e.features[0].properties.duration;
     let timeOfDay = e.features[0].properties.time_of_day;
     let description = `<strong>Service Point at ${[coordinates[0].toFixed(6), coordinates[1].toFixed(6)]}</strong>
       <p> Duration : ${duration} <br>
           Time of Day: ${timeOfDay}
       </p>`;
-        
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
@@ -775,5 +789,13 @@ function displayServicePointInfo() {
   beforeMap.on('mouseleave', 'outage_point', () => {
     beforeMap.getCanvas().style.cursor = '';
   });
+}
 
+function outageType(radioButtons) {
+  for (let i = 0; i < radioButtons.length; i++) {
+    if (radioButtons[i].checked) {
+      return radioButtons[i].value;
+    }
+  }
+  return null;
 }
