@@ -77,6 +77,8 @@ beforeMap.on("load", () => {
     } else {
       updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
     }
+    // update other filters too
+    updateFilter();
   });
 
   monthSlider.addEventListener('input', function() {
@@ -136,11 +138,7 @@ beforeMap.on("load", () => {
       if (selectedIndex != 1) {
         beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex - 2, ['array', ['get', 'causation']]], '1']);
       } else {
-        if(monthsCheckbox.checked) {
-          updateHeatmapLayer(yearSlider.value, "all", "sum");
-        } else {
-          updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
-        }
+        beforeMap.setFilter('outage_heatmap', ['!=', ['at', 0, ['array', ['get', 'causation']]], '1']);
       }
     })
   });
@@ -152,7 +150,7 @@ beforeMap.on("load", () => {
     displayAreaInformation();
 
     beforeMap.moveLayer('co_line_layer', 'outage_heatmap');
-  });
+});
 
 
 // map containing equity matrix and all other data
@@ -706,4 +704,41 @@ function displayAreaInformation() {
     let featureData = e.features[0].properties;
     console.log(featureData);
   })
+}
+
+function updateFilter() {
+  // get selected time of day
+  // get selected causation
+  let timeOfDay = "all";
+  let causationIndex = 0;
+  let timeOfDayInputs = document.getElementsByName('time_of_day');
+  timeOfDayInputs.forEach(function(input) {
+    if(input.checked) {
+      timeOfDay = input.value;
+    }
+  })
+
+  let causations = document.querySelectorAll('.dropdown-item');
+  let buttonText = document.getElementById('causationButton').innerHTML;
+  causations.forEach(function(causation) {
+    let selectedIndex = parseInt(causation.getAttribute('data-index'));
+    if(buttonText == causation.innerHTML) {
+      causationIndex = selectedIndex;
+    }
+  });
+
+  let timeOfDayFilter = ['==', ['get', 'time_of_day'], timeOfDay];
+  if(timeOfDay == "all") {
+    timeOfDayFilter = ['!=', ['get', 'time_of_day'], timeOfDay];
+  }
+
+  let causationFilter = ['==', ['at', causationIndex - 2, ['array', ['get', 'causation']]], '1'];
+  if(causationIndex == 1) {
+    causationFilter = ['!=', ['at', 0, ['array', ['get', 'causation']]], '1']
+  }
+
+  // update map filter
+  filter = ["all", timeOfDayFilter, causationFilter];
+
+  beforeMap.setFilter('outage_heatmap', filter);
 }

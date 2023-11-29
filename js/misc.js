@@ -39,6 +39,6 @@ let dropdownValues = [
   // Update the button text when a dropdown item is clicked
   dropdownMenu.addEventListener('click', function(event) {
     if (event.target.classList.contains('dropdown-item')) {
-      document.getElementById('dropdownMenuButton1').textContent = event.target.textContent;
+      document.getElementById('causationButton').textContent = event.target.textContent;
     }
   });
