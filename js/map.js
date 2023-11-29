@@ -99,37 +99,33 @@ beforeMap.on("load", () => {
     })
   })
 
-
-
-
   // get causation
   let causations = document.querySelectorAll('.dropdown-item');
   causations.forEach(function(causation) {
     causation.addEventListener('click', function() {
       let selectedCausation = this.textContent;
-      let selectedIndex = this.getAttribute('data-index');
+      let selectedIndex = parseInt(this.getAttribute('data-index'));
       let featureData = beforeMap.querySourceFeatures("outage_loc");
-      const geojsonData = {
-        type: "FeatureCollection",
-        features: [],
-      };
-      featureData.forEach(function(feature) {
-        let stringArray = feature.properties.causation;
-        let validJsonString = stringArray.replace(/^"|"$/g, '');
-        let parsedArray = JSON.parse('[' + validJsonString + ']');
-        const feature_point = {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [feature.properties.lon, feature.properties.lat], // Random coordinates
-          },
-          properties: {
-            cause: selectedCausation,
-            causeCount: parseInt(parsedArray[0][selectedIndex])
-          },
-        };
-        geojsonData.features.push(feature_point);
-      })
+
+      beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex, ['array', ['get', 'causation']]], '1']);
+      // featureData.forEach(function(feature) {
+      //   let stringArray = feature.properties.causation;
+      //   let validJsonString = stringArray.replace(/^"|"$/g, '');
+      //   let parsedArray = JSON.parse('[' + validJsonString + ']');
+      //   const feature_point = {
+      //     type: "Feature",
+      //     geometry: {
+      //       type: "Point",
+      //       coordinates: [feature.properties.lon, feature.properties.lat], // Random coordinates
+      //     },
+      //     properties: {
+      //       cause: selectedCausation,
+      //       causeCount: parseInt(parsedArray[0][selectedIndex])
+      //     },
+      //   };
+      //   geojsonData.features.push(feature_point);
+      // })
+
     })
   });
 
