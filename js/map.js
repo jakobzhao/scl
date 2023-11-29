@@ -111,7 +111,13 @@ beforeMap.on("load", () => {
   let causations = document.querySelectorAll('.dropdown-item');
   causations.forEach(function(causation) {
     causation.addEventListener('click', function() {
-      beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex, ['array', ['get', 'causation']]], '1']);
+      let selectedIndex = parseInt(this.getAttribute('data-index'));
+      console.log(selectedIndex);
+      if (selectedIndex != 1) {
+        beforeMap.setFilter('outage_heatmap', ['==', ['at', selectedIndex - 2, ['array', ['get', 'causation']]], '1']);
+      } else {
+        updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
+      }
     })
   });
 

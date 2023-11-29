@@ -1,4 +1,5 @@
 let dropdownValues = [
+    'All',
     'Airplane',
     'Balloon',
     'Bird_Animal',
@@ -31,7 +32,7 @@ let dropdownValues = [
   // Populate the dropdown menu with values
   dropdownValues.forEach(function(value, index) {
     var listItem = document.createElement('li');
-    listItem.innerHTML = '<a class="dropdown-item" href="#" data-index="' + index + '">' + value + '</a>';
+    listItem.innerHTML = '<a class="dropdown-item" href="#" data-index="' + (index + 1) + '">' + value + '</a>';
     dropdownMenu.appendChild(listItem);
   });
 
