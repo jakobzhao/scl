@@ -104,6 +104,7 @@ beforeMap.on("load", () => {
       monthInputs.style.display = "block";
       updateHeatmapLayer(yearSlider.value, monthSlider.value, "sum");
     }
+    updateFilter();
   })
 
   // Add event listeners for radio button changes
@@ -148,6 +149,9 @@ beforeMap.on("load", () => {
 
     // add tooltip for cliked feature
     displayAreaInformation();
+
+    // adding popup for cliked point
+    displayServicePointInfo();
 
     beforeMap.moveLayer('co_line_layer', 'outage_heatmap');
 });
@@ -741,4 +745,35 @@ function updateFilter() {
   filter = ["all", timeOfDayFilter, causationFilter];
 
   beforeMap.setFilter('outage_heatmap', filter);
+}
+
+function displayServicePointInfo() {
+  beforeMap.on('click', 'outage_point', (e) => {
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+    
+    let duration = e.features[0].properties.duration;
+    let timeOfDay = e.features[0].properties.time_of_day;
+    let description = `<strong>Service Point at ${[coordinates[0].toFixed(6), coordinates[1].toFixed(6)]}</strong>
+      <p> Duration : ${duration} <br>
+          Time of Day: ${timeOfDay}
+      </p>`;
+        
+    new maplibregl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(beforeMap);
+  });
+
+
+  beforeMap.on('mouseenter', 'outage_point', () => {
+    beforeMap.getCanvas().style.cursor = 'pointer';
+  });
+  // Change it back to a pointer when it leaves.
+  beforeMap.on('mouseleave', 'outage_point', () => {
+    beforeMap.getCanvas().style.cursor = '';
+  });
+
 }
