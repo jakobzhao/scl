@@ -766,9 +766,9 @@ function addHeatmapLayer(year, month, outage_type) {
           600,
           "rgb(178,24,43)",
         ],
-        "circle-stroke-color": "darkgrey",
+        "circle-stroke-color": "darkgray",
         "circle-stroke-width": 1,
-        "circle-stroke-opacity": 0.8,
+        "circle-stroke-opacity": 0.7,
         // Transition from heatmap to circle layer by zoom level
         "circle-opacity": {
           stops: [
@@ -823,7 +823,7 @@ function addHeatmapLayer(year, month, outage_type) {
       },
       filter: ["!=", ["get", "time_of_day"], ""],
     },
-    "watername_ocean"
+    "outage_point"
   );
 }
 
