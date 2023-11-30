@@ -58,14 +58,16 @@
     <div class="map-overlay top">
 
         <div class="map-overlay-inner">
-            <h5>Outage</h5>
-            <input type="radio" id="frequency" name="outage_type" value="sum" checked />
-            <label for="one">Frequency</label>
+            <b>Outage:</b>
+            <div> <input type="radio" id="frequency" name="outage_type" value="sum" checked />
+                <label for="one">frequency</label>
+            </div>
             <input type="radio" id="duration" name="outage_type" value="duration" />
             <label for="duration">Duration</label>
         </div>
         <div class="map-overlay-inner d-flex flex-column">
-            <h5>City Outlines</h5>
+            <!-- <h5>City Outlines</h5> -->
+
             <div>
                 <input type="radio" id="c_tract" name="city_outlines" value="ct" checked />
                 <label for="c_tract">Census Tract</label>
@@ -88,24 +90,27 @@
             </div>
         </div>
         <div class="map-overlay-inner">
-            <h5>Year</h5>
-            <label id="yearLabel">2023</label>
+            <!-- <h5>Year</h5> -->
+            <b>Year:</b> <label id="yearLabel">2023</label>
             <input id="yearSlider" type="range" min="2022" max="2023" step="1" value="2023" />
 
-            <h5>Month</h5>
+            <!-- <h5>Month</h5> -->
+
 
             <div>
-                <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
-                <label class="form-check-label" for="all_months">
-                    All months
+                <b>Month: </b><label class="form-check-label" for="all_months">
+                    all
                 </label>
+                <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
+
             </div>
 
             <div id="monthInputs">
                 <label id="monthLabel">January</label>
                 <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" disabled />
             </div>
-            <h5>Time of Day</h5>
+            <!-- <h5>Time of Day</h5> -->
+            <b>Time of Day</b>
             <div class="d-flex flex-column">
                 <div>
                     <input type="radio" id="one" name="time_of_day" value="all" checked />
@@ -131,10 +136,11 @@
         </div>
 
         <div class="map-overlay-inner">
-            <h5>Causation</h5>
+
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="causationButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">All</button>
+                <b>Causation</b>
+                <button class="dropdown-toggle" type="button" id="causationButton" data-bs-toggle="dropdown"
+                    aria-expanded="false">All</button>
                 <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="causationButton">
                 </ul>
             </div>
@@ -143,9 +149,9 @@
 
     <div class="map-overlay-right top">
         <div id="equity-matrix" class="map-overlay-inner">
-            <h5>Equity Matrix</h5>
+            <!-- <h5>Equity Matrix</h5> -->
             <div>
-                Environment
+                <b> Environment</b>
                 <div>
                     <input type="radio" id="ehd" name="population_category" value="1" checked />
                     <label for="ehd">Environ. Health Disparity</label>
@@ -168,7 +174,7 @@
                 </div>
             </div>
             <div>
-                Socialeconomic
+                <b>Socialeconomic</b>
                 <div>
                     <input type="radio" id="svi" name="population_category" value="6" />
                     <label for="svi">Social Vulnerability</label>
@@ -191,7 +197,7 @@
                 </div>
             </div>
             <div>
-                Health Factors
+                <b>Health Factors</b>
                 <div>
                     <input type="radio" id="pm-2.5" name="population_category" value="11" />
                     <label for="pm-2.5">PM 2.5 in the Air</label>
