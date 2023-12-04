@@ -117,6 +117,8 @@ beforeMap.on("load", () => {
       monthSlider.value,
       outageType(radioButtons)
     );
+
+    updateFilter();
   });
 
   // show all months
@@ -135,6 +137,8 @@ beforeMap.on("load", () => {
         outageType(radioButtons)
       );
     }
+
+    updateFilter();
   });
 
   // Add event listeners for radio button changes
@@ -150,6 +154,8 @@ beforeMap.on("load", () => {
           selectedProperty
         );
       }
+
+      updateFilter();
     });
   });
 
