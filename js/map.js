@@ -141,7 +141,7 @@ beforeMap.on("load", () => {
     updateFilter();
   });
 
-  // Add event listeners for radio button changes
+  // Add event listeners for outage type (feature or duration changes)
   radioButtons.forEach(function (radioButton) {
     radioButton.addEventListener("change", function () {
       let selectedProperty = this.value;
@@ -730,9 +730,9 @@ function addHeatmapLayer(year, month, outage_type) {
       "interpolate",
       ["linear"],
       ["get", outage_type],
-      10000,
+      1000,
       0,
-      20000,
+      5000,
       1,
     ];
   }
@@ -859,7 +859,6 @@ function updateHeatmapLayer(year, month, value) {
 function displayAreaInformation() {
   beforeMap.on("click", "co_fill", (e) => {
     let featureData = e.features[0].properties;
-    console.log(featureData);
   });
 }
 
