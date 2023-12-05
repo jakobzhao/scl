@@ -233,7 +233,6 @@ afterMap.on("load", () => {
   );
 
   // initiate
-  let legendLabels = document.querySelectorAll(".legend-row > div");
   let colorScale = chroma.scale("OrRd").colors(4);
   let legendValues = [10, 9, 6, 1];
   plotMap("svi20_data", "env_health_disparity_rank", [
@@ -242,7 +241,7 @@ afterMap.on("load", () => {
     [9, colorScale[2]],
     [10, colorScale[3]],
   ]);
-  updateLegendValues(legendValues, legendLabels, colorScale);
+  updateLegendValues(legendValues, colorScale);
   justiceOptions();
 });
 
@@ -307,9 +306,9 @@ afterMap.on("click", "options_layer", (e) => {
 // function
 function justiceOptions() {
   let radioButtons = document.getElementsByName("population_category");
-  let legendLabels = document.querySelectorAll(".legend-row > div");
   radioButtons.forEach(function (radioButton) {
     radioButton.addEventListener("change", function () {
+      removeColorLegend();
       let selectedProperty = this.value;
       if (selectedProperty == 1) {
         let colorScale = chroma.scale("OrRd").colors(4);
@@ -320,7 +319,7 @@ function justiceOptions() {
           [10, colorScale[3]],
         ]);
         let legendValues = [10, 9, 6, 1];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 2) {
         let colorScale = chroma.scale("PuBu").colors(4);
         // let features = afterMap.querySourceFeatures('svi20_data');
@@ -336,7 +335,7 @@ function justiceOptions() {
         ]);
 
         let legendValues = ["14K+", "2K", "1K", "50"];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 3) {
         let colorScale = chroma.scale("Oranges").colors(4);
         plotMap("svi20_data", "Proximity.to.hazardous.waste.sites", [
@@ -346,7 +345,7 @@ function justiceOptions() {
           [25, colorScale[3]],
         ]);
         let legendValues = [25, 10, 5, 0.5];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 4) {
         let colorScale = chroma.scale("Greys").colors(4);
         plotMap(
@@ -360,7 +359,7 @@ function justiceOptions() {
           ]
         );
         let legendValues = [0.0145, 0.0048, 0.0035, 0.0024];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 5) {
         let colorScale = chroma.scale("Greens").colors(4);
         plotMap("svi20_data", "housing_transit", [
@@ -370,7 +369,7 @@ function justiceOptions() {
           [1.0, colorScale[3]],
         ]);
         let legendValues = [1.0, 1.0, 0.609, 0.041];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 6) {
         let colorScale = chroma.scale("GnBu").colors(4);
         plotMap("svi20_data", "svi", [
@@ -380,7 +379,7 @@ function justiceOptions() {
           [1.0, colorScale[3]],
         ]);
         let legendValues = [1.0, 1.0, 0.385, 0.007];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 7) {
         let colorScale = chroma.scale("BuPu").colors(4);
         plotMap("svi20_data", "sef_rank", [
@@ -390,7 +389,7 @@ function justiceOptions() {
           [10, colorScale[3]],
         ]);
         let legendValues = ["10", "6", "2", "1"];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 8) {
         let colorScale = chroma.scale("BuGn").colors(4);
         plotMap("svi20_data", "Housing.burden..percent.", [
@@ -400,7 +399,7 @@ function justiceOptions() {
           [100, colorScale[3]],
         ]);
         let legendValues = [100, 30, 20, 5];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 9) {
         let colorScale = chroma.scale("Blues").colors(4);
         plotMap("svi20_data", "Linguistic.isolation..percent.", [
@@ -410,7 +409,7 @@ function justiceOptions() {
           [35, colorScale[3]],
         ]);
         let legendValues = [35.0, 5.0, 1.0, 0.0];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 10) {
         let colorScale = chroma.scale("PuRd").colors(4);
         plotMap("svi20_data", "Percent.Black.or.African.American.alone", [
@@ -420,7 +419,7 @@ function justiceOptions() {
           [0.5, colorScale[3]],
         ]);
         let legendValues = ["0.5", "0.1", "0.01", "0"];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 11) {
         let colorScale = chroma.scale("Purples").colors(4);
         plotMap("svi20_data", "PM2.5.in.the.air", [
@@ -430,7 +429,7 @@ function justiceOptions() {
           [7.9, colorScale[3]],
         ]);
         let legendValues = [7.9, 7.8, 7.6, 7.4];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 12) {
         let colorScale = chroma.scale("YlGn").colors(4);
         plotMap("svi20_data", "Diesel.particulate.matter.exposure", [
@@ -440,7 +439,7 @@ function justiceOptions() {
           [1.0, colorScale[3]],
         ]);
         let legendValues = ["1.0", "0.75", "0.5", "0.4"];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 13) {
         let colorScale = chroma.scale("YlOrBr").colors(4);
         plotMap("svi20_data", "%_disability", [
@@ -450,7 +449,7 @@ function justiceOptions() {
           [30, colorScale[3]],
         ]);
         let legendValues = [30, 10, 7, 4];
-        updateLegendValues(legendValues, legendLabels, colorScale);
+        updateLegendValues(legendValues, colorScale);
       }
     });
   });
@@ -569,19 +568,32 @@ function beforeMapPlotPoint(source) {
   });
 }
 
-function updateLegendValues(rangeArray, legendLabels, colorScale) {
+function updateLegendValues(rangeArray, gradientColors) {
   let length = rangeArray.length;
-  legendLabels.forEach((label, index) => {
-    let span = label.parentElement.querySelector("span");
-    span.style.backgroundColor = colorScale[length - 1 - index];
-    let value = rangeArray[index];
-    if (index == length - 1 || index == 0) {
-      label.textContent = value;
-    } else {
-      let prev = rangeArray[index - 1];
-      label.textContent = value + " - " + prev;
-    }
+  let colorsDiv = document.createElement('div');
+  colorsDiv.classList.add('row', 'colors', 'ms-1');
+  colorsDiv.style.background = `linear-gradient(to right, ${gradientColors.join(', ')})`;
+  let labelsDiv = document.createElement('div');
+  labelsDiv.classList.add('labels', 'ms-1');
+  gradientColors.forEach((color, index) => {
+    let labelDiv = document.createElement('div');
+    labelDiv.classList.add('label');
+    labelDiv.textContent = rangeArray[length - index - 1];
+    labelsDiv.appendChild(labelDiv);
   });
+
+  // Insert the color legend below the selected radio button
+  const selectedRadioButton = document.querySelector('input[name="population_category"]:checked');
+  selectedRadioButton.parentNode.appendChild(colorsDiv);
+  selectedRadioButton.parentNode.appendChild(labelsDiv);
+}
+
+// Function to remove color legend
+function removeColorLegend() {
+  let existingColorLegend = document.querySelector('.row.colors');
+  let existingLabelLegend = document.querySelector('.labels');
+  if (existingColorLegend) existingColorLegend.remove();
+  if (existingLabelLegend) existingLabelLegend.remove();
 }
 
 function outlineOptions() {
