@@ -192,14 +192,6 @@ body {
   background-color: #66c2a5;
 }
 
-#state-legend {
-  position: absolute;
-  bottom: 5%;
-  left: 52%;
-  padding: 10px;
-  width: 120px;
-}
-
 .legend {
   background-color: rgba(255, 255, 255, 0.75);
   border-radius: 3px;
@@ -226,12 +218,6 @@ body {
 
 #equity-matrix {
   padding: 10px;
-}
-
-#histogram-testing {
-  position: absolute;
-  bottom: 33%;
-  left: 51%;
 }
 
 .scrollable-dropdown {
