@@ -54,18 +54,20 @@ function toggleOverlay() {
   var currentDisplay = overlay.style.display;
 
   // Toggle the visibility based on the current state
-    overlay.style.display = (currentDisplay === "block") ? "none" : "block";
+  overlay.style.display = (currentDisplay === "block") ? "none" : "block";
 
   // if style is none:
   // update
   if(overlay.style.display == "none") {
     // add a div that contains the env and also the legend
     displaySelectedRadio();
-    // change text or burger
   } else {
     // clear text
     let displayDiv = document.getElementById('displayWhenCollapsed');
     displayDiv.innerHTML = "";
+    // clear bar
+    let colorBar = document.getElementById('cloneColorBar');
+    colorBar.remove();
   }
 
 }
@@ -76,10 +78,13 @@ function displaySelectedRadio() {
   if (selectedRadio) {
     let labelElement = document.querySelector('label[for="' + selectedRadio.id + '"]');
     let labelText = labelElement ? labelElement.innerText : "";
-    
+
+    // get color bar
+    let colorBar = document.getElementById('legend-color-bar');
+    let clone = colorBar.cloneNode(true);
+    clone.id = "cloneColorBar";
     let displayDiv = document.getElementById('displayWhenCollapsed');
     displayDiv.innerHTML = labelText;
-
-
+    displayDiv.after(clone);
   }
 }

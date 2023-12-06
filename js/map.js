@@ -575,6 +575,7 @@ function beforeMapPlotPoint(source) {
 function updateLegendValues(rangeArray, gradientColors) {
   let length = rangeArray.length;
   let colorsDiv = document.createElement('div');
+  colorsDiv.id = 'legend-color-bar';
   colorsDiv.classList.add('row', 'colors', 'ms-1');
   colorsDiv.style.background = `linear-gradient(to right, ${gradientColors.join(', ')})`;
   let labelsDiv = document.createElement('div');
