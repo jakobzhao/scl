@@ -58,16 +58,17 @@
     <div class="map-overlay top">
 
         <div class="map-overlay-inner">
-            <b>Outage:</b>
+            <!-- <b>Outage:</b> -->
+            <div class="subheadline">Outage:</div>
             <div> <input type="radio" id="frequency" name="outage_type" value="sum" checked />
                 <label for="one">Frequency</label>
             </div>
             <input type="radio" id="duration" name="outage_type" value="duration" />
             <label for="duration">Duration</label>
-        </div>
-        <div class="map-overlay-inner d-flex flex-column">
+        <!-- </div> -->
+        <!-- <div class="map-overlay-inner d-flex flex-column"> -->
             <!-- <h5>City Outlines</h5> -->
-
+            <div class="subheadline">Outlines:</div>
             <div>
                 <input type="radio" id="c_tract" name="city_outlines" value="ct" checked />
                 <label for="c_tract">Census Tract</label>
@@ -88,22 +89,25 @@
                 <input type="radio" id="uas" name="city_outlines" value="uas" />
                 <label for="uas">Underground Area Status</label>
             </div>
-        </div>
-        <div class="map-overlay-inner">
+        <!-- </div>
+        <div class="map-overlay-inner"> -->
             <!-- <h5>Year</h5> -->
-            <b>Year:</b> <label id="yearLabel">2023</label>
+
+            <div class="subheadline">Year:  <label id="yearLabel">2023</label></div> 
             <input id="yearSlider" type="range" min="2022" max="2023" step="1" value="2023" />
 
             <!-- <h5>Month</h5> -->
 
 
             <div>
-                <b>Month: </b>
-                <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
-                <label class="form-check-label" for="all_months">
-                    All
-                </label>
-
+                <div class="subheadline">Month:
+                    <label id="monthAllCheck" class="form-check-label" for="all_months">
+                        All
+                    </label>
+                    <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
+               
+                </div> 
+            
             </div>
 
             <div id="monthInputs">
@@ -122,12 +126,9 @@
                     <option value="Late Night">Late Night</option>
                 </select>
             </div>
-        </div>
-
-        <div class="map-overlay-inner">
-
-            <div class="dropdown">
-                <b>Causation: </b>
+   
+            <div>
+                <div class="subheadline">Causation:</div>
                 <button class="dropdown-toggle" type="button" id="causationButton" data-bs-toggle="dropdown"
                     aria-expanded="false">All</button>
                 <ul class="dropdown-menu scrollable-dropdown" aria-labelledby="causationButton">
@@ -138,7 +139,7 @@
 
     <div class="map-overlay-right top">
         <div class="burger-btn" onclick="toggleOverlay()">☰</div>
-        <div id="displayWhenCollapsed"></div>
+        <!-- <div id="displayWhenCollapsed"></div> -->
         <div id="equity-matrix" class="map-overlay-inner">
             <div>
                 <b> Environment</b>
