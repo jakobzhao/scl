@@ -5,6 +5,7 @@ var beforeMap = new maplibregl.Map({
     [-122.6290395434541, 47.81179323004783],
     [-122.03558975261807, 47.420779676472435],
   ],
+  attributionControl: false
 });
 
 // the bounds for seattle city is [-122.335167, 47.608013], [-122.224433, 47.734145]
