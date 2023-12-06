@@ -71,6 +71,10 @@ body {
 .map-overlay .dropdown-menu {
   font-size: small;
 }
+#causationButton {
+  background-color: #FFFFFF;
+
+}
 
 .timeDay {
   display: flex; /* 2. display flex to the rescue */
