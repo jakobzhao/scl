@@ -17,6 +17,7 @@ var afterMap = new maplibregl.Map({
     [-122.6290395434541, 47.81179323004783],
     [-122.03558975261807, 47.420779676472435],
   ],
+  customAttribution: "Seattle City Light | Locaphilia | University of Washington"
   // center: [-122.335167, 47.608013],
   // zoom: 12,
 });
