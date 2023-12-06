@@ -249,3 +249,8 @@ input[type="checkbox"] {
   display: inline-block;
   text-align: center;
 }
+
+#time_of_day {
+  border: black 2px solid;
+  height: 25px;
+}

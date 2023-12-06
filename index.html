@@ -98,10 +98,11 @@
 
 
             <div>
-                <b>Month: </b><label class="form-check-label" for="all_months">
-                    all
-                </label>
+                <b>Month: </b>
                 <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
+                <label class="form-check-label" for="all_months">
+                    All
+                </label>
 
             </div>
 
@@ -110,32 +111,16 @@
                 <input id="monthSlider" type="range" min="1" max="12" step="1" value="1" disabled />
             </div>
             <!-- <h5>Time of Day</h5> -->
-            <b>Time of Day</b>
-            <div class="d-flex flex-column">
-                <div>
-                    <input type="radio" id="one" name="time_of_day" value="all" checked />
-                    <label for="one">All</label>
-                </div>
-                <div>
-                    <input type="radio" id="morning" name="time_of_day" value="Morning" />
-                    <label for="morning">Morning</label>
-                </div>
-                <div>
-                    <input type="radio" id="afternoon" name="time_of_day" value="Afternoon" />
-                    <label for="afternoon">Afternoon</label>
-                </div>
-                <div>
-                    <input type="radio" id="evening" name="time_of_day" value="Evening" />
-                    <label for="evening">Evening</label>
-                </div>
-                <div>
-                    <input type="radio" id="night" name="time_of_day" value="Night" />
-                    <label for="night">Night</label>
-                </div>
-                <div>
-                    <input type="radio" id="late_night" name="time_of_day" value="Late Night" />
-                    <label for="late_night">Late Night</label>
-                </div>
+            <div>
+                <label for="time_of_day"><b>Time of Day:</b></label>
+                <select id="time_of_day" name="time_of_day">
+                    <option value="all" selected>All</option>
+                    <option value="Morning">Morning</option>
+                    <option value="Afternoon">Afternoon</option>
+                    <option value="Evening">Evening</option>
+                    <option value="Night">Night</option>
+                    <option value="Late Night">Late Night</option>
+                </select>
             </div>
         </div>
 

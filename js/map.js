@@ -255,6 +255,8 @@ afterMap.on("click", "options_layer", (e) => {
   );
 
   let featureData = e.features[0].properties;
+
+  // populate information in div
   document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
   document.getElementById("countyName").textContent =
     featureData["County.Name"];
@@ -786,7 +788,7 @@ function addHeatmapLayer(year, month, outage_type) {
         ],
         "circle-stroke-color": "darkgray",
         "circle-stroke-width": 1,
-        "circle-stroke-opacity": 0.7,
+        "circle-stroke-opacity": 1,
         // Transition from heatmap to circle layer by zoom level
         "circle-opacity": {
           stops: [
@@ -919,6 +921,17 @@ function updateFilter() {
 
 function displayServicePointInfo() {
   beforeMap.on("click", "outage_point", (e) => {
+
+    // check if it is within layer?
+    console.log("coordinates:", e.point);
+    let bbox = [
+      [e.point.x - 20, e.point.y - 20],
+      [e.point.x + 20, e.point.y + 20]
+      ];
+    console.log(beforeMap.queryRenderedFeatures(bbox,
+      {layers: ['co_line_layer']}));
+    // check if coordinates is within layer. if yes, then take the one that is true
+
     const coordinates = e.features[0].geometry.coordinates.slice();
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
