@@ -48,3 +48,38 @@ dropdownMenu.addEventListener("click", function (event) {
       event.target.textContent;
   }
 });
+
+function toggleOverlay() {
+  var overlay = document.getElementById("equity-matrix");
+  var currentDisplay = overlay.style.display;
+
+  // Toggle the visibility based on the current state
+    overlay.style.display = (currentDisplay === "block") ? "none" : "block";
+
+  // if style is none:
+  // update
+  if(overlay.style.display == "none") {
+    // add a div that contains the env and also the legend
+    displaySelectedRadio();
+    // change text or burger
+  } else {
+    // clear text
+    let displayDiv = document.getElementById('displayWhenCollapsed');
+    displayDiv.innerHTML = "";
+  }
+
+}
+
+function displaySelectedRadio() {
+  let radios = document.querySelectorAll('input[name="population_category"]');
+  let selectedRadio = Array.from(radios).find(radio => radio.checked);
+  if (selectedRadio) {
+    let labelElement = document.querySelector('label[for="' + selectedRadio.id + '"]');
+    let labelText = labelElement ? labelElement.innerText : "";
+    
+    let displayDiv = document.getElementById('displayWhenCollapsed');
+    displayDiv.innerHTML = labelText;
+
+
+  }
+}

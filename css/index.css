@@ -254,3 +254,28 @@ input[type="checkbox"] {
   border: black 2px solid;
   height: 25px;
 }
+
+/* Style for the burger button */
+.burger-btn {
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px;
+  text-align: right;
+  transition: font-size 0.2s ease; /* Add a smooth transition effect */
+}
+
+/* Increase font size on hover */
+.burger-btn:hover {
+    font-size: 30px; /* Adjust the font size as needed */
+}
+
+.map-overlay-inner {
+  display: block;
+}
+
+#displayWhenCollapsed {
+  font-size: 25px;
+  font-weight: 200;
+  background: white;
+  opacity: 0.7;
+}
