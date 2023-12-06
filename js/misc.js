@@ -52,10 +52,8 @@ dropdownMenu.addEventListener("click", function (event) {
 function toggleOverlay() {
   var overlay = document.getElementById("equity-matrix");
   var currentDisplay = overlay.style.display;
-
   // Toggle the visibility based on the current state
   overlay.style.display = (currentDisplay === "block") ? "none" : "block";
-
   // if style is none:
   // update
   if(overlay.style.display == "none") {
@@ -67,7 +65,9 @@ function toggleOverlay() {
     displayDiv.innerHTML = "";
     // clear bar
     let colorBar = document.getElementById('cloneColorBar');
-    colorBar.remove();
+    if(colorBar) {
+      colorBar.remove();
+    }
   }
 
 }

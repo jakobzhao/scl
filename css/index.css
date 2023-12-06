@@ -257,6 +257,7 @@ input[type="checkbox"] {
 
 /* Style for the burger button */
 .burger-btn {
+  display: block;
   cursor: pointer;
   font-size: 20px;
   padding: 10px;
