@@ -69,6 +69,27 @@ function toggleOverlay() {
       colorBar.remove();
     }
   }
+  
+
+  var overlay = document.getElementById("tract-info");
+  var currentDisplay = overlay.style.display;
+  // Toggle the visibility based on the current state
+  overlay.style.display = (currentDisplay === "block") ? "none" : "block";
+  // if style is none:
+  // update
+  if(overlay.style.display == "none") {
+    // add a div that contains the env and also the legend
+    displaySelectedRadio();
+  } else {
+    // clear text
+    let displayDiv = document.getElementById('displayWhenCollapsed');
+    displayDiv.innerHTML = "";
+    // clear bar
+    let colorBar = document.getElementById('cloneColorBar');
+    if(colorBar) {
+      colorBar.remove();
+    }
+  }
 
 }
 
