@@ -259,9 +259,9 @@ afterMap.on("click", "options_layer", (e) => {
   let featureData = e.features[0].properties;
 
   // populate information in div
-  document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
-  document.getElementById("countyName").textContent =
-    featureData["County.Name"];
+  document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"].replace("Census Tract", "");
+  // document.getElementById("countyName").textContent =
+  //   featureData["County.Name"];
   document.getElementById("population").textContent =
     featureData["Total.population"];
   document.getElementById("life-expectancy").textContent =
