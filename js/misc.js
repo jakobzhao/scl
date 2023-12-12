@@ -127,9 +127,4 @@ $(".showFrontPage").on("click", function() {
   localStorage.setItem('popState', 'notShown');
 })
 
-
-
-
-
-
-// $('#loader').fadeOut("slow");
+$('#loader').fadeOut("slow");
