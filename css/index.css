@@ -71,6 +71,10 @@ body {
 .map-overlay .dropdown-menu {
   font-size: small;
 }
+#causationButton {
+  background-color: #FFFFFF;
+
+}
 
 .timeDay {
   display: flex; /* 2. display flex to the rescue */
@@ -251,7 +255,7 @@ input[type="checkbox"] {
 }
 
 #time_of_day {
-  border: black 2px solid;
+  /* border: black 2px solid; */
   height: 25px;
 }
 
@@ -275,8 +279,18 @@ input[type="checkbox"] {
 }
 
 #displayWhenCollapsed {
-  font-size: 25px;
+  /* font-size: 25px; */
   font-weight: 200;
   background: white;
   opacity: 0.7;
+  padding: 20px;
 }
+
+.subheadline {
+  font-weight: bold;
+}
+
+#yearLabel, #monthAllCheck {
+  font-weight: normal;
+}
+
