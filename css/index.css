@@ -313,10 +313,10 @@ input[type="checkbox"] {
 /* welcome panel */
 
 .map-window {
-  --bs-modal-bg: rgba(26, 24, 24, 0.75);
+  /* --bs-modal-bg: rgba(26, 24, 24, 0.75);
   --bs-modal-header-border-color: rgba(158, 153, 153, 0.205);
-  --bs-modal-footer-border-color: rgba(158, 153, 153, 0.205);
-  color: #dddddd;
+  --bs-modal-footer-border-color: rgba(158, 153, 153, 0.205); */
+  /* color: #dddddd; */
 }
 
 .map-window-content {
@@ -332,11 +332,11 @@ input[type="checkbox"] {
 /* .map-window-content, */
 .modal-title,
 #nextTimeLabel {
-  color: #dddddd;
+  /* color: #dddddd; */
 }
 
 .modal {
-  background-color: rgba(0, 0, 0, 0.55);
+  /* background-color: rgba(0, 0, 0, 0.55); */
 }
 
 
