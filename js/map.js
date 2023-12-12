@@ -56,6 +56,11 @@ beforeMap.on("load", () => {
     data: "data/ug_status.geojson",
   });
 
+  beforeMap.addSource("svi20_data", {
+    type: "geojson",
+    data: "data/svi_20_seattle_new.geojson",
+  });
+
   beforeMap.addLayer(
     {
       id: "co_line_layer",
@@ -64,11 +69,38 @@ beforeMap.on("load", () => {
       paint: {
         "line-opacity": 0.3,
         "line-color": "black",
-        // "line-width": 2,
       },
     },
     "watername_ocean"
   );
+
+  beforeMap.addLayer(
+    {
+      id: "co_fill",
+      type: "fill",
+      source: "censusTract",
+      paint: {
+        "fill-color": "white",
+        "fill-opacity": 0.7,
+      },
+    },
+    "watername_ocean"
+  );
+
+
+  beforeMap.addLayer(
+    {
+      id: "svi_data",
+      type: "fill",
+      source: "svi20_data",
+      paint: {
+        "fill-color": "white",
+        "fill-opacity": 0.7,
+      },
+    },
+    "watername_ocean"
+  );
+
 
   // Initialize the heatmap layer with the default year
   addHeatmapLayer(2023, "all", "sum");
@@ -211,6 +243,7 @@ beforeMap.on("load", () => {
   // adding popup for cliked point
   displayServicePointInfo();
 
+  // organize layer z-index and which ones go on top of each other
   beforeMap.moveLayer("co_line_layer", "outage_heatmap");
 });
 
@@ -248,6 +281,9 @@ afterMap.on("load", () => {
 });
 
 afterMap.on("click", "options_layer", (e) => {
+  // highlight layer
+  addOutline(afterMap, e.features[0].geometry);
+  addOutline(beforeMap, e.features[0].geometry);
   // enable tooltips
   const tooltipTriggerList = document.querySelectorAll(
     '[data-bs-toggle="tooltip"]'
@@ -257,54 +293,8 @@ afterMap.on("click", "options_layer", (e) => {
   );
 
   let featureData = e.features[0].properties;
+  populateTractInformation(featureData);
 
-  // populate information in div
-  document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
-  document.getElementById("countyName").textContent =
-    featureData["County.Name"];
-  document.getElementById("population").textContent =
-    featureData["Total.population"];
-  document.getElementById("life-expectancy").textContent =
-    featureData["Life.expectancy..years."];
-  document.getElementById("households").textContent = featureData["Households"];
-
-  // Update progress bar also [need to optimize]
-  document.getElementById("a-native-indian").style.width =
-    featureData["Percent.American.Indian...Alaska.Native"] * 100 + "%";
-  document.getElementById("a-native-indian").title =
-    "American Indian/Alaska Native:" +
-    featureData["Percent.American.Indian...Alaska.Native"] * 100 +
-    "%";
-  document.getElementById("a-asian").style.width =
-    featureData["Percent.Asian"] * 100 + "%";
-  document.getElementById("a-asian").title =
-    "Asian: " + featureData["Percent.Asian"] * 100 + "%";
-  document.getElementById("a-black").style.width =
-    featureData["Percent.Black.or.African.American.alone"] * 100 + "%";
-  document.getElementById("a-black").title =
-    "Black/African American: " +
-    featureData["Percent.Black.or.African.American.alone"] * 100 +
-    "%";
-  document.getElementById("a-latino").style.width =
-    featureData["Percent.Hispanic.or.Latino"] * 100 + "%";
-  document.getElementById("a-latino").title =
-    "Hispanic or Latino: " +
-    featureData["Percent.Hispanic.or.Latino"] * 100 +
-    "%";
-  document.getElementById("a-native-pacific").style.width =
-    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 + "%";
-  document.getElementById("a-native-pacific").title =
-    "Native Hawaiian/Pacific Islander: " +
-    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 +
-    "%";
-  document.getElementById("a-white").style.width =
-    featureData["Percent.White"] * 100 + "%";
-  document.getElementById("a-white").title =
-    "White: " + featureData["Percent.White"] * 100 + "%";
-  document.getElementById("a-other").style.width =
-    featureData["Percent.other.races"] * 100 + "%";
-  document.getElementById("a-other").title =
-    "Other: " + featureData["Percent.other.races"] * 100 + "%";
 });
 
 // function
@@ -503,8 +493,8 @@ function beforeMapPlotLine(source) {
       type: "fill",
       source: source,
       paint: {
-        "fill-color": "#ffffff",
-        "fill-opacity": 0,
+        "fill-color": "white",
+        "fill-opacity": 0.7,
       },
     },
     "watername_ocean"
@@ -874,8 +864,12 @@ function updateHeatmapLayer(year, month, value) {
 
 // display area information for before map
 function displayAreaInformation() {
-  beforeMap.on("click", "co_fill", (e) => {
+  beforeMap.on("click", "svi_data", (e) => {
     let featureData = e.features[0].properties;
+    addOutline(beforeMap, e.features[0].geometry);
+    addOutline(afterMap, e.features[0].geometry);
+    // show tract information
+    populateTractInformation(featureData);
   });
 }
 
@@ -971,4 +965,84 @@ function outageType(radioButtons) {
     }
   }
   return null;
+}
+
+function addOutline(map, geometry) {
+  if (map.getLayer("highlighted_layer")) {
+    map.removeLayer("highlighted_layer");
+  }
+
+  // Remove outline from previously highlighted features
+  if (map.getSource("highlighted_source")) {
+    map.removeSource("highlighted_source");
+  }
+
+  map.addSource("highlighted_source", {
+    type: "geojson",
+    data: {
+      type: "Feature",
+      geometry: geometry,
+    },
+  });
+
+  map.addLayer({
+    id: "highlighted_layer",
+    type: "fill",
+    source: "highlighted_source",
+    paint: {
+      "fill-color": "yellow", // Set the highlight fill color
+      "fill-opacity": 0.5,
+      "fill-outline-color": "red", // Set the highlight border color
+    },
+  });
+}
+
+function populateTractInformation(featureData) {
+  // populate information in div
+  document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
+  document.getElementById("countyName").textContent =
+    featureData["County.Name"];
+  document.getElementById("population").textContent =
+    featureData["Total.population"];
+  document.getElementById("life-expectancy").textContent =
+    featureData["Life.expectancy..years."];
+  document.getElementById("households").textContent = featureData["Households"];
+
+  // Update progress bar also [need to optimize]
+  document.getElementById("a-native-indian").style.width =
+    featureData["Percent.American.Indian...Alaska.Native"] * 100 + "%";
+  document.getElementById("a-native-indian").title =
+    "American Indian/Alaska Native:" +
+    featureData["Percent.American.Indian...Alaska.Native"] * 100 +
+    "%";
+  document.getElementById("a-asian").style.width =
+    featureData["Percent.Asian"] * 100 + "%";
+  document.getElementById("a-asian").title =
+    "Asian: " + featureData["Percent.Asian"] * 100 + "%";
+  document.getElementById("a-black").style.width =
+    featureData["Percent.Black.or.African.American.alone"] * 100 + "%";
+  document.getElementById("a-black").title =
+    "Black/African American: " +
+    featureData["Percent.Black.or.African.American.alone"] * 100 +
+    "%";
+  document.getElementById("a-latino").style.width =
+    featureData["Percent.Hispanic.or.Latino"] * 100 + "%";
+  document.getElementById("a-latino").title =
+    "Hispanic or Latino: " +
+    featureData["Percent.Hispanic.or.Latino"] * 100 +
+    "%";
+  document.getElementById("a-native-pacific").style.width =
+    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 + "%";
+  document.getElementById("a-native-pacific").title =
+    "Native Hawaiian/Pacific Islander: " +
+    featureData["Percent.Native.Hawaiian.or.Pacific"] * 100 +
+    "%";
+  document.getElementById("a-white").style.width =
+    featureData["Percent.White"] * 100 + "%";
+  document.getElementById("a-white").title =
+    "White: " + featureData["Percent.White"] * 100 + "%";
+  document.getElementById("a-other").style.width =
+    featureData["Percent.other.races"] * 100 + "%";
+  document.getElementById("a-other").title =
+    "Other: " + featureData["Percent.other.races"] * 100 + "%";
 }
