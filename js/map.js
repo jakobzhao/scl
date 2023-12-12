@@ -203,8 +203,18 @@ beforeMap.on("load", () => {
           ["get", "time_of_day"],
           this.value,
         ]);
+        beforeMap.setFilter("outage_point", [
+          "!=",
+          ["get", "time_of_day"],
+          this.value,
+        ]);
       } else {
         beforeMap.setFilter("outage_heatmap", [
+          "==",
+          ["get", "time_of_day"],
+          this.value,
+        ]);
+        beforeMap.setFilter("outage_point", [
           "==",
           ["get", "time_of_day"],
           this.value,
@@ -224,8 +234,18 @@ beforeMap.on("load", () => {
           ["at", selectedIndex - 2, ["array", ["get", "causation"]]],
           "1",
         ]);
+        beforeMap.setFilter("outage_point", [
+          "==",
+          ["at", selectedIndex - 2, ["array", ["get", "causation"]]],
+          "1",
+        ]);
       } else {
         beforeMap.setFilter("outage_heatmap", [
+          "!=",
+          ["at", 0, ["array", ["get", "causation"]]],
+          "1",
+        ]);
+        beforeMap.setFilter("outage_point", [
           "!=",
           ["at", 0, ["array", ["get", "causation"]]],
           "1",
@@ -696,24 +716,6 @@ function addHeatmapLayer(year, month, outage_type) {
   }
 
   if (outage_type == "duration") {
-    // heatmap_ramp = [
-    //   "interpolate",
-    //   ["linear"],
-    //   ["heatmap-density"],
-    //   0,
-    //   "rgba(255, 255, 255, 0)", // White
-    //   0.2,
-    //   "rgb(173, 216, 230)", // Light Blue
-    //   0.4,
-    //   "rgb(135, 206, 250)", // Sky Blue
-    //   0.6,
-    //   "rgb(70, 130, 180)", // Steel Blue
-    //   0.8,
-    //   "rgb(0, 102, 204)", // Royal Blue
-    //   1,
-    //   "rgb(0, 51, 102)", // Dark Blue
-    // ];
-
     //color can be found from https://colorbrewer2.org/#type=diverging&scheme=PRGn&n=6
     heatmap_ramp = [
       "interpolate",
@@ -790,6 +792,7 @@ function addHeatmapLayer(year, month, outage_type) {
           ],
         },
       },
+      filter: ["!=", ["get", "time_of_day"], ""],
     },
     "watername_ocean"
   );
@@ -914,6 +917,7 @@ function updateFilter() {
   filter = ["all", timeOfDayFilter, causationFilter];
 
   beforeMap.setFilter("outage_heatmap", filter);
+  beforeMap.setFilter("outage_point", filter);
 }
 
 function displayServicePointInfo() {
