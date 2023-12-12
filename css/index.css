@@ -294,3 +294,57 @@ input[type="checkbox"] {
   font-weight: normal;
 }
 
+
+
+/* welcome model and loader */
+
+#loader {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  z-index: 999;
+  background: url("../img/loading.gif") 50% 50% no-repeat white;
+  opacity: 1;
+}
+
+
+/* welcome panel */
+
+.map-window {
+  /* --bs-modal-bg: rgba(26, 24, 24, 0.75);
+  --bs-modal-header-border-color: rgba(158, 153, 153, 0.205);
+  --bs-modal-footer-border-color: rgba(158, 153, 153, 0.205); */
+  /* color: #dddddd; */
+}
+
+.map-window-content {
+  font-size: small;
+}
+
+.map-window-content>img {
+  float: right;
+  width: 200px;
+  margin: 5px
+}
+
+/* .map-window-content, */
+.modal-title,
+#nextTimeLabel {
+  /* color: #dddddd; */
+}
+
+.modal {
+  /* background-color: rgba(0, 0, 0, 0.55); */
+}
+
+
+#nextTimeSwitcher {
+  font-size: medium;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+}

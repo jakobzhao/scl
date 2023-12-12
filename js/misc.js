@@ -89,3 +89,42 @@ function displaySelectedRadio() {
     displayDiv.after(clone);
   }
 }
+
+
+
+
+
+$(window).ready(function() {
+  $('.loader').fadeOut("slow");
+
+
+  $("#nextTimeSwitcher input").on("click", function() {
+    if ($("#nextTimeSwitcher input:checked").val() === "on") {
+      localStorage.setItem('popState', 'shown');
+    } else {
+
+      localStorage.setItem('popState', 'notShown');
+    }
+  })
+
+  if (localStorage.getItem('popState') != 'shown') {
+    console.log("show disclaimer");
+    $('#welcome').modal('show');
+
+  } else {
+    console.log("hide disclaimer");
+    $('#welcome').modal('hide');
+  }
+  $('#welcome-close').click(function(e) // You are clicking the close button
+    {
+      $('#welcome').fadeOut(); // Now the pop up is hiden.
+      $('#welcome').modal('hide');
+    });
+});
+
+$(".showFrontPage").on("click", function() {
+  $('#welcome').modal('show');
+  localStorage.setItem('popState', 'notShown');
+})
+
+$('#loader').fadeOut("slow");
