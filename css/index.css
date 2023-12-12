@@ -1,6 +1,8 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: "Source Sans Pro", sans-serif;
+  /* font-family: 'Barlow Condensed', sans-serif; */
 }
 
 /* .map {
@@ -30,7 +32,7 @@ body {
 }
 
 .map-overlay {
-  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font: 12px/20px "Source Sans Pro", sans-serif;
   position: absolute;
   width: 245px;
   top: 20;
@@ -95,7 +97,7 @@ body {
 }
 
 .map-overlay-right {
-  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font: 12px/20px "Source Sans Pro", sans-serif;
   position: absolute;
   width: 245px;
   top: 20;
@@ -333,6 +335,7 @@ input[type="checkbox"] {
 /* .map-window-content, */
 .modal-title,
 #nextTimeLabel {
+  font-family: 'Barlow Condensed', sans-serif;
   /* color: #dddddd; */
 }
 
