@@ -1000,8 +1000,6 @@ function addOutline(map, geometry) {
 function populateTractInformation(featureData) {
   // populate information in div
   document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
-  document.getElementById("countyName").textContent =
-    featureData["County.Name"];
   document.getElementById("population").textContent =
     featureData["Total.population"];
   document.getElementById("life-expectancy").textContent =
