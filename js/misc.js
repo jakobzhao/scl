@@ -51,6 +51,7 @@ dropdownMenu.addEventListener("click", function (event) {
 
 function toggleOverlay() {
   var overlay = document.getElementById("equity-matrix");
+  let displayDiv = document.getElementById("displayWhenCollapsed");
   var currentDisplay = overlay.style.display;
   // Toggle the visibility based on the current state
   overlay.style.display = currentDisplay === "block" ? "none" : "block";
@@ -58,16 +59,17 @@ function toggleOverlay() {
   // update
   if (overlay.style.display == "none") {
     // add a div that contains the env and also the legend
+    displayDiv.style.display = "block";
     displaySelectedRadio();
   } else {
     // clear text
-    let displayDiv = document.getElementById("displayWhenCollapsed");
     displayDiv.innerHTML = "";
     // clear bar
     let colorBar = document.getElementById("cloneColorBar");
     if (colorBar) {
       colorBar.remove();
     }
+    displayDiv.style.display = "none";
   }
 }
 
