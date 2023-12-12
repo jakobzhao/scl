@@ -361,7 +361,7 @@ function justiceOptions() {
         let legendValues = [25, 10, 5, 0.5];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 4) {
-        let colorScale = chroma.scale("Greys").colors(4);
+        let colorScale = chroma.scale("Reds").colors(4);
         plotMap(
           "svi20_data",
           "Expected.population.loss.rate..Natural.Hazards.Risk.Index.",
@@ -487,8 +487,14 @@ function plotMap(source, property, breaks) {
         "fill-color": {
           property: property,
           stops: breaks,
+          default: 'gray'
         },
-        "fill-opacity": 0.4,
+        "fill-opacity": [
+          'case',
+          ['!=', ['get', property], null],  // If property is not null
+          0.4,                              // Use the default fill-opacity
+          1,                              // If property is null, use a different fill-opacity
+        ]
       },
     },
     "watername_ocean"
