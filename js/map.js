@@ -918,17 +918,21 @@ function updateFilter() {
 
 function displayServicePointInfo() {
   beforeMap.on("click", "outage_point", (e) => {
+    // dropdownValues is the lookup table in misc.js
+    let causationString = e.features[0].properties.causation;
+    let causationIndex = JSON.parse(causationString.replace(/"/g, ''));
 
-    // check if it is within layer?
-    console.log("coordinates:", e.point);
+    const causationCount = causationIndex.reduce((result, value, i) => {
+      if (value !== 0) {
+        result.push(`${dropdownValues[i + 1]}: ${value}`);
+      }
+      return result;
+    }, []).join(', ');
+
     let bbox = [
       [e.point.x - 20, e.point.y - 20],
       [e.point.x + 20, e.point.y + 20]
       ];
-    console.log(beforeMap.queryRenderedFeatures(bbox,
-      {layers: ['co_line_layer']}));
-    // check if coordinates is within layer. if yes, then take the one that is true
-
     const coordinates = e.features[0].geometry.coordinates.slice();
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -936,12 +940,12 @@ function displayServicePointInfo() {
 
     let duration = e.features[0].properties.duration;
     let timeOfDay = e.features[0].properties.time_of_day;
-    let description = `<strong>Service Point at ${[
-      coordinates[0].toFixed(6),
-      coordinates[1].toFixed(6),
-    ]}</strong>
-      <p> Duration : ${duration} <br>
-          Time of Day: ${timeOfDay}
+    let description = `<strong>Service Point</strong>
+      <p>
+          <strong>Causation Count: </strong> <br>
+          ${causationCount} <br>
+          <strong>Duration: </strong>${duration.toLocaleString()} <br>
+          <strong>Time of Day:</strong> ${timeOfDay}
       </p>`;
     new maplibregl.Popup()
       .setLngLat(coordinates)
@@ -1001,10 +1005,10 @@ function populateTractInformation(featureData) {
   // populate information in div
   document.getElementById("c-tract-name").textContent = featureData["NAMELSAD"];
   document.getElementById("population").textContent =
-    featureData["Total.population"];
+    featureData["Total.population"].toLocaleString();
   document.getElementById("life-expectancy").textContent =
     featureData["Life.expectancy..years."];
-  document.getElementById("households").textContent = featureData["Households"];
+  document.getElementById("households").textContent = featureData["Households"].toLocaleString();
 
   // Update progress bar also [need to optimize]
   document.getElementById("a-native-indian").style.width =
