@@ -26,6 +26,10 @@ body {
   float: left;
   border-left: 0.1px solid gray;
 }
+/* 
+#before canvas, #after canvas {
+  cursor: pointer;
+  } */
 
 .maplibregl-ctrl-top-right {
   top: 80px;

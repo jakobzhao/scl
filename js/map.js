@@ -317,6 +317,18 @@ afterMap.on("click", "options_layer", (e) => {
 
 });
 
+afterMap.on('mousemove', 'options_layer', (event) => {
+  afterMap.getCanvas().style.cursor = 'pointer';
+});
+
+afterMap.on('mousemove', 'options_layer', (event) => {
+  afterMap.getCanvas().style.cursor = 'pointer';
+});
+
+afterMap.on('mouseleave', 'options_layer', (event) => {
+  afterMap.getCanvas().style.cursor = '';
+});
+
 // function
 function justiceOptions() {
   let radioButtons = document.getElementsByName("population_category");
