@@ -265,16 +265,29 @@ input[type="checkbox"] {
 /* Style for the burger button */
 .burger-btn {
   display: block;
+  position: absolute;
+  right: 0;
+  margin-right: 0.5em;
   cursor: pointer;
   font-size: 20px;
   padding: 10px;
-  text-align: right;
-  transition: font-size 0.2s ease; /* Add a smooth transition effect */
+  transition: font-size 0.2s ease;
+}
+
+/* Style for left-menu button */
+.left-burger-btn {
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 10px;
+  margin-left: 10em;
+  transition: font-size 0.2s ease;
 }
 
 /* Increase font size on hover */
 .burger-btn:hover {
-  font-size: 30px; /* Adjust the font size as needed */
+  font-size: 25px; /* Adjust the font size as needed */
 }
 
 .map-overlay-inner {

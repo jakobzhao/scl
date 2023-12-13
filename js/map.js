@@ -704,6 +704,7 @@ function updateLegendValues(rangeArray, gradientColors) {
     ", "
   )})`;
   let labelsDiv = document.createElement("div");
+  labelsDiv.id = "label-equity-matrix"
   labelsDiv.classList.add("labels", "ms-1");
   gradientColors.forEach((color, index) => {
     let labelDiv = document.createElement("div");
@@ -738,8 +739,10 @@ function addOutageTypeLegend(gradientColors) {
 
 // Function to remove color legend
 function removeColorLegend() {
-  let existingColorLegend = document.querySelector(".row.colors");
-  let existingLabelLegend = document.querySelector(".labels");
+  let existingColorLegend = document.getElementById("legend-color-bar");
+  let existingLabelLegend = document.getElementById("label-equity-matrix");
+  console.log(existingColorLegend);
+  console.log(existingLabelLegend);
   if (existingColorLegend) existingColorLegend.remove();
   if (existingLabelLegend) existingLabelLegend.remove();
 }

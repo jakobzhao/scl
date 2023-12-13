@@ -56,6 +56,16 @@ function toggleOverlay() {
   overlay.style.display = currentDisplay === "block" ? "none" : "block";
 }
 
+function toggleLeftOverlay() {
+  var overlay = document.getElementById("time-panel");
+  var leftBurgerBtn = document.querySelector(".left-burger-btn");
+  var currentDisplay = overlay.style.display;
+  // Toggle the visibility based on the current state
+  overlay.style.display = currentDisplay === "block" ? "none" : "block";
+  leftBurgerBtn.style.marginLeft = currentDisplay === "block" ? "0" : "10em";
+
+}
+
 function setupLegend(legendId, radioButtonId, legendColorClass) {
   const radioButton = document.getElementById(radioButtonId);
   const legend = document.getElementById(legendId);
