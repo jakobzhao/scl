@@ -56,21 +56,27 @@ function toggleOverlay() {
   overlay.style.display = currentDisplay === "block" ? "none" : "block";
 }
 
-// landuse-legend
-// Get the radio buttons and legend elements
-const landuseRadioButton = document.getElementById("landuse");
-const landuseLegend = document.getElementById("landuse-legend");
+function setupLegend(legendId, radioButtonId, legendColorClass) {
+  const radioButton = document.getElementById(radioButtonId);
+  const legend = document.getElementById(legendId);
 
-const otherRadioButtons = document.querySelectorAll('input[name="city_outlines"]:not(#landuse)');
+  const otherRadioButtons = document.querySelectorAll(`input[name="city_outlines"]:not(#${radioButtonId})`);
 
-landuseRadioButton.addEventListener("change", function() {
-  landuseLegend.style.display = this.checked ? "block" : "none";
-  otherRadioButtons.forEach(radioButton => {
-    radioButton.addEventListener("change", function() {
-      landuseLegend.style.display = "none";
+  radioButton.addEventListener("change", function() {
+    legend.style.display = this.checked ? "block" : "none";
+    otherRadioButtons.forEach(otherRadioButton => {
+      otherRadioButton.addEventListener("change", function() {
+        legend.style.display = "none";
+      });
     });
   });
-});
+}
+
+// Usage for landuse legend
+setupLegend("landuse-legend", "landuse", "landuse-legend-color");
+
+// Usage for uas legend
+setupLegend("uas-legend", "uas", "uas-legend-color");
 
 // window on ready
 $(window).ready(function () {

@@ -389,7 +389,7 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-#landuse-legend {
+#landuse-legend, #uas-legend{
   display: none;
 }
 
