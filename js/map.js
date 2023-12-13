@@ -887,7 +887,7 @@ function addHeatmapLayer(year, month, outage_type) {
           "circle-opacity": {
             stops: [
               [14, 0],
-              [15, 1],
+              [18, 1],
             ],
           },
         },
