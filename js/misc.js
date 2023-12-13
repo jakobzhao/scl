@@ -51,45 +51,9 @@ dropdownMenu.addEventListener("click", function (event) {
 
 function toggleOverlay() {
   var overlay = document.getElementById("equity-matrix");
-  let displayDiv = document.getElementById("displayWhenCollapsed");
   var currentDisplay = overlay.style.display;
   // Toggle the visibility based on the current state
   overlay.style.display = currentDisplay === "block" ? "none" : "block";
-  // if style is none:
-  // update
-  if (overlay.style.display == "none") {
-    // add a div that contains the env and also the legend
-    displayDiv.style.display = "block";
-    displaySelectedRadio();
-  } else {
-    // clear text
-    displayDiv.innerHTML = "";
-    // clear bar
-    let colorBar = document.getElementById("cloneColorBar");
-    if (colorBar) {
-      colorBar.remove();
-    }
-    displayDiv.style.display = "none";
-  }
-}
-
-function displaySelectedRadio() {
-  let radios = document.querySelectorAll('input[name="population_category"]');
-  let selectedRadio = Array.from(radios).find((radio) => radio.checked);
-  if (selectedRadio) {
-    let labelElement = document.querySelector(
-      'label[for="' + selectedRadio.id + '"]'
-    );
-    let labelText = labelElement ? labelElement.innerText : "";
-
-    // get color bar
-    let colorBar = document.getElementById("legend-color-bar");
-    let clone = colorBar.cloneNode(true);
-    clone.id = "cloneColorBar";
-    let displayDiv = document.getElementById("displayWhenCollapsed");
-    displayDiv.innerHTML = labelText;
-    displayDiv.after(clone);
-  }
 }
 
 $(window).ready(function () {
@@ -132,12 +96,53 @@ document.querySelectorAll(".em_factor").forEach((factor) => {
     const offsetY = 20; // Vertical offset
 
     tooltip.style.display = "block";
-    // tooltip.style.left = event.pageX + offsetX + "px";
-    // tooltip.style.top = event.pageY + offsetY + "px";
-    if (event.target.textContent === "Environ. Health Disparity") {
-      tooltip.textContent = "test.";
-    } else {
-      tooltip.textContent = "Your hint or tooltip text here"; // Update based on factor
+    // Get the value from the associated input element
+    let targetContent = document.querySelector(`#${event.target.htmlFor}`).value;
+
+    // Use a switch statement for better readability
+    switch (targetContent) {
+      case "1":
+        tooltip.textContent = "Percentile ranking of disparities in environmental health, such as unequal exposure to hazards, unequal access to resources, and variations of health outcomes.";
+        break;
+      case "2":
+        tooltip.textContent = "Count of vehicles at major roads within 500 meters divided by distance in meters.";
+        break;
+      case "3":
+        tooltip.textContent = "Count of hazardous waste facilities within 5 kilometers.";
+        break;
+      case "4":
+        tooltip.textContent = "Level of risk or vulnerability that a region or area faces regarding various natural hazards.";
+        break;
+      case "5": // transportation insecurity
+        tooltip.textContent = "Percentile ranking for housing type & transportation.";
+        break;
+      case "6": // sociol vulnerability
+        tooltip.textContent = "CDC/ATSDR Social Vulnerability Index, possible scores range from 0 (lowest vulnerability) to 1 (highest vulnerability). Indicates the degree to which a community exhibits certain social conditions, including high poverty, low percentage of vehicle access, or crowded households.";
+        break;
+      case "7": // socioeconomic factor
+        tooltip.textContent = "Ranking of Socioeconomic Factor, which measures educational attainment, poverty, housing tenure, access to broadband, and housing cost burden within a community.";
+        break;
+      case "8":
+        tooltip.textContent = "Percentage of a household’s income that is spent on housing costs (including rent, mortgage, property taxes, and utility bills).";
+        break;
+      case "9":
+        tooltip.textContent = "Share of households where no on over the age of 14 can speak English very well.";
+        break;
+      case "10":
+        tooltip.textContent = "Percent of Black or African American, within the Census Tract, alone.";
+        break;
+      case "11":
+        tooltip.textContent = "Measured in micrograms of particulate matter per cubic meter of air. This is the level of inhalable particles, 2.5 micrometers or smaller. For reference, the general accepted level is 10 micrograms/m³(annual mean), as set by WHO.";
+        break;
+      case "12":
+        tooltip.textContent = "Measures the concentration of tiny particles in the air that come from diesel engine exhaust.";
+        break;
+      case "13":
+        tooltip.textContent = "Percentage disability of census tract.";
+        break;
+      // Add more cases as needed
+      default:
+        tooltip.textContent = "Default tooltip text.";
     }
   });
 
