@@ -1,4 +1,4 @@
-var beforeMap = new maplibregl.Map({
+var leftMap = new maplibregl.Map({
   container: "before",
   style: "data/style.json",
   bounds: [
@@ -10,7 +10,7 @@ var beforeMap = new maplibregl.Map({
 
 // the bounds for seattle city is [-122.335167, 47.608013], [-122.224433, 47.734145]
 
-var afterMap = new maplibregl.Map({
+var rightMap = new maplibregl.Map({
   container: "after",
   style: "data/style.json",
   bounds: [
@@ -21,45 +21,45 @@ var afterMap = new maplibregl.Map({
 });
 
 // Data Sources
-beforeMap.on("load", () => {
+leftMap.on("load", () => {
   // Add a geojson point source.
   // Heatmap layers also work with a vector tile source.
-  beforeMap.addSource("outage_loc", {
+  leftMap.addSource("outage_loc", {
     type: "geojson",
     data: "data/outage_condensed_2023.geojson",
   });
 
-  beforeMap.addSource("censusTract", {
+  leftMap.addSource("censusTract", {
     type: "geojson",
     data: "data/c_tract_2020_seattle.geojson",
   });
 
-  beforeMap.addSource("cc_districts", {
+  leftMap.addSource("cc_districts", {
     type: "geojson",
     data: "data/seattle_city_council_districts.geojson",
   });
 
-  beforeMap.addSource("neighborhoods_outline", {
+  leftMap.addSource("neighborhoods_outline", {
     type: "geojson",
     data: "data/SCL_neighborhood_data.geojson",
   });
 
-  beforeMap.addSource("wireless_priority_area", {
+  leftMap.addSource("wireless_priority_area", {
     type: "geojson",
     data: "data/WirelessPriorityAreas.geojson",
   });
 
-  beforeMap.addSource("ua_status", {
+  leftMap.addSource("ua_status", {
     type: "geojson",
     data: "data/ug_status.geojson",
   });
 
-  beforeMap.addSource("svi20_data", {
+  leftMap.addSource("svi20_data", {
     type: "geojson",
     data: "data/svi_20_seattle_new.geojson",
   });
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "co_line_layer",
       type: "line",
@@ -72,7 +72,7 @@ beforeMap.on("load", () => {
     "watername_ocean"
   );
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "co_fill",
       type: "fill",
@@ -86,7 +86,7 @@ beforeMap.on("load", () => {
   );
 
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "svi_data",
       type: "fill",
@@ -196,23 +196,23 @@ beforeMap.on("load", () => {
   timeOfDayButtons.forEach(function (button) {
     button.addEventListener("change", function () {
       if (this.value == "all") {
-        beforeMap.setFilter("outage_heatmap", [
+        leftMap.setFilter("outage_heatmap", [
           "!=",
           ["get", "time_of_day"],
           this.value,
         ]);
-        beforeMap.setFilter("outage_point", [
+        leftMap.setFilter("outage_point", [
           "!=",
           ["get", "time_of_day"],
           this.value,
         ]);
       } else {
-        beforeMap.setFilter("outage_heatmap", [
+        leftMap.setFilter("outage_heatmap", [
           "==",
           ["get", "time_of_day"],
           this.value,
         ]);
-        beforeMap.setFilter("outage_point", [
+        leftMap.setFilter("outage_point", [
           "==",
           ["get", "time_of_day"],
           this.value,
@@ -227,23 +227,23 @@ beforeMap.on("load", () => {
     causation.addEventListener("click", function () {
       let selectedIndex = parseInt(this.getAttribute("data-index"));
       if (selectedIndex != 1) {
-        beforeMap.setFilter("outage_heatmap", [
+        leftMap.setFilter("outage_heatmap", [
           "==",
           ["at", selectedIndex - 2, ["array", ["get", "causation"]]],
           "1",
         ]);
-        beforeMap.setFilter("outage_point", [
+        leftMap.setFilter("outage_point", [
           "==",
           ["at", selectedIndex - 2, ["array", ["get", "causation"]]],
           "1",
         ]);
       } else {
-        beforeMap.setFilter("outage_heatmap", [
+        leftMap.setFilter("outage_heatmap", [
           "!=",
           ["at", 0, ["array", ["get", "causation"]]],
           "1",
         ]);
-        beforeMap.setFilter("outage_point", [
+        leftMap.setFilter("outage_point", [
           "!=",
           ["at", 0, ["array", ["get", "causation"]]],
           "1",
@@ -262,17 +262,17 @@ beforeMap.on("load", () => {
   displayServicePointInfo();
 
   // organize layer z-index and which ones go on top of each other
-  beforeMap.moveLayer("co_line_layer", "outage_heatmap");
+  leftMap.moveLayer("co_line_layer", "outage_heatmap");
 });
 
 // map containing equity matrix and all other data
-afterMap.on("load", () => {
-  afterMap.addSource("svi20_data", {
+rightMap.on("load", () => {
+  rightMap.addSource("svi20_data", {
     type: "geojson",
     data: "data/svi_20_seattle_new.geojson",
   });
 
-  afterMap.addLayer(
+  rightMap.addLayer(
     {
       id: "svi_lines",
       type: "line",
@@ -298,10 +298,10 @@ afterMap.on("load", () => {
   justiceOptions();
 });
 
-afterMap.on("click", "options_layer", (e) => {
+rightMap.on("click", "options_layer", (e) => {
   // highlight layer
-  addOutline(afterMap, e.features[0].geometry);
-  addOutline(beforeMap, e.features[0].geometry);
+  addOutline(rightMap, e.features[0].geometry);
+  addOutline(leftMap, e.features[0].geometry);
   // enable tooltips
   const tooltipTriggerList = document.querySelectorAll(
     '[data-bs-toggle="tooltip"]'
@@ -315,23 +315,23 @@ afterMap.on("click", "options_layer", (e) => {
 
 });
 
-afterMap.on('mousemove', 'options_layer', (event) => {
-  afterMap.getCanvas().style.cursor = 'pointer';
+rightMap.on('mousemove', 'options_layer', (event) => {
+  rightMap.getCanvas().style.cursor = 'pointer';
 });
 
 
-afterMap.on('mouseleave', 'options_layer', (event) => {
-  afterMap.getCanvas().style.cursor = '';
+rightMap.on('mouseleave', 'options_layer', (event) => {
+  rightMap.getCanvas().style.cursor = '';
 });
 
 
-beforeMap.on('mousemove', 'outage_point', (event) => {
-  beforeMap.getCanvas().style.cursor = 'pointer';
+leftMap.on('mousemove', 'outage_point', (event) => {
+  leftMap.getCanvas().style.cursor = 'pointer';
 });
 
 
-beforeMap.on('mouseleave', 'outage_point', (event) => {
-  beforeMap.getCanvas().style.cursor = '';
+leftMap.on('mouseleave', 'outage_point', (event) => {
+  leftMap.getCanvas().style.cursor = '';
 });
 
 
@@ -356,7 +356,7 @@ function justiceOptions() {
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 2) {
         let colorScale = chroma.scale("PuBu").colors(4);
-        // let features = afterMap.querySourceFeatures('svi20_data');
+        // let features = rightMap.querySourceFeatures('svi20_data');
         // var propertyValues = features.map(function (feature) {
         //   return feature.properties["Traffic.proximity.and.volume"];
         // });
@@ -490,15 +490,15 @@ function justiceOptions() {
 }
 
 function plotMap(source, property, breaks) {
-  if (!(source in afterMap.style.sourceCaches)) {
+  if (!(source in rightMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if (afterMap.getLayer("options_layer")) {
-    afterMap.removeLayer("options_layer");
+  if (rightMap.getLayer("options_layer")) {
+    rightMap.removeLayer("options_layer");
   }
 
   // Add following layer with indicated source & property
-  afterMap.addLayer(
+  rightMap.addLayer(
     {
       id: "options_layer",
       type: "fill",
@@ -521,19 +521,19 @@ function plotMap(source, property, breaks) {
   );
 }
 
-function beforeMapPlotLine(source) {
-  if (!(source in beforeMap.style.sourceCaches)) {
+function leftMapPlotLine(source) {
+  if (!(source in leftMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if (beforeMap.getLayer("co_line_layer")) {
-    beforeMap.removeLayer("co_line_layer");
+  if (leftMap.getLayer("co_line_layer")) {
+    leftMap.removeLayer("co_line_layer");
   }
 
-  if (beforeMap.getLayer("co_fill")) {
-    beforeMap.removeLayer("co_fill");
+  if (leftMap.getLayer("co_fill")) {
+    leftMap.removeLayer("co_fill");
   }
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "co_fill",
       type: "fill",
@@ -546,7 +546,7 @@ function beforeMapPlotLine(source) {
     "watername_ocean"
   );
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "co_line_layer",
       type: "line",
@@ -561,16 +561,16 @@ function beforeMapPlotLine(source) {
   );
 }
 
-function beforeMapPlotPoint(source) {
-  if (!(source in beforeMap.style.sourceCaches)) {
+function leftMapPlotPoint(source) {
+  if (!(source in leftMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
-  if (beforeMap.getLayer("co_line_layer")) {
-    beforeMap.removeLayer("co_line_layer");
+  if (leftMap.getLayer("co_line_layer")) {
+    leftMap.removeLayer("co_line_layer");
   }
 
-  if (beforeMap.getLayer("co_fill")) {
-    beforeMap.removeLayer("co_fill");
+  if (leftMap.getLayer("co_fill")) {
+    leftMap.removeLayer("co_fill");
   }
 
   let statusColorScale = {
@@ -580,7 +580,7 @@ function beforeMapPlotPoint(source) {
     "Low Priority": "#3399ff", // Blue
   };
 
-  beforeMap.addLayer({
+  leftMap.addLayer({
     id: "co_line_layer",
     type: "circle",
     source: source,
@@ -643,29 +643,29 @@ function outlineOptions() {
     radioButton.addEventListener("change", function () {
       let selectedProperty = this.value;
       if (selectedProperty == "cc") {
-        beforeMapPlotLine("cc_districts");
+        leftMapPlotLine("cc_districts");
       } else if (selectedProperty == "nh") {
-        beforeMapPlotLine("neighborhoods_outline");
+        leftMapPlotLine("neighborhoods_outline");
       } else if (selectedProperty == "ct") {
-        beforeMapPlotLine("censusTract");
+        leftMapPlotLine("censusTract");
       } else if (selectedProperty == "wpa") {
-        beforeMapPlotLine("wireless_priority_area");
+        leftMapPlotLine("wireless_priority_area");
       } else if (selectedProperty == "uas") {
-        beforeMapPlotPoint("ua_status");
+        leftMapPlotPoint("ua_status");
       }
     });
   });
 }
 
 // Synchronize map movements from map1 to map2
-afterMap.on("moveend", function () {
-  var center1 = afterMap.getCenter();
-  var zoom1 = afterMap.getZoom();
-  var bearing1 = afterMap.getBearing();
-  var pitch1 = afterMap.getPitch();
+rightMap.on("moveend", function () {
+  var center1 = rightMap.getCenter();
+  var zoom1 = rightMap.getZoom();
+  var bearing1 = rightMap.getBearing();
+  var pitch1 = rightMap.getPitch();
 
   try{
-  beforeMap.jumpTo({
+  leftMap.jumpTo({
     center: center1,
     zoom: zoom1,
     bearing: bearing1,
@@ -678,14 +678,14 @@ afterMap.on("moveend", function () {
 });
 
 // Synchronize map movements from map2 to map1
-beforeMap.on("moveend", function () {
-  var center2 = beforeMap.getCenter();
-  var zoom2 = beforeMap.getZoom();
-  var bearing2 = beforeMap.getBearing();
-  var pitch2 = beforeMap.getPitch();
+leftMap.on("moveend", function () {
+  var center2 = leftMap.getCenter();
+  var zoom2 = leftMap.getZoom();
+  var bearing2 = leftMap.getBearing();
+  var pitch2 = leftMap.getPitch();
 
   try {
-  afterMap.jumpTo({
+  rightMap.jumpTo({
     center: center2,
     zoom: zoom2,
     bearing: bearing2,
@@ -742,8 +742,8 @@ function addHeatmapLayer(year, month, outage_type) {
       ".geojson";
   }
 
-  if (!beforeMap.getSource("outage_loc")) {
-    beforeMap.addSource("outage_loc", {
+  if (!leftMap.getSource("outage_loc")) {
+    leftMap.addSource("outage_loc", {
       type: "geojson",
       data: data_path,
     });
@@ -781,7 +781,7 @@ function addHeatmapLayer(year, month, outage_type) {
   }
 
   // get radio button value to decide if frequency or duration
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "outage_point",
       type: "circle",
@@ -831,7 +831,7 @@ function addHeatmapLayer(year, month, outage_type) {
     "watername_ocean"
   );
 
-  beforeMap.addLayer(
+  leftMap.addLayer(
     {
       id: "outage_heatmap",
       type: "heatmap",
@@ -884,16 +884,16 @@ function updateHeatmapLayer(year, month, value) {
     month = parseInt(month, 10);
   }
   // Remove the existing heatmap layer and source
-  if (beforeMap.getLayer("outage_heatmap")) {
-    beforeMap.removeLayer("outage_heatmap");
+  if (leftMap.getLayer("outage_heatmap")) {
+    leftMap.removeLayer("outage_heatmap");
   }
 
-  if (beforeMap.getLayer("outage_point")) {
-    beforeMap.removeLayer("outage_point");
+  if (leftMap.getLayer("outage_point")) {
+    leftMap.removeLayer("outage_point");
   }
 
-  if (beforeMap.getSource("outage_loc")) {
-    beforeMap.removeSource("outage_loc");
+  if (leftMap.getSource("outage_loc")) {
+    leftMap.removeSource("outage_loc");
   }
 
   addHeatmapLayer(selectedYear, month, value);
@@ -901,10 +901,10 @@ function updateHeatmapLayer(year, month, value) {
 
 // display area information for before map
 function displayAreaInformation() {
-  beforeMap.on("click", "svi_data", (e) => {
+  leftMap.on("click", "svi_data", (e) => {
     let featureData = e.features[0].properties;
-    addOutline(beforeMap, e.features[0].geometry);
-    addOutline(afterMap, e.features[0].geometry);
+    addOutline(leftMap, e.features[0].geometry);
+    addOutline(rightMap, e.features[0].geometry);
     // show tract information
     populateTractInformation(featureData);
   });
@@ -950,12 +950,12 @@ function updateFilter() {
   // update map filter
   filter = ["all", timeOfDayFilter, causationFilter];
 
-  beforeMap.setFilter("outage_heatmap", filter);
-  beforeMap.setFilter("outage_point", filter);
+  leftMap.setFilter("outage_heatmap", filter);
+  leftMap.setFilter("outage_point", filter);
 }
 
 function displayServicePointInfo() {
-  beforeMap.on("click", "outage_point", (e) => {
+  leftMap.on("click", "outage_point", (e) => {
     // dropdownValues is the lookup table in misc.js
     let causationString = e.features[0].properties.causation;
     let causationIndex = JSON.parse(causationString.replace(/"/g, ''));
@@ -988,15 +988,15 @@ function displayServicePointInfo() {
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
-      .addTo(beforeMap);
+      .addTo(leftMap);
   });
 
-  beforeMap.on("mouseenter", "outage_point", () => {
-    beforeMap.getCanvas().style.cursor = "pointer";
+  leftMap.on("mouseenter", "outage_point", () => {
+    leftMap.getCanvas().style.cursor = "pointer";
   });
   // Change it back to a pointer when it leaves.
-  beforeMap.on("mouseleave", "outage_point", () => {
-    beforeMap.getCanvas().style.cursor = "";
+  leftMap.on("mouseleave", "outage_point", () => {
+    leftMap.getCanvas().style.cursor = "";
   });
 }
 
