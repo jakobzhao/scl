@@ -226,6 +226,11 @@ body {
   display: flex;
 }
 
+.labels{
+  margin-top: -6px;
+  margin-bottom: -4px;
+}
+
 #equity-matrix {
   padding: 10px;
 }
