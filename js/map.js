@@ -108,6 +108,19 @@ leftMap.on("load", () => {
 
   // Initialize the heatmap layer with the default year
   addHeatmapLayer(2023, "all", "sum");
+  
+  // Initialized heatmap legend 
+   // heatmap colorscale
+   let colorScale = [
+    "rgb(33, 102, 172)",
+    "rgb(103, 169, 207)",
+    "rgb(209, 229, 240)",
+    "rgb(253, 219, 199)",
+    "rgb(239, 138, 98)",
+    "rgb(178, 24, 43)"
+  ];
+  addOutageTypeLegend(colorScale);
+
 
   let yearSlider = document.getElementById("yearSlider");
   let monthSlider = document.getElementById("monthSlider");
@@ -199,17 +212,6 @@ leftMap.on("load", () => {
       }
       updateFilter();
 
-      // heatmap colorscale
-      let colorScale = [
-        "rgb(33, 102, 172)",
-        "rgb(103, 169, 207)",
-        "rgb(209, 229, 240)",
-        "rgb(253, 219, 199)",
-        "rgb(239, 138, 98)",
-        "rgb(178, 24, 43)"
-      ];
-
-      // default is frequency heatmap color scale
       if(selectedProperty == "duration") {
         colorScale = [
           "#ffffff",
@@ -219,8 +221,17 @@ leftMap.on("load", () => {
           "#f03b20",
           "#bd0026"
         ]
+      } else { // switch back to frequency colorscale
+        colorScale = [
+          "rgb(33, 102, 172)",
+          "rgb(103, 169, 207)",
+          "rgb(209, 229, 240)",
+          "rgb(253, 219, 199)",
+          "rgb(239, 138, 98)",
+          "rgb(178, 24, 43)"
+        ];
       }
-
+      console.log(colorScale);
       // create legend for frequency/duration here
       addOutageTypeLegend(colorScale);
     });
