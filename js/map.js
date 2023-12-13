@@ -828,8 +828,11 @@ function addHeatmapLayer(year, month, outage_type) {
 
     heatmap_intensify = {
       stops: [
-        [11, 1],
-        [15, 3],
+        [11, 1.5],
+        [12, 1.5],
+        [13, 1],
+        [15, 0.8],
+        [25, 0.75],
       ],
     };
     min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 3];
@@ -902,11 +905,21 @@ function addHeatmapLayer(year, month, outage_type) {
       1,
     ];
 
+    // heatmap_intensify = {
+    //   stops: [
+    //     [11, 0.2],
+    //     [13, 0.5],
+    //     [18, 1],
+    //   ],
+    // };
+
     heatmap_intensify = {
       stops: [
-        [11, 0.2],
-        [13, 0.5],
-        [18, 1],
+        [11, 0.1],
+        [12, 0.1],
+        [13, 0.3],
+        [15, 0.7],
+        [25, 0.9],
       ],
     };
 
@@ -992,9 +1005,11 @@ function addHeatmapLayer(year, month, outage_type) {
             [9, 5],
             [11, 8],
             [13, 30],
-            [14, 80],
-            [15, 150],
-            [20, 230],
+            [14, 50],
+            [15, 100],
+            [16, 130],
+            [17, 180],
+            [18, 250],
           ],
         },
         // Transition from heatmap to circle layer by zoom level
