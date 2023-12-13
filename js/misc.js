@@ -104,10 +104,10 @@ $(window).ready(function () {
   });
 
   if (localStorage.getItem("popState") != "shown") {
-    console.log("show disclaimer");
+    console.log("show welcome panel");
     $("#welcome").modal("show");
   } else {
-    console.log("hide disclaimer");
+    console.log("hide welcome panel");
     $("#welcome").modal("hide");
   }
   $("#welcome-close").click(function (

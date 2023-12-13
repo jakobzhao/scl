@@ -52,6 +52,11 @@ leftMap.on("load", () => {
     data: "data/WirelessPriorityAreas.geojson",
   });
 
+  leftMap.addSource("landuse", {
+    type: "geojson",
+    data: "data/landuse_20231209.geojson",
+  });
+
   leftMap.addSource("ua_status", {
     type: "geojson",
     data: "data/ug_status.geojson",
@@ -537,7 +542,7 @@ function leftMapPlotLine(source) {
         "fill-opacity": 0.7,
       },
     },
-    "watername_ocean"
+    "outage_heatmap"
   );
 
   leftMap.addLayer(
@@ -551,7 +556,7 @@ function leftMapPlotLine(source) {
         "line-width": 1.5,
       },
     },
-    "watername_ocean"
+    "outage_heatmap"
   );
 }
 
@@ -650,6 +655,8 @@ function outlineOptions() {
         leftMapPlotLine("wireless_priority_area");
       } else if (selectedProperty == "uas") {
         leftMapPlotPoint("ua_status");
+      } else if (selectedProperty == "lu") {
+        leftMapPlotLine("landuse");
       }
     });
   });
