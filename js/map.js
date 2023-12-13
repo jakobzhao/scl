@@ -1121,12 +1121,16 @@ function displayServicePointInfo() {
     // dropdownValues is the lookup table in misc.js
     let causationString = e.features[0].properties.causation;
     let causationIndex = JSON.parse(causationString.replace(/"/g, ""));
-
+    let causation_desc = "";
+    let causation_count = 0;
     const causationCount = causationIndex
       .reduce((result, value, i) => {
         if (value !== 0) {
-          result.push(`${dropdownValues[i + 1]}: ${value}`);
+          result.push(`<b>${dropdownValues[i + 1]}:</b> ${value}`);
+          causation_desc = dropdownValues[i + 1];
+          causation_count = value;
         }
+
         return result;
       }, [])
       .join(", ");
@@ -1142,13 +1146,12 @@ function displayServicePointInfo() {
 
     let duration = e.features[0].properties.duration;
     let timeOfDay = e.features[0].properties.time_of_day;
-    let description = `<strong>Service Point</strong>
-      <p>
-          <strong>Causation Count: </strong> <br>
-          ${causationCount} <br>
-          <strong>Duration: </strong>${duration.toLocaleString()} <br>
-          <strong>Time of Day:</strong> ${timeOfDay}
-      </p>`;
+    let description = `<p style="font-size:small"><strong>Causation:</strong> ${causation_desc}<br>
+          <strong>Frequency:</strong> ${causation_count}  <i>times</i> <br>
+          <strong>Time of Day:</strong> ${timeOfDay} <br>
+          <strong>Duration: </strong>${duration.toLocaleString()} <i>secs</i></p>
+          <hr>
+          <p style="font-size:small; font-style: italic; color:gray"> <strong>Causation</strong>, identified by the SCL operator, shows why each power outage occurred. <strong>Frequency</strong> counts the outages at this location. <strong>Time of day</strong> notes when they happened. <strong>Duration</strong> sums up the total resolution time for all outages here, indicating the cumulative outage duration in the selected period</p>`;
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
