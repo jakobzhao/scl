@@ -1032,7 +1032,7 @@ function addOutline(map, geometry) {
     type: "line",
     source: "highlighted_source",
     'paint': {
-      'line-color': 'yellow',
+      'line-color': 'yellow', //#00dfff
       'line-width': 3,
       // 'line-opacity': 0.75
       }
