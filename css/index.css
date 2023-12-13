@@ -309,7 +309,8 @@ input[type="checkbox"] {
   top: 0;
   bottom: 0;
   z-index: 999;
-  background: url("../img/loading-logo.gif") 50% 50% no-repeat white;
+  background: url("../img/loading-logo.gif") 50% 50% no-repeat
+    rgba(255, 255, 255, 0.5);
   opacity: 1;
 }
 

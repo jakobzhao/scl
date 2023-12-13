@@ -315,19 +315,19 @@ rightMap.on("click", "options_layer", (e) => {
   populateTractInformation(featureData);
 });
 
-rightMap.on("mousemove", "options_layer", (event) => {
+rightMap.on("mousemove", "options_layer", (e) => {
   rightMap.getCanvas().style.cursor = "pointer";
 });
 
-rightMap.on("mouseleave", "options_layer", (event) => {
+rightMap.on("mouseleave", "options_layer", (e) => {
   rightMap.getCanvas().style.cursor = "";
 });
 
-leftMap.on("mousemove", "outage_point", (event) => {
+leftMap.on("mousemove", "outage_point", (e) => {
   leftMap.getCanvas().style.cursor = "pointer";
 });
 
-leftMap.on("mouseleave", "outage_point", (event) => {
+leftMap.on("mouseleave", "outage_point", (e) => {
   leftMap.getCanvas().style.cursor = "";
 });
 
@@ -689,6 +689,12 @@ leftMap.on("moveend", function () {
   } catch (error) {}
 });
 
+leftMap.once("data", (e) => {
+  if (e.sourceId === "outage_loc" && e.isSourceLoaded) {
+    $("#loader").fadeOut("slow");
+  }
+});
+
 // slider bar change on slide
 function updateYearLabel() {
   let yearLabel = document.getElementById("yearLabel");
@@ -715,11 +721,25 @@ function addHeatmapLayer(year, month, outage_type) {
   }
 
   if (!leftMap.getSource("outage_loc")) {
+    // $("#loader").fadeOut("slow");
+    $("#loader").show();
+
     leftMap.addSource("outage_loc", {
       type: "geojson",
       data: data_path,
     });
+
+    leftMap.on("data", (e) => {
+      // $("#loader").show();
+      if (e.sourceId == "outage_loc" && e.isSourceLoaded) {
+        // $("#loader").show();
+        $("#loader").fadeOut("slow");
+        // $("#loader").hide();
+      }
+    });
   }
+
+  // $("#loader").show();
 
   if (outage_type == "sum") {
     heatmap_ramp = [

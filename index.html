@@ -41,44 +41,64 @@
 <body>
 
 
-     <!-- LOADER -->
-     <div id="loader"></div>
-     <!-- Welcome Panel -->
-     <div id="welcome" class="modal fade map-window modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title">Welcome to SCL GIS Mapping Hub!</h5>
-                 </div>
-                 <div class="modal-body map-window-content">
-                     <img src="img/scl-logo.png"></img>
-                     <p> 
-                        The platform is designed to explore the intricate relationships between power outages in Seattle and various equity factors related to the environment, socio-economics, and public health. This interactive map offers several primary features:
-                     </p>
+    <!-- LOADER -->
+    <div id="loader"></div>
+    <!-- Welcome Panel -->
+    <div id="welcome" class="modal fade map-window modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Welcome to SCL GIS Mapping Hub!</h5>
+                </div>
+                <div class="modal-body map-window-content">
+                    <img src="img/scl-logo.png"></img>
+                    <p>
+                        The platform is designed to explore the intricate relationships between power outages in Seattle
+                        and various equity factors related to the environment, socio-economics, and public health. This
+                        interactive map offers several primary features:
+                    </p>
 
-                 
-                     <ul>
-                         <li><b>Power Outage Exploration:</b> Users can explore the history of power outages in the Seattle Service Area dating back to 2011. This feature facilitates a detailed examination of outage patterns by year, month, and time of day. Users can also delve into the causes behind these outages.</li>
-                         <li><b>Equity Matrix:</b> The platform allows users to investigate socio-economic, environmental, and health factors at the census tract level. It includes detailed demographics for each census tract within Seattle, offering a comprehensive view of the city's diverse communities.</li>
-                         <li><b>Correlation Analysis:</b> The hub enables the exploration of the connection between power outage patterns and equity factors, assisting users in uncovering latent relationships and understanding the broader implications of these outages.</li>
-                     </ul>
-                     <p>The data supporting this hub is sourced from various open data platforms, including the Seattle Open Data Portal, Justice 40, and the Seattle Equity Map. Constructed using MapLibre, an open-source web map framework, the platform ensures accessibility and ease of use. This project is a collaborative endeavor led by Seattle City Light, with significant contributions from the University of Washington's Department of Geography. Locaphilia LLC has been instrumental in developing this GIS Mapping Hub.
-                     </p>
-                     <p>Acknowledging the project's location, it is noted that the Seattle City Light Service Area is situated on the lands and waters of the Coastal Salish peoples, specifically the Suquamish, Tulalip, and Muckleshoot nations. This acknowledgment reflects a commitment to contemplating the historical legacies of the land and striving for greater recognition and confrontation of these histories.</p>
-                     <p>Contributions and suggestions for improving this web map are highly welcome. The team invites any questions or ideas to enhance the platform's effectiveness and reach.</p>
-                 </div>
-                 <div class="modal-footer">
-                     <div class="form-switch" id="nextTimeSwitcher">
-                         <input class="form-check-input" type="checkbox">
-                     </div>
-                     <label id="nextTimeLabel">Don't show this info again.</label>
 
-                     <button id="welcome-close" type="button" class="btn btn-primary py-1"
-                         data-bs-dismiss="modal">Close</button>
-                 </div>
-             </div>
-         </div>
-     </div>
+                    <ul>
+                        <li><b>Power Outage Exploration:</b> Users can explore the history of power outages in the
+                            Seattle Service Area dating back to 2011. This feature facilitates a detailed examination of
+                            outage patterns by year, month, and time of day. Users can also delve into the causes behind
+                            these outages.</li>
+                        <li><b>Equity Matrix:</b> The platform allows users to investigate socio-economic,
+                            environmental, and health factors at the census tract level. It includes detailed
+                            demographics for each census tract within Seattle, offering a comprehensive view of the
+                            city's diverse communities.</li>
+                        <li><b>Correlation Analysis:</b> The hub enables the exploration of the connection between power
+                            outage patterns and equity factors, assisting users in uncovering latent relationships and
+                            understanding the broader implications of these outages.</li>
+                    </ul>
+                    <p>The data supporting this hub is sourced from various open data platforms, including the Seattle
+                        Open Data Portal, Justice 40, and the Seattle Equity Map. Constructed using MapLibre, an
+                        open-source web map framework, the platform ensures accessibility and ease of use. This project
+                        is a collaborative endeavor led by Seattle City Light, with significant contributions from the
+                        University of Washington's Department of Geography. Locaphilia LLC has been instrumental in
+                        developing this GIS Mapping Hub.
+                    </p>
+                    <p>Acknowledging the project's location, it is noted that the Seattle City Light Service Area is
+                        situated on the lands and waters of the Coastal Salish peoples, specifically the Suquamish,
+                        Tulalip, and Muckleshoot nations. This acknowledgment reflects a commitment to contemplating the
+                        historical legacies of the land and striving for greater recognition and confrontation of these
+                        histories.</p>
+                    <p>Contributions and suggestions for improving this web map are highly welcome. The team invites any
+                        questions or ideas to enhance the platform's effectiveness and reach.</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-switch" id="nextTimeSwitcher">
+                        <input class="form-check-input" type="checkbox">
+                    </div>
+                    <label id="nextTimeLabel">Don't show this info again.</label>
+
+                    <button id="welcome-close" type="button" class="btn btn-primary py-1"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-black">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Seattle City Light</a>
@@ -131,7 +151,7 @@
 
             <div>
                 <div class="subheadline">Month:
-                
+
                     <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
                     <label id="monthAllCheck" class="form-check-label" for="all_months">
                         All
