@@ -18,8 +18,6 @@ var afterMap = new maplibregl.Map({
     [-122.03558975261807, 47.420779676472435],
   ],
   customAttribution: "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © <a href='mailto://jakobzhao@gmail.com' target='_blank' >Locaphilia</a>, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>"
-  // center: [-122.335167, 47.608013],
-  // zoom: 12,
 });
 
 // Data Sources
@@ -656,12 +654,17 @@ afterMap.on("moveend", function () {
   var bearing1 = afterMap.getBearing();
   var pitch1 = afterMap.getPitch();
 
+  try{
   beforeMap.jumpTo({
     center: center1,
     zoom: zoom1,
     bearing: bearing1,
     pitch: pitch1,
   });
+}
+  catch(error){
+
+  }
 });
 
 // Synchronize map movements from map2 to map1
@@ -671,12 +674,15 @@ beforeMap.on("moveend", function () {
   var bearing2 = beforeMap.getBearing();
   var pitch2 = beforeMap.getPitch();
 
+  try {
   afterMap.jumpTo({
     center: center2,
     zoom: zoom2,
     bearing: bearing2,
     pitch: pitch2,
-  });
+  });}catch(error){
+
+  }
 });
 
 // slider bar change on slide
