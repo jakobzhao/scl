@@ -73,8 +73,8 @@ leftMap.on("load", () => {
       type: "line",
       source: "censusTract",
       paint: {
-        "line-opacity": 0.3,
-        "line-color": "black",
+        "line-opacity": 0.4,
+        "line-color": "gray",
       },
     },
     "watername_ocean"
@@ -87,7 +87,7 @@ leftMap.on("load", () => {
       source: "censusTract",
       paint: {
         "fill-color": "white",
-        "fill-opacity": 0.7,
+        "fill-opacity": 0,
       },
     },
     "watername_ocean"
@@ -99,8 +99,8 @@ leftMap.on("load", () => {
       type: "fill",
       source: "svi20_data",
       paint: {
-        "fill-color": "white",
-        "fill-opacity": 0.7,
+        // "fill-color": "white",
+        "fill-opacity": 0,
       },
     },
     "watername_ocean"
@@ -521,6 +521,8 @@ function plotMap(source, property, breaks) {
 }
 
 function leftMapPlotLine(source) {
+  let fill_paint = null;
+  let line_paint = null;
   if (!(source in leftMap.style.sourceCaches)) {
     console.log("Could not find proper source.");
   }
@@ -531,16 +533,67 @@ function leftMapPlotLine(source) {
   if (leftMap.getLayer("co_fill")) {
     leftMap.removeLayer("co_fill");
   }
+  if (source === "wireless_priority_area") {
+    fill_paint = {
+      "fill-color": "#F79489",
+      "fill-opacity": 0.3,
+    };
+    line_paint = {
+      "line-color": "#F79489",
+      "line-width": 1,
+    };
+  } else if (source === "landuse") {
+    fill_paint = {
+      "fill-opacity": 0.7,
+      "fill-color": [
+        "match",
+        ["get", "CLASS_DESC"],
+        "Multi-Family",
+        "#B1C381",
+        "Neighborhood Residential",
+        "#B1C381",
+        "Master Planned Community",
+        "#B1C381",
+        "Manufacturing/Industrial",
+        "#F79489", //  "#9BB8CD",
+        "Commercial/Mixed Use",
+        "#F79489",
+        "Industrial and Maritime",
+        "#F79489",
+        "Seattle Mixed",
+        "#EEC759",
+        "Downtown",
+        "#EEC759",
+        "Multi-Family/Residential-Commercial",
+        "#EEC759",
+        "Major Institutions",
+        "#ffffff",
+        "#ffffff", // Default color for unmatched values
+      ],
+    };
+    line_paint = {
+      "line-color": "darkgray",
+      "line-width": 1,
+      "line-opacity": 0.2,
+    };
+  } else {
+    fill_paint = {
+      "fill-color": "darkgray",
+      "fill-opacity": 0,
+    };
+
+    line_paint = {
+      "line-color": "darkgray",
+      "line-width": 1,
+    };
+  }
 
   leftMap.addLayer(
     {
       id: "co_fill",
       type: "fill",
       source: source,
-      paint: {
-        "fill-color": "white",
-        "fill-opacity": 0.7,
-      },
+      paint: fill_paint,
     },
     "outage_heatmap"
   );
@@ -550,11 +603,7 @@ function leftMapPlotLine(source) {
       id: "co_line_layer",
       type: "line",
       source: source,
-      paint: {
-        "line-opacity": 0.2,
-        "line-color": "black",
-        "line-width": 1.5,
-      },
+      paint: line_paint,
     },
     "outage_heatmap"
   );
@@ -573,10 +622,10 @@ function leftMapPlotPoint(source) {
   }
 
   let statusColorScale = {
-    Completed: "#00ff00", // Green
-    "High Priority": "#ff0000", // Red
-    "Medium Priority": "#ffcc00", // Yellow
-    "Low Priority": "#3399ff", // Blue
+    Completed: "#91cf60",
+    "High Priority": "#d73027",
+    "Medium Priority": "#fc8d59",
+    "Low Priority": "#fee08b",
   };
 
   leftMap.addLayer({
@@ -585,11 +634,11 @@ function leftMapPlotPoint(source) {
     source: source,
     paint: {
       "circle-radius": 5,
-      //transparency of the circle fill (0-1)
-      //how to set the transparency of the circle fill
+      "circle-stroke-width": 0.5,
+      "circle-stroke-color": "gray",
+      "circle-stroke-opacity": 0.8,
       "circle-opacity": 0.8,
 
-      // "circle-transparency": 0.5,
       "circle-color": [
         "match",
         ["get", "Status"],
