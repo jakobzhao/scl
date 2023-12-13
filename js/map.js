@@ -705,7 +705,7 @@ function updateYearLabel() {
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
-  let heatmap_ramp = null, heatmap_weight=null, minzoom=null, maxzoom=null;
+  let heatmap_ramp = null, heatmap_weight=null, minzoom=null, maxzoom=null, circleColors=null;
   if (month != "all") {
     data_path =
       "data/year_month_data/outage_condensed_" +
@@ -755,6 +755,24 @@ function addHeatmapLayer(year, month, outage_type) {
   minzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
   maxzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
 
+  circleColors = [
+    "interpolate",
+    ["linear"],
+    ["get", outage_type],
+    0,
+    "rgba(33,102,172,0)",
+    200,
+    "rgb(103,169,207)",
+    300,
+    "rgb(209,229,240)",
+    400,
+    "rgb(253,219,199)",
+    500,
+    "rgb(239,138,98)",
+    600,
+    "rgb(178,24,43)",
+  ];
+
     // get radio button value to decide if frequency or duration
     leftMap.addLayer(
       {
@@ -770,23 +788,7 @@ function addHeatmapLayer(year, month, outage_type) {
             ["zoom"],
             7, minzoom, 25, maxzoom,
           ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["get", outage_type],
-            0,
-            "rgba(33,102,172,0)",
-            200,
-            "rgb(103,169,207)",
-            300,
-            "rgb(209,229,240)",
-            400,
-            "rgb(253,219,199)",
-            500,
-            "rgb(239,138,98)",
-            600,
-            "rgb(178,24,43)",
-          ],
+          "circle-color": circleColors,
           "circle-stroke-color": "darkgray",
           "circle-stroke-width": 1,
           "circle-stroke-opacity": 1,
@@ -841,62 +843,67 @@ function addHeatmapLayer(year, month, outage_type) {
     maxzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 1000, 7, 3000, 10];
 
 
-  // get radio button value to decide if frequency or duration
-  leftMap.addLayer(
-    {
-      id: "outage_point",
-      type: "circle",
-      source: "outage_loc",
-      minzoom: 14,
-      paint: {
-        // Size circle radius by earthquake magnitude and zoom level
-        "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["zoom"],
-          7,
-          minzoom,
-          25,
-          maxzoom,
-        ],
-        "circle-color": [
-          "interpolate",
-          ["linear"],
-          ["get", outage_type],
-          0,
-          "rgba(255, 255, 255, 0)",
-          200,
-          "#ffffb2",
-          500,
-          "#fecc5c",
-          1000,
-          "#fd8d3c",
-          2000,
-          "#f03b20",
-          3000,
-          "#bd0026",
-        ],
-        "circle-stroke-color": "darkgray",
-        "circle-stroke-width": 1,
-        "circle-stroke-opacity": 1,
-        // Transition from heatmap to circle layer by zoom level
-        "circle-opacity": {
-          stops: [
-            [14, 0],
-            [15, 1],
-          ],
-        },
-      },
-      filter: ["!=", ["get", "time_of_day"], ""],
-    },
-    "watername_ocean"
-  );
+    circleColors = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      0,
+      "rgba(255, 255, 255, 0)",
+      200,
+      "#ffffb2",
+      500,
+      "#fecc5c",
+      1000,
+      "#fd8d3c",
+      2000,
+      "#f03b20",
+      3000,
+      "#bd0026",
+    ];
+
+
 
 
 
   }
 
 
+
+
+    // get radio button value to decide if frequency or duration
+    leftMap.addLayer(
+      {
+        id: "outage_point",
+        type: "circle",
+        source: "outage_loc",
+        minzoom: 14,
+        paint: {
+          // Size circle radius by earthquake magnitude and zoom level
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            7,
+            minzoom,
+            25,
+            maxzoom,
+          ],
+          "circle-color": circleColors,
+          "circle-stroke-color": "darkgray",
+          "circle-stroke-width": 1,
+          "circle-stroke-opacity": 1,
+          // Transition from heatmap to circle layer by zoom level
+          "circle-opacity": {
+            stops: [
+              [14, 0],
+              [15, 1],
+            ],
+          },
+        },
+        filter: ["!=", ["get", "time_of_day"], ""],
+      },
+      "watername_ocean"
+    );
 
   leftMap.addLayer(
     {
