@@ -17,7 +17,7 @@ var afterMap = new maplibregl.Map({
     [-122.6290395434541, 47.81179323004783],
     [-122.03558975261807, 47.420779676472435],
   ],
-  customAttribution: "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © Locaphilia, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>"
+  customAttribution: "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © <a href='mailto://jakobzhao@gmail.com' target='_blank' >Locaphilia</a>, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>"
   // center: [-122.335167, 47.608013],
   // zoom: 12,
 });
