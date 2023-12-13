@@ -1000,6 +1000,8 @@ function displayAreaInformation() {
 }
 
 
+
+
 function updateFilter() {
   // get selected time of day
   // get selected causation
@@ -1130,6 +1132,53 @@ function addOutline(map, geometry) {
   });
 
 }
+
+
+function clearHighlight() {
+  // Check if the highlighted layer exists and remove it
+  if (leftMap.getLayer("highlighted_layer")) {
+    leftMap.removeLayer("highlighted_layer");
+  }
+  // Check if the highlighted source exists and remove it
+  if (leftMap.getSource("highlighted_source")) {
+    leftMap.removeSource("highlighted_source");
+  }
+
+    // Check if the highlighted layer exists and remove it
+    if (rightMap.getLayer("highlighted_layer")) {
+      rightMap.removeLayer("highlighted_layer");
+    }
+    // Check if the highlighted source exists and remove it
+    if (rightMap.getSource("highlighted_source")) {
+      rightMap.removeSource("highlighted_source");
+    }
+}
+
+leftMap.on("click", (e) => {
+  // Query the map for features at the clicked point across all layers
+  var features = leftMap.queryRenderedFeatures(e.point);
+
+  // If no features are found, clear the highlight and return
+  if (!features.length) {
+    clearHighlight();
+    return;
+  }
+
+});
+
+
+rightMap.on("click", (e) => {
+  // Query the map for features at the clicked point across all layers
+  var features = rightMap.queryRenderedFeatures(e.point);
+
+  // If no features are found, clear the highlight and return
+  if (!features.length) {
+    clearHighlight();
+    return;
+  }
+
+});
+
 
 function populateTractInformation(featureData) {
   // populate information in div
