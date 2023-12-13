@@ -388,3 +388,20 @@ input[type="checkbox"] {
 .em_factor {
   cursor: pointer;
 }
+
+#landuse-legend {
+  display: none;
+}
+
+.landuse-legend-color {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #000; /* Optional: Add a border for better visibility */
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-left: 20%;
+}

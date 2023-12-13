@@ -230,8 +230,7 @@ leftMap.on("load", () => {
           "rgb(239, 138, 98)",
           "rgb(178, 24, 43)"
         ];
-      }
-      console.log(colorScale);
+      };
       // create legend for frequency/duration here
       addOutageTypeLegend(colorScale);
     });
@@ -552,7 +551,7 @@ function plotMap(source, property, breaks) {
           "case",
           ["!=", ["get", property], null], // If property is not null
           0.4, // Use the default fill-opacity
-          1, // If property is null, use a different fill-opacity
+          0.7, // If property is null, use a different fill-opacity
         ],
       },
     },

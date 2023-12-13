@@ -56,6 +56,23 @@ function toggleOverlay() {
   overlay.style.display = currentDisplay === "block" ? "none" : "block";
 }
 
+// landuse-legend
+// Get the radio buttons and legend elements
+const landuseRadioButton = document.getElementById("landuse");
+const landuseLegend = document.getElementById("landuse-legend");
+
+const otherRadioButtons = document.querySelectorAll('input[name="city_outlines"]:not(#landuse)');
+
+landuseRadioButton.addEventListener("change", function() {
+  landuseLegend.style.display = this.checked ? "block" : "none";
+  otherRadioButtons.forEach(radioButton => {
+    radioButton.addEventListener("change", function() {
+      landuseLegend.style.display = "none";
+    });
+  });
+});
+
+// window on ready
 $(window).ready(function () {
   $("#loader").fadeOut("slow");
 
