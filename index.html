@@ -131,10 +131,11 @@
 
             <div>
                 <div class="subheadline">Month:
+                
+                    <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
                     <label id="monthAllCheck" class="form-check-label" for="all_months">
                         All
                     </label>
-                    <input class="form-check-input" type="checkbox" value="all_months" id="all_months" checked>
 
                 </div>
 
@@ -149,11 +150,11 @@
                 <label for="time_of_day"><b>Time of Day:</b></label>
                 <select id="time_of_day" name="time_of_day">
                     <option value="all" selected>All</option>
-                    <option value="Morning">Morning</option>
-                    <option value="Afternoon">Afternoon</option>
-                    <option value="Evening">Evening</option>
-                    <option value="Night">Night</option>
-                    <option value="Late Night">Late Night</option>
+                    <option value="Morning">Morning: 6am-12pm</option>
+                    <option value="Afternoon">Afternoon: 12pm-6pm</option>
+                    <option value="Evening">Evening: 6pm-9pm</option>
+                    <option value="Night">Night: 9pm-12am</option>
+                    <option value="Late Night">Late Night: 12am-6am</option>
                 </select>
             </div>
             <hr />
