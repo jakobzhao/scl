@@ -19,7 +19,8 @@ var rightMap = new maplibregl.Map({
     [-122.03558975261807, 47.420779676472435],
   ],
   minZoom: 7,
-  customAttribution: "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © <a href='mailto://jakobzhao@gmail.com' target='_blank' >Locaphilia</a>, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>"
+  customAttribution:
+    "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © <a href='mailto://jakobzhao@gmail.com' target='_blank' >Locaphilia</a>, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>",
 });
 
 // Data Sources
@@ -87,7 +88,6 @@ leftMap.on("load", () => {
     "watername_ocean"
   );
 
-
   leftMap.addLayer(
     {
       id: "svi_data",
@@ -100,7 +100,6 @@ leftMap.on("load", () => {
     },
     "watername_ocean"
   );
-
 
   // Initialize the heatmap layer with the default year
   addHeatmapLayer(2023, "all", "sum");
@@ -314,30 +313,23 @@ rightMap.on("click", "options_layer", (e) => {
 
   let featureData = e.features[0].properties;
   populateTractInformation(featureData);
-
 });
 
-rightMap.on('mousemove', 'options_layer', (event) => {
-  rightMap.getCanvas().style.cursor = 'pointer';
+rightMap.on("mousemove", "options_layer", (event) => {
+  rightMap.getCanvas().style.cursor = "pointer";
 });
 
-
-rightMap.on('mouseleave', 'options_layer', (event) => {
-  rightMap.getCanvas().style.cursor = '';
+rightMap.on("mouseleave", "options_layer", (event) => {
+  rightMap.getCanvas().style.cursor = "";
 });
 
-
-leftMap.on('mousemove', 'outage_point', (event) => {
-  leftMap.getCanvas().style.cursor = 'pointer';
+leftMap.on("mousemove", "outage_point", (event) => {
+  leftMap.getCanvas().style.cursor = "pointer";
 });
 
-
-leftMap.on('mouseleave', 'outage_point', (event) => {
-  leftMap.getCanvas().style.cursor = '';
+leftMap.on("mouseleave", "outage_point", (event) => {
+  leftMap.getCanvas().style.cursor = "";
 });
-
-
-
 
 // function
 function justiceOptions() {
@@ -509,14 +501,14 @@ function plotMap(source, property, breaks) {
         "fill-color": {
           property: property,
           stops: breaks,
-          default: 'gray'
+          default: "gray",
         },
         "fill-opacity": [
-          'case',
-          ['!=', ['get', property], null],  // If property is not null
-          0.4,                              // Use the default fill-opacity
-          1,                              // If property is null, use a different fill-opacity
-        ]
+          "case",
+          ["!=", ["get", property], null], // If property is not null
+          0.4, // Use the default fill-opacity
+          1, // If property is null, use a different fill-opacity
+        ],
       },
     },
     "watername_ocean"
@@ -612,29 +604,33 @@ function leftMapPlotPoint(source) {
 
 function updateLegendValues(rangeArray, gradientColors) {
   let length = rangeArray.length;
-  let colorsDiv = document.createElement('div');
-  colorsDiv.id = 'legend-color-bar';
-  colorsDiv.classList.add('row', 'colors', 'ms-3');
-  colorsDiv.style.background = `linear-gradient(to right, ${gradientColors.join(', ')})`;
-  let labelsDiv = document.createElement('div');
-  labelsDiv.classList.add('labels', 'ms-1');
+  let colorsDiv = document.createElement("div");
+  colorsDiv.id = "legend-color-bar";
+  colorsDiv.classList.add("row", "colors", "ms-3");
+  colorsDiv.style.background = `linear-gradient(to right, ${gradientColors.join(
+    ", "
+  )})`;
+  let labelsDiv = document.createElement("div");
+  labelsDiv.classList.add("labels", "ms-1");
   gradientColors.forEach((color, index) => {
-    let labelDiv = document.createElement('div');
-    labelDiv.classList.add('label');
+    let labelDiv = document.createElement("div");
+    labelDiv.classList.add("label");
     labelDiv.textContent = rangeArray[length - index - 1];
     labelsDiv.appendChild(labelDiv);
   });
 
   // Insert the color legend below the selected radio button
-  const selectedRadioButton = document.querySelector('input[name="population_category"]:checked');
+  const selectedRadioButton = document.querySelector(
+    'input[name="population_category"]:checked'
+  );
   selectedRadioButton.parentNode.appendChild(colorsDiv);
   selectedRadioButton.parentNode.appendChild(labelsDiv);
 }
 
 // Function to remove color legend
 function removeColorLegend() {
-  let existingColorLegend = document.querySelector('.row.colors');
-  let existingLabelLegend = document.querySelector('.labels');
+  let existingColorLegend = document.querySelector(".row.colors");
+  let existingLabelLegend = document.querySelector(".labels");
   if (existingColorLegend) existingColorLegend.remove();
   if (existingLabelLegend) existingLabelLegend.remove();
 }
@@ -666,17 +662,14 @@ rightMap.on("moveend", function () {
   var bearing1 = rightMap.getBearing();
   var pitch1 = rightMap.getPitch();
 
-  try{
-  leftMap.jumpTo({
-    center: center1,
-    zoom: zoom1,
-    bearing: bearing1,
-    pitch: pitch1,
-  });
-}
-  catch(error){
-
-  }
+  try {
+    leftMap.jumpTo({
+      center: center1,
+      zoom: zoom1,
+      bearing: bearing1,
+      pitch: pitch1,
+    });
+  } catch (error) {}
 });
 
 // Synchronize map movements from map2 to map1
@@ -687,14 +680,13 @@ leftMap.on("moveend", function () {
   var pitch2 = leftMap.getPitch();
 
   try {
-  rightMap.jumpTo({
-    center: center2,
-    zoom: zoom2,
-    bearing: bearing2,
-    pitch: pitch2,
-  });}catch(error){
-
-  }
+    rightMap.jumpTo({
+      center: center2,
+      zoom: zoom2,
+      bearing: bearing2,
+      pitch: pitch2,
+    });
+  } catch (error) {}
 });
 
 // slider bar change on slide
@@ -707,7 +699,12 @@ function updateYearLabel() {
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
-  let heatmap_ramp = null, heatmap_weight=null, min_zoom=null, max_zoom=null, circle_colors=null, heatmap_intensify=null;
+  let heatmap_ramp = null,
+    heatmap_weight = null,
+    min_zoom = null,
+    max_zoom = null,
+    circle_colors = null,
+    heatmap_intensify = null;
   if (month != "all") {
     data_path =
       "data/year_month_data/outage_condensed_" +
@@ -723,71 +720,63 @@ function addHeatmapLayer(year, month, outage_type) {
       data: data_path,
     });
   }
- 
 
   if (outage_type == "sum") {
-   heatmap_ramp = [
-    "interpolate",
-    ["linear"],
-    ["heatmap-density"],
-    0,
-    "rgba(33,102,172,0)",
-    0.2,
-    "rgb(103,169,207)",
-    0.4,
-    "rgb(209,229,240)",
-    0.6,
-    "rgb(253,219,199)",
-    0.8,
-    "rgb(239,138,98)",
-    1,
-    "rgb(178,24,43)",
-  ];
+    heatmap_ramp = [
+      "interpolate",
+      ["linear"],
+      ["heatmap-density"],
+      0,
+      "rgba(33,102,172,0)",
+      0.2,
+      "rgb(103,169,207)",
+      0.4,
+      "rgb(209,229,240)",
+      0.6,
+      "rgb(253,219,199)",
+      0.8,
+      "rgb(239,138,98)",
+      1,
+      "rgb(178,24,43)",
+    ];
 
-   heatmap_weight = [
-    "interpolate",
-    ["linear"],
-    ["get", outage_type],
-    0,
-    0,
-    100,
-    1,
-  ];
+    heatmap_weight = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      0,
+      0,
+      100,
+      1,
+    ];
 
+    heatmap_intensify = {
+      stops: [
+        [11, 1],
+        [15, 3],
+      ],
+    };
+    min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
+    max_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
 
-
-  heatmap_intensify = {
-    stops: [
-      [11, 1],
-      [15, 3],
-    ],
-  };
-  min_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
-  max_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
-
-  circle_colors = [
-    "interpolate",
-    ["linear"],
-    ["get", outage_type],
-    0,
-    "rgba(33,102,172,0)",
-    3,
-    "rgb(103,169,207)",
-    5,
-    "rgb(209,229,240)",
-    10,
-    "rgb(253,219,199)",
-    15,
-    "rgb(239,138,98)",
-    200,
-    "rgb(178,24,43)",
-  ];
-
-
-    
-
-
-}else{
+    circle_colors = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      0,
+      "rgba(33,102,172,0)",
+      3,
+      "rgb(103,169,207)",
+      5,
+      "rgb(209,229,240)",
+      10,
+      "rgb(253,219,199)",
+      15,
+      "rgb(239,138,98)",
+      200,
+      "rgb(178,24,43)",
+    ];
+  } else {
     //color can be found from https://colorbrewer2.org/#type=diverging&scheme=PRGn&n=6
     heatmap_ramp = [
       "interpolate",
@@ -807,7 +796,6 @@ function addHeatmapLayer(year, month, outage_type) {
       "#bd0026", // Dark Blue
     ];
 
-
     circle_colors = [
       "interpolate",
       ["linear"],
@@ -825,8 +813,6 @@ function addHeatmapLayer(year, month, outage_type) {
       3000,
       "#bd0026",
     ];
-
-
 
     heatmap_weight = [
       "interpolate",
@@ -848,101 +834,108 @@ function addHeatmapLayer(year, month, outage_type) {
       ],
     };
 
-    min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 1000, 2, 3000, 4];
-    max_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 1000, 7, 3000, 10];
-
-
-
-
-    
-
+    min_zoom = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      1,
+      1,
+      1000,
+      2,
+      3000,
+      4,
+    ];
+    max_zoom = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      1,
+      5,
+      1000,
+      7,
+      3000,
+      10,
+    ];
   }
 
-
-
-
-    // get radio button value to decide if frequency or duration
-    leftMap.addLayer(
-      {
-        id: "outage_point",
-        type: "circle",
-        source: "outage_loc",
-        minzoom: 14,
-        paint: {
-          // Size circle radius by earthquake magnitude and zoom level
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            7,
-            min_zoom,
-            25,
-            max_zoom,
+  // get radio button value to decide if frequency or duration
+  leftMap.addLayer(
+    {
+      id: "outage_point",
+      type: "circle",
+      source: "outage_loc",
+      minzoom: 14,
+      paint: {
+        // Size circle radius by earthquake magnitude and zoom level
+        "circle-radius": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          7,
+          min_zoom,
+          25,
+          max_zoom,
+        ],
+        "circle-color": circle_colors,
+        "circle-stroke-color": "darkgray",
+        "circle-stroke-width": 1,
+        "circle-stroke-opacity": 1,
+        // Transition from heatmap to circle layer by zoom level
+        "circle-opacity": {
+          stops: [
+            [14, 0],
+            [18, 1],
           ],
-          "circle-color": circle_colors,
-          "circle-stroke-color": "darkgray",
-          "circle-stroke-width": 1,
-          "circle-stroke-opacity": 1,
-          // Transition from heatmap to circle layer by zoom level
-          "circle-opacity": {
-            stops: [
-              [14, 0],
-              [18, 1],
-            ],
-          },
         },
-        filter: ["!=", ["get", "time_of_day"], ""],
       },
-      "watername_ocean"
-    );
+      filter: ["!=", ["get", "time_of_day"], ""],
+    },
+    "watername_ocean"
+  );
 
-
-    leftMap.addLayer(
-      {
-        id: "outage_heatmap",
-        type: "heatmap",
-        source: "outage_loc",
-        maxzoom: 21,
-        paint: {
-          // Increase the heatmap weight based on frequency and property magnitude
-          "heatmap-weight": heatmap_weight,
-          // Increase the heatmap color weight weight by zoom level
-          // heatmap-intensity is a multiplier on top of heatmap-weight
-          "heatmap-intensity": heatmap_intensify,
-          // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-          // Begin color ramp at 0-stop with a 0-transparancy color
-          // to create a blur-like effect.
-          "heatmap-color": heatmap_ramp,
-          // Adjust the heatmap radius by zoom level
-          "heatmap-radius": {
-            "stops": [
-              [7, 1],
-              [9, 5],
-              [11, 8],
-              [13, 30],
-              [14, 80],
-              [15, 150],
-              [20, 230],
-            ],
-          },
-          // Transition from heatmap to circle layer by zoom level
-          "heatmap-opacity": {
-            default: 1,
-            stops: [
-              [9, 0.9],
-              [12, 0.7],
-              [15, 0.6],
-              [18, 0],
-            ],
-          },
+  leftMap.addLayer(
+    {
+      id: "outage_heatmap",
+      type: "heatmap",
+      source: "outage_loc",
+      maxzoom: 21,
+      paint: {
+        // Increase the heatmap weight based on frequency and property magnitude
+        "heatmap-weight": heatmap_weight,
+        // Increase the heatmap color weight weight by zoom level
+        // heatmap-intensity is a multiplier on top of heatmap-weight
+        "heatmap-intensity": heatmap_intensify,
+        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+        // Begin color ramp at 0-stop with a 0-transparancy color
+        // to create a blur-like effect.
+        "heatmap-color": heatmap_ramp,
+        // Adjust the heatmap radius by zoom level
+        "heatmap-radius": {
+          stops: [
+            [7, 1],
+            [9, 5],
+            [11, 8],
+            [13, 30],
+            [14, 80],
+            [15, 150],
+            [20, 230],
+          ],
         },
-        filter: ["!=", ["get", "time_of_day"], ""],
+        // Transition from heatmap to circle layer by zoom level
+        "heatmap-opacity": {
+          default: 1,
+          stops: [
+            [9, 0.9],
+            [12, 0.7],
+            [15, 0.6],
+            [18, 0],
+          ],
+        },
       },
-      "outage_point"
-    );
-
-
-
+      filter: ["!=", ["get", "time_of_day"], ""],
+    },
+    "outage_point"
+  );
 }
 
 // Function to update the heatmap layer
@@ -981,14 +974,18 @@ function updateHeatmapLayer(year, month, value) {
 function displayAreaInformation() {
   leftMap.on("click", (e) => {
     // Check if the clicked feature is a service point
-    const features = leftMap.queryRenderedFeatures(e.point, { layers: ["outage_point"] });
+    const features = leftMap.queryRenderedFeatures(e.point, {
+      layers: ["outage_point"],
+    });
     if (features.length > 0) {
       // If it's a service point, stop further event handling
       return;
     }
 
     // Handle click event for svi_data layer
-    const sviFeatures = leftMap.queryRenderedFeatures(e.point, { layers: ["svi_data"] });
+    const sviFeatures = leftMap.queryRenderedFeatures(e.point, {
+      layers: ["svi_data"],
+    });
     if (sviFeatures.length > 0) {
       let featureData = sviFeatures[0].properties;
       addOutline(leftMap, sviFeatures[0].geometry);
@@ -998,9 +995,6 @@ function displayAreaInformation() {
     }
   });
 }
-
-
-
 
 function updateFilter() {
   // get selected time of day
@@ -1050,19 +1044,21 @@ function displayServicePointInfo() {
   leftMap.on("click", "outage_point", (e) => {
     // dropdownValues is the lookup table in misc.js
     let causationString = e.features[0].properties.causation;
-    let causationIndex = JSON.parse(causationString.replace(/"/g, ''));
+    let causationIndex = JSON.parse(causationString.replace(/"/g, ""));
 
-    const causationCount = causationIndex.reduce((result, value, i) => {
-      if (value !== 0) {
-        result.push(`${dropdownValues[i + 1]}: ${value}`);
-      }
-      return result;
-    }, []).join(', ');
+    const causationCount = causationIndex
+      .reduce((result, value, i) => {
+        if (value !== 0) {
+          result.push(`${dropdownValues[i + 1]}: ${value}`);
+        }
+        return result;
+      }, [])
+      .join(", ");
 
     let bbox = [
       [e.point.x - 20, e.point.y - 20],
-      [e.point.x + 20, e.point.y + 20]
-      ];
+      [e.point.x + 20, e.point.y + 20],
+    ];
     const coordinates = e.features[0].geometry.coordinates.slice();
     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
@@ -1081,7 +1077,6 @@ function displayServicePointInfo() {
       .setLngLat(coordinates)
       .setHTML(description)
       .addTo(leftMap);
-
   });
 
   leftMap.on("mouseenter", "outage_point", () => {
@@ -1124,15 +1119,13 @@ function addOutline(map, geometry) {
     id: "highlighted_layer",
     type: "line",
     source: "highlighted_source",
-    'paint': {
-      'line-color': 'yellow', //#00dfff
-      'line-width': 3,
+    paint: {
+      "line-color": "yellow", //#00dfff
+      "line-width": 3,
       // 'line-opacity': 0.75
-      }
+    },
   });
-
 }
-
 
 function clearHighlight() {
   // Check if the highlighted layer exists and remove it
@@ -1144,14 +1137,14 @@ function clearHighlight() {
     leftMap.removeSource("highlighted_source");
   }
 
-    // Check if the highlighted layer exists and remove it
-    if (rightMap.getLayer("highlighted_layer")) {
-      rightMap.removeLayer("highlighted_layer");
-    }
-    // Check if the highlighted source exists and remove it
-    if (rightMap.getSource("highlighted_source")) {
-      rightMap.removeSource("highlighted_source");
-    }
+  // Check if the highlighted layer exists and remove it
+  if (rightMap.getLayer("highlighted_layer")) {
+    rightMap.removeLayer("highlighted_layer");
+  }
+  // Check if the highlighted source exists and remove it
+  if (rightMap.getSource("highlighted_source")) {
+    rightMap.removeSource("highlighted_source");
+  }
 }
 
 leftMap.on("click", (e) => {
@@ -1163,9 +1156,7 @@ leftMap.on("click", (e) => {
     clearHighlight();
     return;
   }
-
 });
-
 
 rightMap.on("click", (e) => {
   // Query the map for features at the clicked point across all layers
@@ -1176,9 +1167,7 @@ rightMap.on("click", (e) => {
     clearHighlight();
     return;
   }
-
 });
-
 
 function populateTractInformation(featureData) {
   // populate information in div
@@ -1187,7 +1176,8 @@ function populateTractInformation(featureData) {
     featureData["Total.population"].toLocaleString();
   document.getElementById("life-expectancy").textContent =
     featureData["Life.expectancy..years."];
-  document.getElementById("households").textContent = featureData["Households"].toLocaleString();
+  document.getElementById("households").textContent =
+    featureData["Households"].toLocaleString();
 
   // Update progress bar also [need to optimize]
   document.getElementById("a-native-indian").style.width =

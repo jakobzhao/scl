@@ -5,14 +5,6 @@ body {
   /* font-family: 'Barlow Condensed', sans-serif; */
 }
 
-/* .map {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 50%;
-  z-index: -10;
-} */
-
 #before {
   width: 50%;
   height: 100vh;
@@ -26,10 +18,11 @@ body {
   float: left;
   border-left: 0.1px solid gray;
 }
-/* 
-#before canvas, #after canvas {
-  cursor: pointer;
-  } */
+
+input,
+select {
+  cursor: pointer !important;
+}
 
 .maplibregl-ctrl-top-right {
   top: 80px;
@@ -78,8 +71,7 @@ body {
   font-size: small;
 }
 #causationButton {
-  background-color: #FFFFFF;
-
+  background-color: #ffffff;
 }
 
 .timeDay {
@@ -226,7 +218,7 @@ body {
   display: flex;
 }
 
-.labels{
+.labels {
   margin-top: -6px;
   margin-bottom: -4px;
 }
@@ -282,7 +274,7 @@ input[type="checkbox"] {
 
 /* Increase font size on hover */
 .burger-btn:hover {
-    font-size: 30px; /* Adjust the font size as needed */
+  font-size: 30px; /* Adjust the font size as needed */
 }
 
 .map-overlay-inner {
@@ -302,11 +294,10 @@ input[type="checkbox"] {
   font-weight: bold;
 }
 
-#yearLabel, #monthAllCheck {
+#yearLabel,
+#monthAllCheck {
   font-weight: normal;
 }
-
-
 
 /* welcome model and loader */
 
@@ -322,7 +313,6 @@ input[type="checkbox"] {
   opacity: 1;
 }
 
-
 /* welcome panel */
 
 .map-window {
@@ -336,7 +326,7 @@ input[type="checkbox"] {
   font-size: small;
 }
 
-.map-window-content>img {
+.map-window-content > img {
   float: right;
   width: 200px;
   /* margin: 0px */
@@ -345,14 +335,13 @@ input[type="checkbox"] {
 /* .map-window-content, */
 .modal-title,
 #nextTimeLabel {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: "Barlow Condensed", sans-serif;
   /* color: #dddddd; */
 }
 
 .modal {
   /* background-color: rgba(255, 255, 255, 0.85); */
 }
-
 
 #nextTimeSwitcher {
   font-size: medium;
@@ -362,7 +351,6 @@ input[type="checkbox"] {
   display: flex;
   flex-direction: column;
 }
-
 
 /* dropdown */
 
