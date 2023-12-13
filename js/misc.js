@@ -134,7 +134,11 @@ document.querySelectorAll(".em_factor").forEach((factor) => {
     tooltip.style.display = "block";
     // tooltip.style.left = event.pageX + offsetX + "px";
     // tooltip.style.top = event.pageY + offsetY + "px";
-    tooltip.textContent = "Your hint or tooltip text here"; // Update based on factor
+    if (event.target.textContent === "Environ. Health Disparity") {
+      tooltip.textContent = "test.";
+    } else {
+      tooltip.textContent = "Your hint or tooltip text here"; // Update based on factor
+    }
   });
 
   factor.addEventListener("mouseleave", () => {

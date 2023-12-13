@@ -383,3 +383,7 @@ input[type="checkbox"] {
   z-index: 1000; /* Ensure it's above other elements */
   font-size: small;
 }
+
+.em_factor {
+  cursor: pointer;
+}
