@@ -1029,14 +1029,15 @@ function addOutline(map, geometry) {
 
   map.addLayer({
     id: "highlighted_layer",
-    type: "fill",
+    type: "line",
     source: "highlighted_source",
-    paint: {
-      "fill-color": "yellow", // Set the highlight fill color
-      "fill-opacity": 0.5,
-      "fill-outline-color": "red", // Set the highlight border color
-    },
+    'paint': {
+      'line-color': 'yellow',
+      'line-width': 3,
+      'line-opacity': 0.75
+      }
   });
+
 }
 
 function populateTractInformation(featureData) {
