@@ -720,8 +720,8 @@ function addHeatmapLayer(year, month, outage_type) {
       ".geojson";
   }
 
+  // data loading bar
   if (!leftMap.getSource("outage_loc")) {
-    // $("#loader").fadeOut("slow");
     $("#loader").show();
 
     leftMap.addSource("outage_loc", {
@@ -1172,7 +1172,7 @@ leftMap.on("click", (e) => {
   var features = leftMap.queryRenderedFeatures(e.point);
 
   // If no features are found, clear the highlight and return
-  if (!features.length) {
+  if (features[0].source === "carto") {
     clearHighlight();
     return;
   }
@@ -1183,7 +1183,11 @@ rightMap.on("click", (e) => {
   var features = rightMap.queryRenderedFeatures(e.point);
 
   // If no features are found, clear the highlight and return
-  if (!features.length) {
+  // if (!features.length) {
+  //   clearHighlight();
+  //   return;
+  // }
+  if (features[0].source === "carto") {
     clearHighlight();
     return;
   }
