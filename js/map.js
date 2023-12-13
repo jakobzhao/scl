@@ -5,7 +5,8 @@ var leftMap = new maplibregl.Map({
     [-122.6290395434541, 47.81179323004783],
     [-122.03558975261807, 47.420779676472435],
   ],
-  attributionControl: false
+  attributionControl: false,
+  minZoom: 7,
 });
 
 // the bounds for seattle city is [-122.335167, 47.608013], [-122.224433, 47.734145]
@@ -17,6 +18,7 @@ var rightMap = new maplibregl.Map({
     [-122.6290395434541, 47.81179323004783],
     [-122.03558975261807, 47.420779676472435],
   ],
+  minZoom: 7,
   customAttribution: "<a href='https://www.seattle.gov/city-light' target='_blank'>Seattle City Light</a>, © <a href='mailto://jakobzhao@gmail.com' target='_blank' >Locaphilia</a>, <a href='https://geography.washington.edu/' target='_blank' >UW Geography</a>"
 });
 
@@ -705,7 +707,7 @@ function updateYearLabel() {
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
-  let heatmap_ramp = null, heatmap_weight=null, minzoom=null, maxzoom=null, circleColors=null;
+  let heatmap_ramp = null, heatmap_weight=null, min_zoom=null, max_zoom=null, circle_colors=null, heatmap_intensify=null;
   if (month != "all") {
     data_path =
       "data/year_month_data/outage_condensed_" +
@@ -752,59 +754,37 @@ function addHeatmapLayer(year, month, outage_type) {
     1,
   ];
 
-  minzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
-  maxzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
 
-  circleColors = [
+
+  heatmap_intensify = {
+    stops: [
+      [11, 1],
+      [15, 3],
+    ],
+  };
+  min_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
+  max_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
+
+  circle_colors = [
     "interpolate",
     ["linear"],
     ["get", outage_type],
     0,
     "rgba(33,102,172,0)",
-    200,
+    3,
     "rgb(103,169,207)",
-    300,
+    5,
     "rgb(209,229,240)",
-    400,
+    10,
     "rgb(253,219,199)",
-    500,
+    15,
     "rgb(239,138,98)",
-    600,
+    200,
     "rgb(178,24,43)",
   ];
 
-    // get radio button value to decide if frequency or duration
-    leftMap.addLayer(
-      {
-        id: "outage_point",
-        type: "circle",
-        source: "outage_loc",
-        minzoom: 14,
-        paint: {
-          // Size circle radius by earthquake magnitude and zoom level
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["zoom"],
-            7, minzoom, 25, maxzoom,
-          ],
-          "circle-color": circleColors,
-          "circle-stroke-color": "darkgray",
-          "circle-stroke-width": 1,
-          "circle-stroke-opacity": 1,
-          // Transition from heatmap to circle layer by zoom level
-          "circle-opacity": {
-            stops: [
-              [14, 0],
-              [15, 1],
-            ],
-          },
-        },
-        filter: ["!=", ["get", "time_of_day"], ""],
-      },
-      "watername_ocean"
-    );
 
+    
 
 
 }else{
@@ -827,23 +807,8 @@ function addHeatmapLayer(year, month, outage_type) {
       "#bd0026", // Dark Blue
     ];
 
-    heatmap_weight = [
-      "interpolate",
-      ["linear"],
-      ["get", outage_type],
-      0,
-      0,
-      2000,
-      0.5,
-      3000,
-      1,
-    ];
 
-    minzoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 1000, 2, 3000, 4];
-    maxzoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 1000, 7, 3000, 10];
-
-
-    circleColors = [
+    circle_colors = [
       "interpolate",
       ["linear"],
       ["get", outage_type],
@@ -863,7 +828,33 @@ function addHeatmapLayer(year, month, outage_type) {
 
 
 
+    heatmap_weight = [
+      "interpolate",
+      ["linear"],
+      ["get", outage_type],
+      0,
+      0,
+      2000,
+      0.5,
+      3000,
+      1,
+    ];
 
+    heatmap_intensify = {
+      stops: [
+        [11, 0.2],
+        [13, 0.5],
+        [18, 1],
+      ],
+    };
+
+    min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 1000, 2, 3000, 4];
+    max_zoom =  ["interpolate", ["linear"], ["get", outage_type], 1, 5, 1000, 7, 3000, 10];
+
+
+
+
+    
 
   }
 
@@ -884,11 +875,11 @@ function addHeatmapLayer(year, month, outage_type) {
             ["linear"],
             ["zoom"],
             7,
-            minzoom,
+            min_zoom,
             25,
-            maxzoom,
+            max_zoom,
           ],
-          "circle-color": circleColors,
+          "circle-color": circle_colors,
           "circle-stroke-color": "darkgray",
           "circle-stroke-width": 1,
           "circle-stroke-opacity": 1,
@@ -905,50 +896,53 @@ function addHeatmapLayer(year, month, outage_type) {
       "watername_ocean"
     );
 
-  leftMap.addLayer(
-    {
-      id: "outage_heatmap",
-      type: "heatmap",
-      source: "outage_loc",
-      maxzoom: 21,
-      paint: {
-        // Increase the heatmap weight based on frequency and property magnitude
-        "heatmap-weight": heatmap_weight,
-        // Increase the heatmap color weight weight by zoom level
-        // heatmap-intensity is a multiplier on top of heatmap-weight
-        "heatmap-intensity": {
-          stops: [
-            [11, 1],
-            [15, 3],
-          ],
+
+    leftMap.addLayer(
+      {
+        id: "outage_heatmap",
+        type: "heatmap",
+        source: "outage_loc",
+        maxzoom: 21,
+        paint: {
+          // Increase the heatmap weight based on frequency and property magnitude
+          "heatmap-weight": heatmap_weight,
+          // Increase the heatmap color weight weight by zoom level
+          // heatmap-intensity is a multiplier on top of heatmap-weight
+          "heatmap-intensity": heatmap_intensify,
+          // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+          // Begin color ramp at 0-stop with a 0-transparancy color
+          // to create a blur-like effect.
+          "heatmap-color": heatmap_ramp,
+          // Adjust the heatmap radius by zoom level
+          "heatmap-radius": {
+            "stops": [
+              [7, 1],
+              [9, 5],
+              [11, 8],
+              [13, 30],
+              [14, 80],
+              [15, 150],
+              [20, 230],
+            ],
+          },
+          // Transition from heatmap to circle layer by zoom level
+          "heatmap-opacity": {
+            default: 1,
+            stops: [
+              [9, 0.9],
+              [12, 0.7],
+              [15, 0.6],
+              [18, 0],
+            ],
+          },
         },
-        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-        // Begin color ramp at 0-stop with a 0-transparancy color
-        // to create a blur-like effect.
-        "heatmap-color": heatmap_ramp,
-        // Adjust the heatmap radius by zoom level
-        "heatmap-radius": {
-          stops: [
-            [9, 5],
-            [12, 40],
-            [15, 120],
-          ],
-        },
-        // Transition from heatmap to circle layer by zoom level
-        "heatmap-opacity": {
-          default: 1,
-          stops: [
-            [9, 0.9],
-            [12, 0.7],
-            [15, 0.7],
-            [18, 0],
-          ],
-        },
+        filter: ["!=", ["get", "time_of_day"], ""],
       },
-      filter: ["!=", ["get", "time_of_day"], ""],
-    },
-    "outage_point"
-  );
+      "outage_point"
+    );
+
+
+
 }
 
 // Function to update the heatmap layer
@@ -1063,6 +1057,7 @@ function displayServicePointInfo() {
       .setLngLat(coordinates)
       .setHTML(description)
       .addTo(leftMap);
+
   });
 
   leftMap.on("mouseenter", "outage_point", () => {
