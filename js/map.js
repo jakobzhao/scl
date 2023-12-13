@@ -968,15 +968,37 @@ function updateHeatmapLayer(year, month, value) {
 }
 
 // display area information for before map
+// function displayAreaInformation() {
+//   leftMap.on("click", "svi_data", (e) => {
+//     let featureData = e.features[0].properties;
+//     addOutline(leftMap, e.features[0].geometry);
+//     addOutline(rightMap, e.features[0].geometry);
+//     // show tract information
+//     populateTractInformation(featureData);
+//   });
+// }
+
 function displayAreaInformation() {
-  leftMap.on("click", "svi_data", (e) => {
-    let featureData = e.features[0].properties;
-    addOutline(leftMap, e.features[0].geometry);
-    addOutline(rightMap, e.features[0].geometry);
-    // show tract information
-    populateTractInformation(featureData);
+  leftMap.on("click", (e) => {
+    // Check if the clicked feature is a service point
+    const features = leftMap.queryRenderedFeatures(e.point, { layers: ["outage_point"] });
+    if (features.length > 0) {
+      // If it's a service point, stop further event handling
+      return;
+    }
+
+    // Handle click event for svi_data layer
+    const sviFeatures = leftMap.queryRenderedFeatures(e.point, { layers: ["svi_data"] });
+    if (sviFeatures.length > 0) {
+      let featureData = sviFeatures[0].properties;
+      addOutline(leftMap, sviFeatures[0].geometry);
+      addOutline(rightMap, sviFeatures[0].geometry);
+      // Show tract information
+      populateTractInformation(featureData);
+    }
   });
 }
+
 
 function updateFilter() {
   // get selected time of day
