@@ -832,8 +832,8 @@ function addHeatmapLayer(year, month, outage_type) {
         [15, 3],
       ],
     };
-    min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 4];
-    max_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 10];
+    min_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 1, 6, 3];
+    max_zoom = ["interpolate", ["linear"], ["get", outage_type], 1, 5, 6, 15];
 
     circle_colors = [
       "interpolate",
@@ -919,7 +919,7 @@ function addHeatmapLayer(year, month, outage_type) {
       1000,
       2,
       3000,
-      4,
+      3,
     ];
     max_zoom = [
       "interpolate",
@@ -928,9 +928,9 @@ function addHeatmapLayer(year, month, outage_type) {
       1,
       5,
       1000,
-      7,
+      8,
       3000,
-      10,
+      15,
     ];
   }
 
@@ -947,9 +947,9 @@ function addHeatmapLayer(year, month, outage_type) {
           "interpolate",
           ["linear"],
           ["zoom"],
-          7,
+          13,
           min_zoom,
-          25,
+          20,
           max_zoom,
         ],
         "circle-color": circle_colors,
