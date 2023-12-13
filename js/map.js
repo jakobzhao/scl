@@ -319,13 +319,23 @@ afterMap.on('mousemove', 'options_layer', (event) => {
   afterMap.getCanvas().style.cursor = 'pointer';
 });
 
-afterMap.on('mousemove', 'options_layer', (event) => {
-  afterMap.getCanvas().style.cursor = 'pointer';
-});
 
 afterMap.on('mouseleave', 'options_layer', (event) => {
   afterMap.getCanvas().style.cursor = '';
 });
+
+
+beforeMap.on('mousemove', 'outage_point', (event) => {
+  beforeMap.getCanvas().style.cursor = 'pointer';
+});
+
+
+beforeMap.on('mouseleave', 'outage_point', (event) => {
+  beforeMap.getCanvas().style.cursor = '';
+});
+
+
+
 
 // function
 function justiceOptions() {
