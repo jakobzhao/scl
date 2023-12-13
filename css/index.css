@@ -370,3 +370,16 @@ input[type="checkbox"] {
   background: #0d6efd;
   border-radius: 0;
 }
+
+#tooltip {
+  position: absolute;
+  top: 50px;
+  right: 250px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  display: none;
+  z-index: 1000; /* Ensure it's above other elements */
+  font-size: small;
+}

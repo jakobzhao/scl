@@ -124,3 +124,20 @@ $(".showFrontPage").on("click", function () {
 });
 
 // $("#loader").fadeOut("slow");
+
+document.querySelectorAll(".em_factor").forEach((factor) => {
+  factor.addEventListener("mouseenter", (event) => {
+    const tooltip = document.getElementById("tooltip");
+    const offsetX = 10; // Horizontal offset
+    const offsetY = 20; // Vertical offset
+
+    tooltip.style.display = "block";
+    // tooltip.style.left = event.pageX + offsetX + "px";
+    // tooltip.style.top = event.pageY + offsetY + "px";
+    tooltip.textContent = "Your hint or tooltip text here"; // Update based on factor
+  });
+
+  factor.addEventListener("mouseleave", () => {
+    document.getElementById("tooltip").style.display = "none";
+  });
+});
