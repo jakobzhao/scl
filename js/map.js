@@ -182,6 +182,11 @@ leftMap.on("load", () => {
   // Add event listeners for outage type (feature or duration changes)
   radioButtons.forEach(function (radioButton) {
     radioButton.addEventListener("change", function () {
+      // remove legend
+      let existingLegend = document.getElementById("outage-legend");
+      if (existingLegend) {
+        existingLegend.parentNode.removeChild(existingLegend);
+      }
       let selectedProperty = this.value;
       if (monthsCheckbox.checked) {
         updateHeatmapLayer(yearSlider.value, "all", selectedProperty);
@@ -192,8 +197,32 @@ leftMap.on("load", () => {
           selectedProperty
         );
       }
-
       updateFilter();
+
+      // heatmap colorscale
+      let colorScale = [
+        "rgb(33, 102, 172)",
+        "rgb(103, 169, 207)",
+        "rgb(209, 229, 240)",
+        "rgb(253, 219, 199)",
+        "rgb(239, 138, 98)",
+        "rgb(178, 24, 43)"
+      ];
+
+      // default is frequency heatmap color scale
+      if(selectedProperty == "duration") {
+        colorScale = [
+          "#ffffff",
+          "#ffffb2",
+          "#fecc5c",
+          "#fd8d3c",
+          "#f03b20",
+          "#bd0026"
+        ]
+      }
+
+      // create legend for frequency/duration here
+      addOutageTypeLegend(colorScale);
     });
   });
 
@@ -622,7 +651,7 @@ function leftMapPlotPoint(source) {
   }
 
   let statusColorScale = {
-    Completed: "#91cf60",
+    "Completed": "#91cf60",
     "High Priority": "#d73027",
     "Medium Priority": "#fc8d59",
     "Low Priority": "#fee08b",
@@ -674,11 +703,27 @@ function updateLegendValues(rangeArray, gradientColors) {
   });
 
   // Insert the color legend below the selected radio button
-  const selectedRadioButton = document.querySelector(
+  let selectedRadioButton = document.querySelector(
     'input[name="population_category"]:checked'
   );
   selectedRadioButton.parentNode.appendChild(colorsDiv);
   selectedRadioButton.parentNode.appendChild(labelsDiv);
+}
+
+function addOutageTypeLegend(gradientColors) {
+  let legend = document.createElement("div");
+  legend.id = "outage-legend";
+  legend.classList.add("row", "colors", "ms-3");
+  legend.style.background = `linear-gradient(to right, ${gradientColors.join(
+    ", "
+  )})`;
+
+  // insert legend below the selected radio button
+  let selectedRadioButton = document.querySelector(
+    'input[name="outage_type"]:checked'
+  );
+  let label = document.querySelector('label[for="' + selectedRadioButton.id + '"]');
+  label.parentNode.insertBefore(legend, label.nextSibling);
 }
 
 // Function to remove color legend
@@ -862,17 +907,17 @@ function addHeatmapLayer(year, month, outage_type) {
       ["linear"],
       ["heatmap-density"],
       0,
-      "rgba(255, 255, 255, 0)", // White
+      "rgba(255,255,255,0)",
       0.2,
-      "#ffffb2", // Light Blue
+      "#ffffb2",
       0.4,
-      "#fecc5c", // Sky Blue
+      "#fecc5c",
       0.6,
-      "#fd8d3c", // Steel Blue
+      "#fd8d3c",
       0.8,
-      "#f03b20", // Royal Blue
+      "#f03b20",
       1,
-      "#bd0026", // Dark Blue
+      "#bd0026",
     ];
 
     circle_colors = [
