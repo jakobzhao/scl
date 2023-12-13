@@ -418,3 +418,10 @@ input[type="checkbox"] {
   gap: 1em;
   margin-left: 20%;
 }
+
+#outage-legend {
+  margin-bottom: 2em;
+}
+#outage-type-label {
+  margin-top: 1em;
+}

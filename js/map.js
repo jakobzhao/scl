@@ -729,6 +729,21 @@ function addOutageTypeLegend(gradientColors) {
     ", "
   )})`;
 
+  // Add text labels below the color bar
+  let legendLabels = document.createElement("div");
+  legendLabels.id = "outage-type-label";
+  legendLabels.classList.add('d-flex', 'justify-content-between');
+
+  let highLabel = document.createElement("div");
+  highLabel.textContent = "Low";
+  legendLabels.appendChild(highLabel);
+
+  let lowLabel = document.createElement("div");
+  lowLabel.textContent = "High";
+  legendLabels.appendChild(lowLabel);
+
+  legend.appendChild(legendLabels);
+
   // insert legend below the selected radio button
   let selectedRadioButton = document.querySelector(
     'input[name="outage_type"]:checked'
