@@ -705,7 +705,26 @@ function updateYearLabel() {
 // function add heatmap layer
 function addHeatmapLayer(year, month, outage_type) {
   let data_path = "data/outage_condensed_" + year + ".geojson";
-  let heatmap_ramp = [
+  let heatmap_ramp = null, heatmap_weight=null;
+  if (month != "all") {
+    data_path =
+      "data/year_month_data/outage_condensed_" +
+      year +
+      "_" +
+      month +
+      ".geojson";
+  }
+
+  if (!leftMap.getSource("outage_loc")) {
+    leftMap.addSource("outage_loc", {
+      type: "geojson",
+      data: data_path,
+    });
+  }
+ 
+
+  if (outage_type != "duration") {
+   heatmap_ramp = [
     "interpolate",
     ["linear"],
     ["heatmap-density"],
@@ -723,7 +742,7 @@ function addHeatmapLayer(year, month, outage_type) {
     "rgb(178,24,43)",
   ];
 
-  let heatmap_weight = [
+   heatmap_weight = [
     "interpolate",
     ["linear"],
     ["get", outage_type],
@@ -733,23 +752,7 @@ function addHeatmapLayer(year, month, outage_type) {
     1,
   ];
 
-  if (month != "all") {
-    data_path =
-      "data/year_month_data/outage_condensed_" +
-      year +
-      "_" +
-      month +
-      ".geojson";
-  }
-
-  if (!leftMap.getSource("outage_loc")) {
-    leftMap.addSource("outage_loc", {
-      type: "geojson",
-      data: data_path,
-    });
-  }
-
-  if (outage_type == "duration") {
+}else{
     //color can be found from https://colorbrewer2.org/#type=diverging&scheme=PRGn&n=6
     heatmap_ramp = [
       "interpolate",
