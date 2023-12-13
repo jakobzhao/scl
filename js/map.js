@@ -1034,7 +1034,7 @@ function addOutline(map, geometry) {
     'paint': {
       'line-color': 'yellow',
       'line-width': 3,
-      'line-opacity': 0.75
+      // 'line-opacity': 0.75
       }
   });
 
