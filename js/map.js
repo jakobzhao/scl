@@ -437,20 +437,20 @@ function justiceOptions() {
         plotMap("svi20_data", "housing_transit", [
           [0.041, colorScale[0]],
           [0.609, colorScale[1]],
-          [1.0, colorScale[2]],
+          [0.800, colorScale[2]],
           [1.0, colorScale[3]],
         ]);
-        let legendValues = [1.0, 1.0, 0.609, 0.041];
+        let legendValues = [1.0, 0.800, 0.609, 0.041];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 6) {
         let colorScale = chroma.scale("GnBu").colors(4);
         plotMap("svi20_data", "svi", [
           [0.007, colorScale[0]],
           [0.385, colorScale[1]],
-          [1.0, colorScale[2]],
+          [0.605, colorScale[2]],
           [1.0, colorScale[3]],
         ]);
-        let legendValues = [1.0, 1.0, 0.385, 0.007];
+        let legendValues = [1.0, 0.605, 0.385, 0.007];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 7) {
         let colorScale = chroma.scale("BuPu").colors(4);
