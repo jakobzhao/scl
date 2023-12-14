@@ -385,11 +385,11 @@ function justiceOptions() {
         let colorScale = chroma.scale("OrRd").colors(4);
         plotMap("svi20_data", "env_health_disparity_rank", [
           [1, colorScale[0]],
-          [6, colorScale[1]],
-          [9, colorScale[2]],
+          [5, colorScale[1]],
+          [8, colorScale[2]],
           [10, colorScale[3]],
         ]);
-        let legendValues = [10, 9, 6, 1];
+        let legendValues = [10, 8, 5, 1];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 2) {
         let colorScale = chroma.scale("PuBu").colors(4);
@@ -423,40 +423,40 @@ function justiceOptions() {
           "svi20_data",
           "Expected.population.loss.rate..Natural.Hazards.Risk.Index.",
           [
-            [0.0024, colorScale[0]],
-            [0.0035, colorScale[1]],
-            [0.0048, colorScale[2]],
-            [0.0145, colorScale[3]],
+            [0.002, colorScale[0]],
+            [0.003, colorScale[1]],
+            [0.005, colorScale[2]],
+            [0.015, colorScale[3]],
           ]
         );
-        let legendValues = [0.0145, 0.0048, 0.0035, 0.0024];
+        let legendValues = [0.015, 0.005, 0.003, 0.002];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 5) {
         let colorScale = chroma.scale("Greens").colors(4);
         plotMap("svi20_data", "housing_transit", [
-          [0.041, colorScale[0]],
-          [0.609, colorScale[1]],
+          [0.05, colorScale[0]],
+          [0.6, colorScale[1]],
           [0.8, colorScale[2]],
           [1.0, colorScale[3]],
         ]);
-        let legendValues = [1.0, 0.8, 0.609, 0.041];
+        let legendValues = [1.0, 0.8, 0.6, 0.05];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 6) {
         let colorScale = chroma.scale("GnBu").colors(4);
         plotMap("svi20_data", "svi", [
-          [0.007, colorScale[0]],
-          [0.385, colorScale[1]],
-          [0.605, colorScale[2]],
+          [0.01, colorScale[0]],
+          [0.4, colorScale[1]],
+          [0.6, colorScale[2]],
           [1.0, colorScale[3]],
         ]);
-        let legendValues = [1.0, 0.605, 0.385, 0.007];
+        let legendValues = [1.0, 0.6, 0.4, 0.01];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 7) {
         let colorScale = chroma.scale("BuPu").colors(4);
         plotMap("svi20_data", "sef_rank", [
           [1, colorScale[0]],
           [2, colorScale[1]],
-          [6, colorScale[2]],
+          [5, colorScale[2]],
           [10, colorScale[3]],
         ]);
         let legendValues = ["10", "6", "2", "1"];
@@ -734,11 +734,11 @@ function addOutageTypeLegend(gradientColors, type) {
   legendLabels.classList.add("d-flex", "justify-content-between");
 
   let lowLabel = document.createElement("div");
-  lowLabel.textContent = type == "frequency" ? "Less" : "Short";
+  lowLabel.textContent = type == "frequency" ? "Less" : "Shorter";
   legendLabels.appendChild(lowLabel);
 
   let highLabel = document.createElement("div");
-  highLabel.textContent = type == "frequency" ? "More" : "Long";
+  highLabel.textContent = type == "frequency" ? "More" : "Longer";
   legendLabels.appendChild(highLabel);
 
   legend.appendChild(legendLabels);
