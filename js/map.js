@@ -756,8 +756,6 @@ function addOutageTypeLegend(gradientColors) {
 function removeColorLegend() {
   let existingColorLegend = document.getElementById("legend-color-bar");
   let existingLabelLegend = document.getElementById("label-equity-matrix");
-  console.log(existingColorLegend);
-  console.log(existingLabelLegend);
   if (existingColorLegend) existingColorLegend.remove();
   if (existingLabelLegend) existingLabelLegend.remove();
 }
@@ -1214,15 +1212,15 @@ function displayServicePointInfo() {
     const causationCount = causationIndex
       .reduce((result, value, i) => {
         if (value !== 0) {
-          result.push(`<b>${dropdownValues[i + 1]}:</b> ${value}`);
+          result.push(`${dropdownValues[i + 1]} (${value})`);
           causation_desc = dropdownValues[i + 1];
-          causation_count = value;
+          causation_count += value;
         }
-
         return result;
       }, [])
       .join(", ");
 
+    console.log(causationCount);
     let bbox = [
       [e.point.x - 20, e.point.y - 20],
       [e.point.x + 20, e.point.y + 20],
@@ -1234,12 +1232,12 @@ function displayServicePointInfo() {
 
     let duration = e.features[0].properties.duration;
     let timeOfDay = e.features[0].properties.time_of_day;
-    let description = `<p style="font-size:small"><strong>Causation:</strong> ${causation_desc}<br>
+    let description = `<p style="font-size:small"><strong>Causation:</strong> ${causationCount}<br>
           <strong>Frequency:</strong> ${causation_count}  <i>times</i> <br>
           <strong>Time of Day:</strong> ${timeOfDay} <br>
           <strong>Duration: </strong>${duration.toLocaleString()} <i>secs</i></p>
           <hr>
-          <p style="font-size:small; font-style: italic; color:gray"> <strong>Causation</strong>, identified by the SCL operator, shows why each power outage occurred. <strong>Frequency</strong> counts the outages at this location. <strong>Time of day</strong> notes when they happened. <strong>Duration</strong> sums up the total resolution time for all outages here, indicating the cumulative outage duration in the selected period</p>`;
+          <p style="font-size:small; font-style: italic; color:gray"> <strong>Causation</strong>, identified by the SCL operator, shows why each power outage occurred with the indicated frequencies in parantheses. <strong>Frequency</strong> counts the total outages at this location. <strong>Time of day</strong> notes when they happened. <strong>Duration</strong> sums up the total resolution time for all outages here, indicating the cumulative outage duration in the selected period</p>`;
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
