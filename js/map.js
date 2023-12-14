@@ -119,7 +119,7 @@ leftMap.on("load", () => {
     "rgb(239, 138, 98)",
     "rgb(178, 24, 43)"
   ];
-  addOutageTypeLegend(colorScale);
+  addOutageTypeLegend(colorScale, "frequency");
 
 
   let yearSlider = document.getElementById("yearSlider");
@@ -220,7 +220,8 @@ leftMap.on("load", () => {
           "#fd8d3c",
           "#f03b20",
           "#bd0026"
-        ]
+        ];
+        addOutageTypeLegend(colorScale, "duration");
       } else { // switch back to frequency colorscale
         colorScale = [
           "rgb(33, 102, 172)",
@@ -230,9 +231,9 @@ leftMap.on("load", () => {
           "rgb(239, 138, 98)",
           "rgb(178, 24, 43)"
         ];
+        addOutageTypeLegend(colorScale, "frequency");
       };
       // create legend for frequency/duration here
-      addOutageTypeLegend(colorScale);
     });
   });
 
@@ -721,7 +722,7 @@ function updateLegendValues(rangeArray, gradientColors) {
   selectedRadioButton.parentNode.appendChild(labelsDiv);
 }
 
-function addOutageTypeLegend(gradientColors) {
+function addOutageTypeLegend(gradientColors, type) {
   let legend = document.createElement("div");
   legend.id = "outage-legend";
   legend.classList.add("row", "colors", "ms-3");
@@ -734,13 +735,13 @@ function addOutageTypeLegend(gradientColors) {
   legendLabels.id = "outage-type-label";
   legendLabels.classList.add('d-flex', 'justify-content-between');
 
-  let highLabel = document.createElement("div");
-  highLabel.textContent = "Low";
-  legendLabels.appendChild(highLabel);
-
   let lowLabel = document.createElement("div");
-  lowLabel.textContent = "High";
+  lowLabel.textContent = (type == "frequency") ? "Less": "Short";
   legendLabels.appendChild(lowLabel);
+
+  let highLabel = document.createElement("div");
+  highLabel.textContent = (type == "frequency") ? "More" : "Long";
+  legendLabels.appendChild(highLabel);
 
   legend.appendChild(legendLabels);
 
