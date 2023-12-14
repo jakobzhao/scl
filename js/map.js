@@ -619,12 +619,12 @@ function leftMapPlotLine(source) {
   } else {
     fill_paint = {
       "fill-color": "darkgray",
-      "fill-opacity": 0,
+      "fill-opacity": 0.2,
     };
 
     line_paint = {
       "line-color": "darkgray",
-      "line-width": 1,
+      "line-width": 1.2,
     };
   }
 
@@ -1164,7 +1164,7 @@ function displayAreaInformation() {
 function updateFilter() {
   // get selected time of day
   // get selected causation
-  let timeOfDay = document.getElementById('time_of_day').value;
+  let timeOfDay = document.getElementById("time_of_day").value;
   let causationIndex = 0;
 
   let causations = document.querySelectorAll(".dropdown-item");
