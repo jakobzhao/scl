@@ -220,6 +220,7 @@ leftMap.on("load", () => {
           "#f03b20",
           "#bd0026",
         ];
+        addOutageTypeLegend(colorScale, "duration");
       } else {
         // switch back to frequency colorscale
         colorScale = [
@@ -230,6 +231,7 @@ leftMap.on("load", () => {
           "rgb(239, 138, 98)",
           "rgb(178, 24, 43)",
         ];
+        addOutageTypeLegend(colorScale, "frequency");
       }
       // create legend for frequency/duration here
     });
