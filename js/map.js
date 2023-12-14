@@ -1242,6 +1242,7 @@ function displayServicePointInfo() {
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
+      .setMaxWidth("350px")
       .addTo(leftMap);
   });
 
