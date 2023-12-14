@@ -108,19 +108,18 @@ leftMap.on("load", () => {
 
   // Initialize the heatmap layer with the default year
   addHeatmapLayer(2023, "all", "sum");
-  
-  // Initialized heatmap legend 
-   // heatmap colorscale
-   let colorScale = [
+
+  // Initialized heatmap legend
+  // heatmap colorscale
+  let colorScale = [
     "rgb(33, 102, 172)",
     "rgb(103, 169, 207)",
     "rgb(209, 229, 240)",
     "rgb(253, 219, 199)",
     "rgb(239, 138, 98)",
-    "rgb(178, 24, 43)"
+    "rgb(178, 24, 43)",
   ];
   addOutageTypeLegend(colorScale);
-
 
   let yearSlider = document.getElementById("yearSlider");
   let monthSlider = document.getElementById("monthSlider");
@@ -212,25 +211,26 @@ leftMap.on("load", () => {
       }
       updateFilter();
 
-      if(selectedProperty == "duration") {
+      if (selectedProperty == "duration") {
         colorScale = [
           "#ffffff",
           "#ffffb2",
           "#fecc5c",
           "#fd8d3c",
           "#f03b20",
-          "#bd0026"
-        ]
-      } else { // switch back to frequency colorscale
+          "#bd0026",
+        ];
+      } else {
+        // switch back to frequency colorscale
         colorScale = [
           "rgb(33, 102, 172)",
           "rgb(103, 169, 207)",
           "rgb(209, 229, 240)",
           "rgb(253, 219, 199)",
           "rgb(239, 138, 98)",
-          "rgb(178, 24, 43)"
+          "rgb(178, 24, 43)",
         ];
-      };
+      }
       // create legend for frequency/duration here
       addOutageTypeLegend(colorScale);
     });
@@ -437,10 +437,10 @@ function justiceOptions() {
         plotMap("svi20_data", "housing_transit", [
           [0.041, colorScale[0]],
           [0.609, colorScale[1]],
-          [0.800, colorScale[2]],
+          [0.8, colorScale[2]],
           [1.0, colorScale[3]],
         ]);
-        let legendValues = [1.0, 0.800, 0.609, 0.041];
+        let legendValues = [1.0, 0.8, 0.609, 0.041];
         updateLegendValues(legendValues, colorScale);
       } else if (selectedProperty == 6) {
         let colorScale = chroma.scale("GnBu").colors(4);
@@ -661,7 +661,7 @@ function leftMapPlotPoint(source) {
   }
 
   let statusColorScale = {
-    "Completed": "#91cf60",
+    Completed: "#91cf60",
     "High Priority": "#d73027",
     "Medium Priority": "#fc8d59",
     "Low Priority": "#fee08b",
@@ -704,7 +704,7 @@ function updateLegendValues(rangeArray, gradientColors) {
     ", "
   )})`;
   let labelsDiv = document.createElement("div");
-  labelsDiv.id = "label-equity-matrix"
+  labelsDiv.id = "label-equity-matrix";
   labelsDiv.classList.add("labels", "ms-1");
   gradientColors.forEach((color, index) => {
     let labelDiv = document.createElement("div");
@@ -732,7 +732,7 @@ function addOutageTypeLegend(gradientColors) {
   // Add text labels below the color bar
   let legendLabels = document.createElement("div");
   legendLabels.id = "outage-type-label";
-  legendLabels.classList.add('d-flex', 'justify-content-between');
+  legendLabels.classList.add("d-flex", "justify-content-between");
 
   let highLabel = document.createElement("div");
   highLabel.textContent = "Low";
@@ -748,7 +748,9 @@ function addOutageTypeLegend(gradientColors) {
   let selectedRadioButton = document.querySelector(
     'input[name="outage_type"]:checked'
   );
-  let label = document.querySelector('label[for="' + selectedRadioButton.id + '"]');
+  let label = document.querySelector(
+    'label[for="' + selectedRadioButton.id + '"]'
+  );
   label.parentNode.insertBefore(legend, label.nextSibling);
 }
 
@@ -1241,6 +1243,7 @@ function displayServicePointInfo() {
     new maplibregl.Popup()
       .setLngLat(coordinates)
       .setHTML(description)
+      .setMaxWidth("350px")
       .addTo(leftMap);
   });
 
