@@ -1164,14 +1164,8 @@ function displayAreaInformation() {
 function updateFilter() {
   // get selected time of day
   // get selected causation
-  let timeOfDay = "all";
+  let timeOfDay = document.getElementById('time_of_day').value;
   let causationIndex = 0;
-  let timeOfDayInputs = document.getElementsByName("time_of_day");
-  timeOfDayInputs.forEach(function (input) {
-    if (input.checked) {
-      timeOfDay = input.value;
-    }
-  });
 
   let causations = document.querySelectorAll(".dropdown-item");
   let buttonText = document.getElementById("causationButton").innerHTML;
@@ -1186,6 +1180,7 @@ function updateFilter() {
   if (timeOfDay == "all") {
     timeOfDayFilter = ["!=", ["get", "time_of_day"], timeOfDay];
   }
+  console.log(timeOfDayFilter);
 
   let causationFilter;
   if (causationIndex == 1) {
