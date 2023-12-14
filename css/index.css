@@ -386,7 +386,7 @@ input[type="checkbox"] {
 
 #tooltip {
   position: absolute;
-  top: 50px;
+  top: 0.75em;
   right: 250px;
   background-color: white;
   border: 1px solid #ddd;
