@@ -142,6 +142,27 @@ select {
   vertical-align: middle;
 }
 
+.map-overlay-right input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.imagery-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.imagery-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.imagery-row label {
+  flex: 1;
+}
+
 .map-overlay-bottom-right {
   font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
   position: absolute;

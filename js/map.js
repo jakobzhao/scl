@@ -313,6 +313,28 @@ leftMap.on("load", () => {
 
 // map containing equity matrix and all other data
 rightMap.on("load", () => {
+  // NASA GIBS MODIS Terra true color, 2026-08-05 (WA wildfire smoke event).
+  // Local tiles, zoom 4-9 only: maxzoom makes MapLibre overzoom instead of 404ing.
+  // Added first so every later addLayer(..., "watername_ocean") lands above it,
+  // keeping the choropleth fill and tract outlines readable.
+  rightMap.addSource("gee_imagery", {
+    type: "raster",
+    tiles: ["tiles/imagery/{z}/{x}/{y}.jpg"],
+    tileSize: 256,
+    maxzoom: 9,
+    attribution: "Imagery: NASA GIBS / MODIS Terra Corrected Reflectance",
+  });
+  rightMap.addLayer(
+    {
+      id: "gee_imagery_layer",
+      type: "raster",
+      source: "gee_imagery",
+      layout: { visibility: "none" },
+      paint: { "raster-opacity": 0.85 },
+    },
+    "watername_ocean"
+  );
+
   rightMap.addSource("svi20_data", {
     type: "geojson",
     data: "data/svi_20_seattle_new.geojson",
@@ -342,6 +364,19 @@ rightMap.on("load", () => {
   ]);
   updateLegendValues(legendValues, colorScale);
   justiceOptions();
+
+  // Imagery toggle + opacity. Deliberately outside the population_category
+  // radio group / plotMap(): this is a raster basemap, not a choropleth.
+  document.getElementById("imagery-toggle").addEventListener("change", function () {
+    rightMap.setLayoutProperty(
+      "gee_imagery_layer",
+      "visibility",
+      this.checked ? "visible" : "none"
+    );
+  });
+  document.getElementById("imagery-opacity").addEventListener("input", function () {
+    rightMap.setPaintProperty("gee_imagery_layer", "raster-opacity", this.value / 100);
+  });
 });
 
 rightMap.on("click", "options_layer", (e) => {
