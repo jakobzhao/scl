@@ -142,6 +142,41 @@ select {
   vertical-align: middle;
 }
 
+.map-overlay-right input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.imagery-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.imagery-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.imagery-row label {
+  flex: 1;
+}
+
+.lst-legend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.lst-legend .lst-ramp {
+  display: inline-block;
+  height: 10px;
+  flex: 1;
+  background: linear-gradient(to right, #313695, #74add1, #fed976, #feb24c, #fd8d3c, #f03b20, #bd0026);
+}
+
 .map-overlay-bottom-right {
   font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
   position: absolute;
