@@ -149,18 +149,33 @@ select {
   vertical-align: middle;
 }
 
-.imagery-row {
+/* LST checkbox and opacity slider share the radio gutter (20%) so their
+   labels line up with the factor labels above them. The 2px gap replaces the
+   inline whitespace that offsets the radio rows' labels. */
+.lst-row {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  column-gap: 2px;
+  align-items: center;
+}
+
+.map-overlay-right .lst-row input[type="checkbox"] {
+  justify-self: center;
+}
+
+.lst-opacity {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
 
-.imagery-row input[type="checkbox"] {
-  flex: 0 0 auto;
-  margin-top: 2px;
-}
-
-.imagery-row label {
+/* min-width:0 overrides the range input's UA intrinsic minimum, which would
+   otherwise push the slider past the panel's right edge. */
+.map-overlay-right .lst-opacity input[type="range"] {
   flex: 1;
+  width: auto;
+  min-width: 0;
 }
 
 .lst-legend {
