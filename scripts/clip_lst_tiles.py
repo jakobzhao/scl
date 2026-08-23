@@ -24,6 +24,22 @@ BOUNDARY = ROOT / "data" / "seattle_city_council_districts.geojson"
 TILE_PX = 256
 SS = 4  # supersample factor; antialiases the city edge
 
+# Must match the raster source's bounds in js/map.js. MapLibre still requests
+# tiles inside this bbox, so those keep a transparent placeholder instead of
+# being deleted; anything wholly outside is never requested and can go.
+BOUNDS = (-122.436, 47.495, -122.236, 47.735)
+
+
+def tile_bbox(zoom, tx, ty):
+    n = 2**zoom
+    lat = lambda t: math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * t / n))))
+    return tx / n * 360 - 180, lat(ty + 1), (tx + 1) / n * 360 - 180, lat(ty)
+
+
+def in_bounds(zoom, tx, ty):
+    w, s, e, n = tile_bbox(zoom, tx, ty)
+    return not (e <= BOUNDS[0] or w >= BOUNDS[2] or n <= BOUNDS[1] or s >= BOUNDS[3])
+
 
 def rings(path):
     """Every (exterior, [holes]) polygon in a GeoJSON of Polygon/MultiPolygon."""
@@ -78,14 +94,21 @@ def mask_for(zoom, tx, ty, polys):
 
 def clip(dry_run=False):
     polys = rings(BOUNDARY)
-    kept = dropped = 0
+    kept = blanked = dropped = 0
     for png in sorted(TILES.glob("*/*/*.png")):
         zoom, tx, ty = int(png.parent.parent.name), int(png.parent.name), int(png.stem)
         mask = mask_for(zoom, tx, ty, polys)
         if mask is None or not mask.getbbox():
-            dropped += 1
-            if not dry_run:
-                png.unlink()
+            # No city in this tile. MapLibre only asks for it if it overlaps
+            # the source bounds, so blank those and delete the rest.
+            if in_bounds(zoom, tx, ty):
+                blanked += 1
+                if not dry_run:
+                    Image.new("RGBA", (TILE_PX, TILE_PX), (0, 0, 0, 0)).save(png)
+            else:
+                dropped += 1
+                if not dry_run:
+                    png.unlink()
             continue
         kept += 1
         if dry_run:
@@ -97,7 +120,7 @@ def clip(dry_run=False):
         for d in sorted(TILES.glob("*/*"), reverse=True):
             if d.is_dir() and not any(d.iterdir()):
                 d.rmdir()
-    return kept, dropped
+    return kept, blanked, dropped
 
 
 def check():
@@ -112,6 +135,14 @@ def check():
     a = Image.new("L", (2, 1), 200)
     m = Image.new("L", (2, 1), 100)
     assert ImageChops.darker(a, m).tobytes() == bytes([100, 100]), "clip combine wrong"
+    # a tile straddling the bounds edge must be blanked, not deleted
+    assert in_bounds(12, 654, 1428), "bounds test tile should be requestable"
+    assert not in_bounds(13, *_tile(-122.6270, 47.5673, 13)), "Bremerton is out of bounds"
+    # every surviving tile is either inside bounds or holds city pixels
+    for png in TILES.glob("*/*/*.png"):
+        z, tx, ty = int(png.parent.parent.name), int(png.parent.name), int(png.stem)
+        if not in_bounds(z, tx, ty):
+            assert Image.open(png).getchannel("A").getbbox(), f"{png} is blank and unreachable"
     print("checks passed")
 
 
@@ -124,5 +155,5 @@ if __name__ == "__main__":
     if "--check" in sys.argv:
         check()
     else:
-        kept, dropped = clip()
-        print(f"kept {kept} tiles, deleted {dropped} outside Seattle")
+        kept, blanked, dropped = clip()
+        print(f"kept {kept}, blanked {blanked} in-bounds, deleted {dropped} outside bounds")
