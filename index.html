@@ -270,6 +270,15 @@
                     <input type="radio" id="ti" name="population_category" value="5" />
                     <label for="ti" class="em_factor">Transportation Insecurity</label>
                 </div>
+                <div class="imagery-row">
+                    <input type="checkbox" id="lst-toggle" />
+                    <label for="lst-toggle" class="em_factor">Surface temperature (&deg;F) &mdash; Landsat, summer 2024 (continuous raster)</label>
+                </div>
+                <div>
+                    <input type="range" id="lst-opacity" min="0" max="100" value="80" style="width: 60%; vertical-align: middle;" />
+                    <label for="lst-opacity" class="em_factor">Opacity</label>
+                </div>
+                <div class="lst-legend"><span>50&deg;F</span><span class="lst-ramp"></span><span>105&deg;F</span></div>
             </div>
             <div>
                 <b>Socialeconomic Factors</b>

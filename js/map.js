@@ -313,6 +313,30 @@ leftMap.on("load", () => {
 
 // map containing equity matrix and all other data
 rightMap.on("load", () => {
+  // Landsat 8/9 land surface temperature, summer 2024 median composite
+  // (see scripts/build_lst_tiles.py). Continuous raster surface — contrast
+  // with the tract-level equity choropleths. Local tiles, zoom 8-13:
+  // source maxzoom makes MapLibre overzoom instead of 404ing beyond.
+  // Added first so every later addLayer(..., "watername_ocean") lands above
+  // it, keeping the choropleth fill and tract outlines readable.
+  rightMap.addSource("lst_raster", {
+    type: "raster",
+    tiles: ["tiles/lst/{z}/{x}/{y}.png"],
+    tileSize: 256,
+    maxzoom: 13,
+    attribution: "Landsat 8/9 LST via Google Earth Engine",
+  });
+  rightMap.addLayer(
+    {
+      id: "lst_raster_layer",
+      type: "raster",
+      source: "lst_raster",
+      layout: { visibility: "none" },
+      paint: { "raster-opacity": 0.8 },
+    },
+    "watername_ocean"
+  );
+
   rightMap.addSource("svi20_data", {
     type: "geojson",
     data: "data/svi_20_seattle_new.geojson",
@@ -342,6 +366,19 @@ rightMap.on("load", () => {
   ]);
   updateLegendValues(legendValues, colorScale);
   justiceOptions();
+
+  // LST toggle + opacity. Deliberately outside the population_category
+  // radio group / plotMap(): this is a raster surface, not a choropleth.
+  document.getElementById("lst-toggle").addEventListener("change", function () {
+    rightMap.setLayoutProperty(
+      "lst_raster_layer",
+      "visibility",
+      this.checked ? "visible" : "none"
+    );
+  });
+  document.getElementById("lst-opacity").addEventListener("input", function () {
+    rightMap.setPaintProperty("lst_raster_layer", "raster-opacity", this.value / 100);
+  });
 });
 
 rightMap.on("click", "options_layer", (e) => {
