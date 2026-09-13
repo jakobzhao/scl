@@ -314,9 +314,11 @@ leftMap.on("load", () => {
 // map containing equity matrix and all other data
 rightMap.on("load", () => {
   // Landsat 8/9 land surface temperature, summer 2024 median composite
-  // (see scripts/build_lst_tiles.py). Continuous raster surface — contrast
-  // with the tract-level equity choropleths. Local tiles, zoom 8-13:
-  // source maxzoom makes MapLibre overzoom instead of 404ing beyond.
+  // (see scripts/build_lst_tiles.py), clipped to Seattle city limits by
+  // scripts/clip_lst_tiles.py. Continuous raster surface, contrast with the
+  // tract-level equity choropleths. Local tiles, zoom 8-13: source maxzoom
+  // makes MapLibre overzoom instead of 404ing beyond, and bounds stops it
+  // requesting the tiles the clip deleted.
   // Added first so every later addLayer(..., "watername_ocean") lands above
   // it, keeping the choropleth fill and tract outlines readable.
   rightMap.addSource("lst_raster", {
@@ -324,6 +326,7 @@ rightMap.on("load", () => {
     tiles: ["tiles/lst/{z}/{x}/{y}.png"],
     tileSize: 256,
     maxzoom: 13,
+    bounds: [-122.436, 47.495, -122.236, 47.735],
     attribution: "Landsat 8/9 LST via Google Earth Engine",
   });
   rightMap.addLayer(

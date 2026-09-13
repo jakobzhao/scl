@@ -1,5 +1,9 @@
 # scl
 
+## Acknowledgments
+
+Myron Lai contributed the Landsat 8/9 surface-temperature layer and its data-processing workflow to this Seattle City Light mapping project under the mentorship of [Jakob Zhao](https://github.com/jakobzhao). These contributions build on the existing project maintained by Jakob Zhao and its other contributors.
+
 
 ## Libraries
 
